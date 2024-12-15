@@ -1,0 +1,97 @@
+<mat-card class="course-app cardWithShadow">
+    <mat-card-content class="p-24">
+      <div class="row justify-content-between">
+        <div class="col-lg-4">
+          <mat-form-field appearance="outline" class="w-100 hide-hint">
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" />
+            <mat-icon matSuffix>
+              <i-tabler name="search" class="icon-20"></i-tabler>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <div *ngIf="isButtonPermission()" class="col-lg-4 d-flex align-items-center justify-content-end">
+          <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+            Thêm Chương Học
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <button (click)="goToDashboard()" mat-flat-button class="m-b-12"><i-tabler style="cursor: pointer; color: #5d87ff;" name="arrow-left" class="icon-40"></i-tabler></button>  
+  <div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner" >
+    <mat-spinner ></mat-spinner>
+  </div>
+ 
+  <div class="row" *ngIf="sourceDetailList$ | async">
+    <div *ngFor="let courseDetail of sourceDetailList$ | async" class="col-sm-6 col-lg-4">
+      <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card-header
+          class="course-header bg-primary d-flex justify-content-between"
+        >
+          <mat-card-title class="m-b-0 f-s-16">
+            {{ courseDetail.title }}
+          </mat-card-title>
+          <span class="d-flex align-items-center gap-4"
+            ><i-tabler name="clock" class="icon-16 d-flex"></i-tabler
+            >{{ courseDetail.time_study }}</span
+          >
+        </mat-card-header>
+        <mat-card-content class="text-center p-y-24">
+          <h3 class="m-b-4 mat-subtitle-2 f-s-16 f-w-600">
+            {{ courseDetail.description }}
+          </h3>
+          <!-- <span class="f-s-12">{{ courseDetail.Update }}</span> -->
+        </mat-card-content>
+        <!-- <mat-divider></mat-divider>
+        <mat-card-actions class="text-center p-y-8">
+        
+          <a
+            mat-button
+            [routerLink]="['/dashboard/course-content-detail', courseDetail.id]"
+            class="w-100"
+            color="primary"
+            
+          >
+          Enroll
+          </a>
+          
+          <a
+            mat-button
+            [routerLink]="['/dashboard/course-content-detail', courseDetail.id]"
+            class="w-100"
+            
+          >
+          Open
+          </a>          
+          
+        </mat-card-actions> -->
+
+        <mat-divider></mat-divider>
+        <div *ngIf="!isButtonPermission()" class="p-24 d-flex align-items-center justify-content-center" >
+          <button mat-flat-button color="accent" (click)="goPage(courseDetail.id)" class="w-100">
+            <mat-icon>open_in_new</mat-icon>
+            Enroll
+          </button>         
+        </div>
+        <div *ngIf="isButtonPermission()" class="p-24 d-flex align-items-center" style="justify-content: space-between">
+          <button mat-flat-button color="primary" (click)="goPage(courseDetail.id)" >
+            <mat-icon>open_in_new</mat-icon>
+            Enroll
+          </button>
+          <button mat-flat-button color="accent" (click)="openDialog('Edit', courseDetail)"  >
+            <mat-icon>settings</mat-icon>
+            Edit
+          </button>
+          <button mat-flat-button color="warn" (click)="openDialogRemove('0ms', '0ms', courseDetail)"  >
+            <mat-icon>delete</mat-icon>
+            Remove
+          </button>         
+        </div>       
+        
+      </mat-card>
+    </div>
+  </div>
+
+  
+  

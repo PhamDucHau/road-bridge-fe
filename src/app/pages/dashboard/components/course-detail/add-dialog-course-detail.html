@@ -1,0 +1,110 @@
+<h2 class="f-w-500 m-b-24" mat-dialog-title><strong>{{action}}</strong></h2>
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner" >
+  <mat-spinner ></mat-spinner>
+</div>
+
+@if(action !== 'Delete') {
+<mat-dialog-content style="max-width: 1400px">
+  <form #courseForm="ngForm">
+    <div class="row">
+      <div class="col-lg-3">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Name:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="title"
+            name="name"
+            [(ngModel)]="local_data.title"
+            placeholder="title"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="text-caption" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Description:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="description"
+            name="description"
+            [(ngModel)]="local_data.description"
+            placeholder="description"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="align-box-left-middle" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Time study:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="time_study"
+            name="time_study"
+            [(ngModel)]="local_data.time_study"
+            placeholder="Time study"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="alarm" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+     
+
+     
+    </div>
+    <button *ngIf="action == 'Add'"
+      mat-flat-button
+      (click)="saveCreate()"
+      mat-flat-button
+      color="primary"
+      [disabled]="!courseForm.valid"
+    >
+      Add
+    </button>
+
+    <button *ngIf="action == 'Edit'"
+    mat-flat-button
+    (click)="saveEdit()"
+    mat-flat-button
+    color="primary"
+    [disabled]="!courseForm.valid"
+  >
+    Edit
+  </button>
+    <button
+      mat-stroked-button
+      color="warn"
+      class="m-l-8"
+      (click)="closeDialog()"
+    >
+      Cancel
+    </button>
+  </form>
+</mat-dialog-content>
+} @else {
+<div class="p-x-24">
+  <p>Sure to delete <span class="f-w-600">{{local_data.Name}}</span> ?</p>
+</div>
+<div mat-dialog-actions class="p-x-24 p-b-24">
+  <button mat-button (click)="saveCreate()" mat-flat-button color="warn">
+    {{action}}
+  </button>
+  <button mat-button (click)="closeDialog()" class="m-l-8">Cancel</button>
+</div>
+}

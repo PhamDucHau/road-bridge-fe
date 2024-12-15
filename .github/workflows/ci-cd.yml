@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Hoặc nhánh mà bạn muốn tự động hóa
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image
+      run: |
+        docker build -t haupham2311/road-bridge-fe:latest .
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: haupham2311
+        password: Hau@12345
+
+    - name: Push Docker image
+      run: |
+        docker push haupham2311/road-bridge-fe:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@master
+      with:
+        host: 103.82.38.96
+        username: root
+        password: v8B7oM21hptdTJQY  # Hoặc sử dụng private key
+        script: |
+          docker pull haupham2311/road-bridge-fe:latest
+          docker stop angular-app || true
+          docker rm angular-app || true
+          docker run -d --name angular-app -p 4300:80 haupham2311/road-bridge-fe:latest

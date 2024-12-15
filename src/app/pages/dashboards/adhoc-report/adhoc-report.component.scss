@@ -1,0 +1,26 @@
+.custom-textarea-container {
+    width: 100%; /* Chiếm toàn bộ chiều rộng container */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .custom-label {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  
+  .custom-textarea {
+    width: 100%;
+    border: 2px dashed #000; /* Viền nét đứt */
+    border-radius: 4px; /* Bo góc */
+    padding: 8px;
+    font-size: 14px;
+    resize: none; /* Tắt khả năng thay đổi kích thước */
+    outline: none;
+  }
+  
+  .custom-textarea:focus {
+    border-color: #007bff; /* Màu viền khi focus */
+    background-color: #f8f9fa; /* Nền sáng hơn khi focus */
+  }

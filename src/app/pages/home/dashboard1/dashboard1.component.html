@@ -1,0 +1,138 @@
+<!-- <app-top-cards></app-top-cards> -->
+
+
+
+  
+
+
+  <div class="d-flex align-items-center justify-content-center gap-4">
+  <h2 class="text-left">Khoá học nổi bậc</h2> 
+  <mat-icon matPrefix>
+    <i-tabler name="arrows-left-right" class="icon-26 d-flex fill-warning"></i-tabler>
+  </mat-icon>
+  </div>
+  <owl-carousel-o [options]="customOptionsProminent">
+    <ng-template carouselSlide *ngFor="let blogPost of (sourceListProminent$ | async) || null " >
+      <mat-card
+      class="cardWithShadow card2 position-relative card-hover cursor-pointer "     
+      style="max-width: 281px;"
+    >     
+      <img
+        mat-card-image
+        src="{{converImage(blogPost.image)}}"
+        alt="Photo of a Shiba Inu"
+        style="height: 137px; "
+      />
+      <mat-card-content >
+        <mat-card-title class="mat-headline-6 m-t-15 ellipsis-2-lines">{{
+          blogPost.description
+        }}</mat-card-title>
+        
+        <div class="f-s-14 f-w-100 bg-white ellipsis-1-line" >{{
+          blogPost.title
+        }}</div>
+        <div class="d-flex m-t-12 flex-column">          
+          <div class="d-flex gap-4">
+            {{blogPost.star}}.0
+            <div *ngFor="let i of [].constructor(blogPost.star);">
+              <span><i-tabler name="star" class="fill-warning icon-18"></i-tabler></span>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="mat-body-2 f-w-600">{{blogPost.price | number:'1.0-0'}}đ</h6>
+            <p class="f-s-14 " style="text-decoration: line-through;">{{blogPost.old_price | number:'1.0-0'}}đ</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center m-t-24">
+          <div class="d-flex align-items-center">
+            <span class="m-r-12 f-s-14 mat-subtitle-2 d-flex align-items-center"
+              ><i-tabler name="user" class="icon-18 m-r-4"></i-tabler
+              >{{blogPost.registered | number:'1.0-0'}}</span
+            >
+            <span class="f-s-14 mat-subtitle-2 d-flex align-items-center"
+              ><i-tabler name="message-2" class="icon-18 m-r-4"></i-tabler
+              >12</span
+            >
+          </div>
+          <span
+            class="m-l-auto f-s-14 mat-subtitle-2 d-flex align-items-center"
+          >
+            <i-tabler name="alarm" class="icon-18 m-r-4"></i-tabler>
+            {{blogPost.time_study}}
+          </span>
+        </div>      
+      </mat-card-content>
+    </mat-card>
+    </ng-template>  
+    
+  </owl-carousel-o>
+
+
+
+<!-- khoá học của tôi -->
+
+<div class="d-flex align-items-center justify-content-center gap-4">
+  <h2 class="text-left">Khoá học của tôi</h2> 
+  <mat-icon matPrefix>
+    <i-tabler name="arrows-left-right" class="icon-26 d-flex text-success"></i-tabler>
+  </mat-icon>
+  </div>
+  <owl-carousel-o [options]="customOptions">
+    <ng-template carouselSlide *ngFor="let blogPost of (sourceList$ | async) || null " >
+      <mat-card
+      class="cardWithShadow card2 position-relative card-hover cursor-pointer "     
+      style="max-width: 281px;"
+    >     
+      <img
+        mat-card-image
+        src="{{converImage(blogPost.image)}}"
+        alt="Photo of a Shiba Inu"
+        style="height: 137px; "
+      />
+      <mat-card-content >
+        <mat-card-title class="mat-headline-6 m-t-15 ellipsis-2-lines">{{
+          blogPost.description
+        }}</mat-card-title>
+        
+        <div class="f-s-14 f-w-100 bg-white ellipsis-1-line" >{{
+          blogPost.title
+        }}</div>
+        <div class="d-flex m-t-12 flex-column">          
+          <div class="d-flex gap-4">
+            {{blogPost.star}}.0
+            <div *ngFor="let i of [].constructor(blogPost.star);">
+              <span><i-tabler name="star" class="fill-warning icon-18"></i-tabler></span>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="mat-body-2 f-w-600">{{blogPost.price | number:'1.0-0'}}đ</h6>
+            <p class="f-s-14 " style="text-decoration: line-through;">{{blogPost.old_price | number:'1.0-0'}}đ</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center m-t-24">
+          <div class="d-flex align-items-center">
+            <span class="m-r-12 f-s-14 mat-subtitle-2 d-flex align-items-center"
+              ><i-tabler name="user" class="icon-18 m-r-4"></i-tabler
+              >{{blogPost.registered | number:'1.0-0'}}</span
+            >
+            <span class="f-s-14 mat-subtitle-2 d-flex align-items-center"
+              ><i-tabler name="message-2" class="icon-18 m-r-4"></i-tabler
+              >12</span
+            >
+          </div>
+          <span
+            class="m-l-auto f-s-14 mat-subtitle-2 d-flex align-items-center"
+          >
+            <i-tabler name="alarm" class="icon-18 m-r-4"></i-tabler>
+            {{blogPost.time_study}}
+          </span>
+        </div>      
+      </mat-card-content>
+    </mat-card>
+    </ng-template>  
+    
+  </owl-carousel-o>
+
+ 
+
+ 

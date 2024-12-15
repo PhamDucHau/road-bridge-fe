@@ -1,0 +1,201 @@
+
+<h2 class="f-w-500 m-b-24" mat-dialog-title><strong>Apply Users</strong></h2>
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner" >
+    <mat-spinner ></mat-spinner>
+</div>
+
+<mat-dialog-content style="max-width: 1600px ; min-height: 750px" >
+   
+
+    <div class="d-flex gap-24" >
+        <div >
+            <mat-card class="cardWithShadow">
+                <mat-card-content class="p-24">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-12">
+                            <mat-form-field appearance="outline" class="w-100 hide-hint">
+                                <input matInput placeholder="Search User"
+                                (keyup)="applyFilterApply($any($event.target).value)"
+                                />
+                                <mat-icon matSuffix>
+                                    <i-tabler name="search" class="icon-20"></i-tabler>
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <!-- <div class="col-lg-4 d-flex align-items-center justify-content-end">
+                            <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+                                Add User
+                            </button>
+                        </div> -->
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <h3 class="text-center">User đã đăng ký</h3>
+            <div *ngIf="totalRecordApply$ | async as length">
+                <mat-paginator (page)="handlePageEventApply($event)" [length]="length" [pageIndex]="pageIndexApply" [pageSize]="pageSizeApply" [pageSizeOptions]="pageSizeOptionsApply"
+                  [hidePageSize]="false" aria-label="Chọn trang">
+              </mat-paginator>
+            </div>
+            <mat-card class="cardWithShadow">
+                <mat-card-content class="p-24">
+                    <div class="table-responsive ">
+                        <table mat-table [dataSource]="listUserApplyCourseList$ | async" class="w-100">
+                            <ng-container matColumnDef="#" >
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">#</th>
+                                <td mat-cell *matCellDef="let element;let i = index;">{{ i + 1 }}</td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="name_user" >
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Name</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="d-flex align-items-left">
+                                        <!-- <img class="rounded-circle" [src]="element.imagePath" width="40" /> -->
+                                        <div >
+                                            <p class="f-w-600 mat-subtitle-1 f-s-16 m-t-0">
+                                                {{ element.name_user }}
+                                            </p>
+                                            <!-- <small class="mat-body-1 f-s-14">{{ element.Position }}</small> -->
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="email">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                    Email
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.email }}</td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="mobie">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                    Mobie
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="f-s-14">
+                                    {{ element.mobie }}
+                                </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="gender">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                    Gender
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="f-s-14">
+                                    {{ element.gender }}
+                                </td>
+                            </ng-container>       
+        
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                    Action
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="action-link" style="text-align: end;">
+                                    <a (click)="openDialogRemove('0ms', '0ms', element, 'remove')" class="m-r-10 cursor-pointer"><i-tabler
+                                            name="arrow-big-right" class="icon-30"></i-tabler></a>
+                                    
+                                </td>
+                            </ng-container>
+        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                        </table>
+                        
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div >
+            <mat-card class="cardWithShadow">
+                <mat-card-content class="p-24">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-12">
+                            <mat-form-field appearance="outline" class="w-100 hide-hint">
+                                <input matInput placeholder="Search User" (keyup)="applyFilterNotApply($any($event.target).value)" />
+                                <mat-icon matSuffix>
+                                    <i-tabler name="search" class="icon-20"></i-tabler>
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>                        
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <h3 class="text-center">User chưa đăng ký</h3>
+            <div *ngIf="totalRecordNotApply$ | async as length">
+                <mat-paginator (page)="handlePageEventNotApply($event)" [length]="length" [pageIndex]="pageIndexNotApply" [pageSize]="pageSizeNotApply" [pageSizeOptions]="pageSizeOptionsNotApply"
+                  [hidePageSize]="false" aria-label="Chọn trang">
+              </mat-paginator>
+            </div>
+            <mat-card class="cardWithShadow">
+                <mat-card-content class="p-24">
+                    <div class="table-responsive ">
+                        <table mat-table [dataSource]="listUserNotApplyCourseList$ | async" class="w-100">
+                            <ng-container matColumnDef="#" >
+                                <th mat-header-cell *matHeaderCellDef class="f-s-14 f-w-600">#</th>
+                                <td mat-cell *matCellDef="let element;let i = index;">{{ i + 1 }}</td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="name_user" >
+                                <th mat-header-cell *matHeaderCellDef class="f-s-14 f-w-600" >Name</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="d-flex align-items-center">
+                                        <!-- <img class="rounded-circle" [src]="element.imagePath" width="40" /> -->
+                                        <div >
+                                            <p class="f-w-600 mat-subtitle-1 f-s-14 m-t-0">
+                                                {{ element.name_user }}
+                                            </p>
+                                            <!-- <small class="mat-body-1 f-s-14">{{ element.Position }}</small> -->
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="email">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-14 f-w-600">
+                                    Email
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.email }}</td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="mobie">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-14 f-w-600">
+                                    Mobie
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="f-s-14">
+                                    {{ element.mobie }}
+                                </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="gender">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-1 f-w-600">
+                                    Gender
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="f-s-14">
+                                    {{ element.gender }}
+                                </td>
+                            </ng-container>                           
+        
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                    Action
+                                </th>
+                                <td mat-cell *matCellDef="let element" class="action-link" >
+                                    <a (click)="openDialogRemove('0ms', '0ms', element, 'add')" class="m-r-10 cursor-pointer"><i-tabler
+                                            name="arrow-big-left" class="icon-30"></i-tabler></a>
+                                    
+                                </td>
+                            </ng-container>
+        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsAdd"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsAdd"></tr>
+                        </table>
+                        
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+
+
+
+</mat-dialog-content>

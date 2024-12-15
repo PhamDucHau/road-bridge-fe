@@ -1,0 +1,115 @@
+
+<div class="row gap-8">
+  <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
+    [routerLink]="['/dashboards/adhoc-report']"
+    >
+    <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
+    <span>Tạo BC đột xuất</span>
+  </a>  
+  <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+  style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
+  [routerLink]="['/dashboards/adhoc-report']"
+  > 
+    <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
+    <span>Tạo BC đinh ngạch</span>
+  </a>
+</div>
+
+<div style="text-align: center; color: #000;font-family:'Roboto Slab';font-size: 26px;font-style: normal;font-weight: 700;line-height: normal;margin-bottom: 20px; ">
+  Báo cáo gần nhất
+</div>
+
+
+<div class="d-flex align-items-center justify-content-start m-b-8">
+  <a (click)="exportToExcelBaoCaoGanNhat()" class="btn-export"
+    style="border-radius: 4px;"
+    mat-button    
+    mat-flat-button
+    class="text-white f-s-16 bg-success"
+    ><mat-icon matSuffix>file_download</mat-icon>Export to Excel</a
+  >
+</div>
+<mat-accordion >
+  <mat-expansion-panel *ngFor="let item of listBaoCaoGanNhat" class="cardWithShadow">
+    <mat-expansion-panel-header style="height: 5rem" >
+      <mat-panel-title class="mat-body-1">
+        <div>
+          <div class="f-w-400" style="color: #000;font-family: Inter;font-size: 18px;font-style: italic;font-weight: 300;line-height: normal;">
+            {{item.time}} - {{item.title}} 
+          </div>
+          <div class="d-flex gap-12 m-t-12">
+            <div class="f-w-700 " style="color: #000;font-family: Inter;font-size: 16px;font-style: normal;font-weight: 500;line-height: normal;"> 
+              {{item.description}} </div> 
+            <div>
+              @if(item.status == 'WIP') {
+                <span style="background-color: rgb(255, 185, 1);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">WIP</span>
+              }    
+              @if(item.status == 'DONE') {
+                <span style="background-color: rgb(42, 196, 111);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span>
+              }   
+                
+            </div>
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p class="mat-body-1 text-left">
+      Admin Dashboard is the backend interface of a website or an
+      application that helps to manage the website's overall content and
+      settings. It is widely used by the site owners to keep track of their
+      website, make changes to their content, and more.
+    </p>
+  </mat-expansion-panel>
+
+
+</mat-accordion>
+
+
+<div style="text-align: center; color: #000;font-family:'Roboto Slab';font-size: 26px;font-style: normal;font-weight: 700;line-height: normal;margin-bottom: 20px; margin-top: 20px">
+  Danh sách báo cáo đột xuất
+</div>
+
+
+<div class="d-flex align-items-center justify-content-start m-b-8">
+  <a (click)="exportToExcelBaoCaoDotXuat()" class="btn-export"
+    style="border-radius: 4px;"
+    mat-button    
+    mat-flat-button
+    class="text-white f-s-16 bg-success"
+    ><mat-icon matSuffix>file_download</mat-icon>Export to Excel</a
+  >
+</div>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let item of listBaoCaoDotXuat" class="cardWithShadow">
+    <mat-expansion-panel-header style="height: 5rem">
+      <mat-panel-title class="mat-body-1">
+        <div>
+          <div class="f-w-400" style="color: #000;font-family: Inter;font-size: 18px;font-style: italic;font-weight: 300;line-height: normal;">
+            {{item.time}} - {{item.title}} </div>
+            <div class="d-flex gap-12 m-t-12">
+              <div class="f-w-700 " style="color: #000;font-family: Inter;font-size: 16px;font-style: normal;font-weight: 500;line-height: normal;"> 
+                {{item.description}} </div> 
+              <div>
+                @if(item.status == 'WIP') {
+                  <span style="background-color: rgb(255, 185, 1);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">WIP</span>
+                }    
+                @if(item.status == 'DONE') {
+                  <span style="background-color: rgb(42, 196, 111);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span>
+                }   
+                  
+              </div>
+            </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p class="mat-body-1 text-left">
+      Admin Dashboard is the backend interface of a website or an
+      application that helps to manage the website's overall content and
+      settings. It is widely used by the site owners to keep track of their
+      website, make changes to their content, and more.
+    </p>
+  </mat-expansion-panel>
+  
+
+</mat-accordion>

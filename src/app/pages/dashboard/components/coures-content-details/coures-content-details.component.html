@@ -1,0 +1,274 @@
+
+
+
+@for(blogPost of blogDetail; track blogPost.user) {
+  <mat-card class="cardWithShadow">
+    <img
+      mat-card-image
+      src="{{ blogPost?.imgSrc }}"
+      alt="Photo of a Shiba Inu"
+      height="440"
+    />
+    <div class="card-overlay h-100 d-flex align-items-center justify-content-between">
+     
+      <div class="m-l-12" (click)="goToDashboardDetail()"><i-tabler style="cursor: pointer; color: #5d87ff;" name="arrow-left" class="icon-40"></i-tabler></div>
+
+      <mat-chip class="f-s-12 f-w-600 m-y-16 m-r-16 bg-white"
+        >2 mins Read</mat-chip
+      >
+    </div>
+    <mat-card-content class="p-24 b-b-1">
+      <div class="user-category">
+        <div>
+          <img src="{{ blogPost?.user }}" class="rounded-circle" width="40" />
+        </div>
+        <mat-chip class="f-s-12 m-y-16 f-w-600">{{
+          blogPost?.category
+        }}</mat-chip>
+      </div>
+  
+      <mat-card-title class="m-t-16 m-b-24 blog-title"
+        >{{ blogPost?.title }}
+      </mat-card-title>
+      <div class="d-flex align-items-center justify-content-center m-t-24">
+        <div class="d-flex align-items-center">
+          <span class="m-r-12 f-s-14 mat-subtitle-2 d-flex align-items-center"
+            ><i-tabler name="eye" class="icon-18 m-r-4"></i-tabler>360</span
+          >
+          <span class="f-s-14 mat-subtitle-2 d-flex align-items-center"
+            ><i-tabler name="message-2" class="icon-18 m-r-4"></i-tabler>4</span
+          >
+        </div>
+        <span class="m-l-auto f-s-14 mat-subtitle-2 d-flex align-items-center">
+          <i-tabler name="point" class="icon-14 m-r-4"></i-tabler>
+          Thu, Mar 30
+        </span>
+      </div>
+
+      <!-- @if(!isEdit){
+        <div class="d-block m-t-16 ">
+          <button mat-flat-button (click)="isEdit = !isEdit"  color="primary">
+            Edit
+          </button>
+        </div>
+      }
+      @if(isEdit){
+        <div class="d-block m-t-16 ">
+          <button mat-flat-button (click)="isEdit = !isEdit"  color="warn">
+            Remove Edit
+          </button>
+        </div>
+      } -->
+      
+      
+    </mat-card-content>
+
+    
+    <!-- contact API -->
+    <div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner" >
+      <mat-spinner ></mat-spinner>
+    </div>
+    <mat-card-content class="p-24">
+      <div *ngFor="let item of sourceContentDetailList$ | async; let i = index ">
+       
+
+        <div *ngIf="item.type_id == 5" >
+          <div class="row">
+            <div class="col-lg-11">
+              <div class="text-center">
+                <video width="600" height="400" controls>
+                  <source src="{{item.value}}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              
+            </div>
+            <div  *ngIf="isButtonPermission()" class="col-lg-1 d-flex align-items-center justify-content-center">
+              <mat-icon style="cursor: pointer; " (click)="openDialog('Edit', item)">settings</mat-icon>
+              <mat-icon style="cursor: pointer; " (click)="openDialogRemove('0ms', '0ms', item)" >delete</mat-icon>
+            </div>
+          </div>          
+        </div>
+
+        
+
+        <div *ngIf="item.type_id == 4" >
+          <div class="row">
+            <div class="col-lg-11">
+              <div class="text-center">
+                <img
+                  mat-card-image
+                  [src]="item.value"
+                  alt="Photo of a Shiba Inu"
+                  height="400"      
+                 />
+              </div>
+            </div>
+            <div  *ngIf="isButtonPermission()" class="col-lg-1 d-flex align-items-center justify-content-center">
+              <mat-icon style="cursor: pointer; " (click)="openDialog('Edit', item)">settings</mat-icon>
+              <mat-icon style="cursor: pointer; " (click)="openDialogRemove('0ms', '0ms', item)" >delete</mat-icon>
+            </div>
+          </div>          
+        </div>
+
+        <div *ngIf="item.type_id == 1" >
+          <div class="row">
+            <div class="col-lg-11">
+              <h3 class="f-w-{{item.bold ? '700' : '100'}}" >{{item.value}}</h3>
+            </div>
+            <div  *ngIf="isButtonPermission()" class="col-lg-1 d-flex align-items-center justify-content-center">
+              <mat-icon style="cursor: pointer; " (click)="openDialog('Edit', item)">settings</mat-icon>
+              <mat-icon style="cursor: pointer; "  (click)="openDialogRemove('0ms', '0ms', item)" >delete</mat-icon>
+            </div>
+          </div>          
+        </div>
+
+        <div *ngIf="item.type_id == 2" >
+          <div class="row">
+            <div class="col-lg-11">
+              <p class="f-w-{{item.bold ? '700' : '100'}}">
+                {{item.value}}
+              </p>
+            </div>
+            <div  *ngIf="isButtonPermission()" class="col-lg-1 d-flex align-items-center justify-content-center">
+              <mat-icon style="cursor: pointer; " (click)="openDialog('Edit', item)">settings</mat-icon>
+              <mat-icon style="cursor: pointer; " (click)="openDialogRemove('0ms', '0ms', item)" >delete</mat-icon>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="item.type_id == 3" >
+          <div class="row">
+            <div class="col-lg-11">
+              <li class="f-w-{{item.bold ? '700' : '100'}}">{{item.value}}</li>
+            </div>
+            <div *ngIf="isButtonPermission()" class="col-lg-1 d-flex align-items-center justify-content-center"  >
+              <mat-icon style="cursor: pointer; " (click)="openDialog('Edit', item)">settings</mat-icon>
+              <mat-icon style="cursor: pointer; " (click)="openDialogRemove('0ms', '0ms', item)" >delete</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-block m-t-16 " *ngIf="isButtonPermission()" >
+        <button mat-flat-button (click)="openDialog('Add', {})"  color="primary">
+          Add
+        </button>
+      </div>
+
+
+    </mat-card-content>
+
+    <!-- contact API -->
+
+
+
+
+
+    
+  </mat-card>
+  }
+  
+  <mat-card class="cardWithShadow">
+    <mat-card-content class="p-24">
+      <mat-card-title class="m-b-24 f-s-21">Post Comments</mat-card-title>
+      <form>
+        <mat-form-field appearance="outline" class="w-100">
+          <textarea matInput rows="5"></textarea>
+        </mat-form-field>
+        <button mat-flat-button color="primary">Post Button</button>
+      </form>
+  
+      <mat-card-title class="m-t-30 f-s-21 p-t-24"
+        >Comments
+        <span
+          class="text-primary p-x-12 p-y-8 rounded bg-light-primary f-w-600 m-l-8 f-s-18"
+          >4</span
+        ></mat-card-title
+      >
+  
+ 
+      <div class="bg-light rounded p-24 m-t-24">
+        <div class="d-flex align-items-center">
+          <img
+            src="/assets/images/profile/user-2.jpg"
+            alt="user"
+            width="35"
+            class="rounded-circle"
+          />
+          <span class="mat-body-2 f-w-600 m-l-12">Charlie Hamilton</span>
+          <span class="m-l-12 f-s-12 d-flex align-items-center">
+            <i-tabler
+              class="icon-7 op-5 d-flex m-r-4"
+              name="circle-filled"
+            ></i-tabler>
+            now
+          </span>
+        </div>
+        <p class="mat-body-1 m-t-16">
+          Jigho tabkubho nira carudi ganlac milza dekpo putog iptodok tuhral canse
+          mi rega ujnuf kukfag osailu bis oca. Gegeholo hata sogi kod bihdelsa
+          nege evinog mes loz perdutace kehlondip im fep wiven fefu fi tigfiso.
+        </p>
+  
+        <button
+          mat-mini-fab
+          color="primary"
+          class="icon-30 m-t-16"
+          matTooltip="Reply"
+          (click)="toggleReply()"
+        >
+          <i-tabler name="arrow-back-up" class="icon-18"></i-tabler>
+        </button>
+      </div>
+      
+      <div [hidden]="istoggleReply">
+        <form class="d-flex align-items-center m-y-24">
+          <img
+            src="/assets/images/profile/user-1.jpg"
+            alt="user"
+            width="35"
+            class="rounded-circle"
+          />
+          <mat-form-field appearance="outline" class="w-100 hide-hint m-l-16">
+            <input matInput placeholder="Reply" />
+          </mat-form-field>
+          <button mat-flat-button color="primary" class="m-l-16">Reply</button>
+        </form>
+      </div>
+
+      <div class="bg-light rounded p-24 m-t-24 m-l-24">
+        <div class="d-flex align-items-center">
+          <img
+            src="/assets/images/profile/user-3.jpg"
+            alt="user"
+            width="35"
+            class="rounded-circle"
+          />
+          <span class="mat-body-2 f-w-600 m-l-12">Ethan Gordon</span>
+          <span class="m-l-12 f-s-12 d-flex align-items-center">
+            <i-tabler
+              class="icon-7 op-5 d-flex m-r-4"
+              name="circle-filled"
+            ></i-tabler>
+            now
+          </span>
+        </div>
+        <p class="mat-body-1 m-t-16">
+          Diprow wir hilohi ilmi fumow oc co cop iv gi ize tamiv kulok. Bam ci
+          urkati ul negu ovga hivwe toubugof gok imro ale sujoh saput.
+        </p>
+  
+        <button
+          mat-mini-fab
+          color="primary"
+          class="icon-30 m-t-16"
+          matTooltip="Reply"
+          (click)="toggleReply()"
+        >
+          <i-tabler name="arrow-back-up" class="icon-18"></i-tabler>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  

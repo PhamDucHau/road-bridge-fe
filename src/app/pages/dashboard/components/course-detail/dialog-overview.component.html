@@ -1,0 +1,13 @@
+<h5 mat-dialog-title class="mat-subtitle-1">Delete file</h5>
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner">
+  <mat-spinner ></mat-spinner>
+</div>
+<div mat-dialog-content class="mat-subtitle-2 lh-16">
+  Bạn có chắc chắn muốn xoá chương học này ?
+</div>
+<div mat-dialog-actions class="p-24 p-t-0">
+  <button mat-stroked-button color="warn" (click)="cancle()" mat-dialog-close>No</button>
+  <button mat-flat-button color="primary" (click)="save()" cdkFocusInitial>
+    Ok
+  </button>
+</div>

@@ -1,0 +1,21 @@
+.ellipsis-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3rem; /* Đặt lại chiều cao tự động */
+    line-height: 1.5rem; /* Chiều cao mỗi dòng */
+    max-height: 3rem; /* 2 dòng với chiều cao 1.5rem mỗi dòng */
+  }
+
+  .ellipsis-1-line {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Hiển thị tối đa 1 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: auto; /* Đặt lại chiều cao tự động */
+    line-height: 1.5rem; /* Chiều cao mỗi dòng */
+    max-height: 1.5rem; /* 1 dòng với chiều cao 1.5rem */
+  }

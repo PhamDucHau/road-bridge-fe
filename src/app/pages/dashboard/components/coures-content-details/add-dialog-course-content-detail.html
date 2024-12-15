@@ -1,0 +1,100 @@
+<h2 class="f-w-500 m-b-24" mat-dialog-title><strong>{{action}}</strong></h2>
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner" >
+  <mat-spinner ></mat-spinner>
+</div>
+
+@if(action !== 'Delete') {
+<mat-dialog-content style="min-width: 800px; ">
+  <form #courseForm="ngForm">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Value:</mat-label
+          >        
+        <mat-form-field appearance="outline" class="w-100 m-t-8" color="primary">
+          <textarea matInput [(ngModel)]="local_data.value" name="value" placeholder="Value" rows="3"></textarea>
+          <mat-icon matPrefix>
+            <i-tabler name="align-box-left-middle" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+        
+      </div>   
+      
+    </div>
+    <div class="row">
+      <div class="col-lg-6 ">
+        <label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Type:</label>
+        <mat-form-field appearance="outline" class="w-100 m-t-8">          
+          <mat-select [(ngModel)]="local_data.type_id" name="type_id">
+            <mat-option [value]="1">Title</mat-option>
+            <mat-option [value]="2">Description</mat-option>
+            <mat-option [value]="3">Child</mat-option>
+            <mat-option [value]="4">Image</mat-option>
+            <mat-option [value]="5">Video</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>
+            <i-tabler name="arrows-random" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      
+      <div class="col-lg-6 " >
+        <label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Bold:</label>
+        <mat-form-field appearance="outline" class="w-100 m-t-8">
+          <mat-select [(ngModel)]="local_data.bold" name="bold">
+            <mat-option [value]="true">Yes</mat-option>
+            <mat-option [value]="false">No</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>
+            <i-tabler name="circle-letter-b" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+   
+    <div class="d-flex justify-content-center">
+      <button *ngIf="action == 'Add'"
+      mat-flat-button
+      (click)="saveCreate()"
+      mat-flat-button
+      color="primary"
+      class="m-b-8"
+      [disabled]="!courseForm.valid"
+    >
+      Add
+    </button>
+
+    <button *ngIf="action == 'Edit'"
+    mat-flat-button
+    (click)="saveEdit()"
+    mat-flat-button
+    color="primary"
+    class="m-b-8"
+    [disabled]="!courseForm.valid"
+  >
+      Save
+  </button>
+    <button
+      mat-stroked-button
+      color="warn"
+      class="m-l-8 m-b-8"
+      (click)="closeDialog()"
+    >
+      Cancel
+    </button>
+    </div>
+   
+  </form>
+</mat-dialog-content>
+} @else {
+<div class="p-x-24">
+  <p>Sure to delete <span class="f-w-600">{{local_data.Name}}</span> ?</p>
+</div>
+<div mat-dialog-actions class="p-x-24 p-b-24">
+  <button mat-button (click)="saveCreate()" mat-flat-button color="warn">
+    {{action}}
+  </button>
+  <button mat-button (click)="closeDialog()" class="m-l-8">Cancel</button>
+</div>
+}

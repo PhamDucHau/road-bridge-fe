@@ -1,0 +1,247 @@
+<h2 class="f-w-500 m-b-24" mat-dialog-title><strong>{{action}}</strong></h2>
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner">
+  <mat-spinner ></mat-spinner>
+</div>
+
+@if(action !== 'Delete') {
+  
+<mat-dialog-content style="max-width: 1400px">
+  
+  <form #courseForm="ngForm">
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+      
+      <mat-tab label="Link">
+        
+        <div class="d-flex align-items-center gap-16 m-b-16"  >
+          <img
+         
+            class="mat-card-avatar"
+            [src]="converImage(local_data.image)"
+            width="200"
+            height="100"
+            
+          />
+        
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            
+            id="image"
+            name="image"
+            [(ngModel)]="local_data.image"
+            placeholder="Link Image"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="photo" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+        </div>
+      </mat-tab>
+      <mat-tab label="File">
+        <div class="d-flex align-items-center m-b-16"  >
+
+          <img
+         
+            class="mat-card-avatar"
+            [src]="converImage(local_data.image)"
+            width="200"
+            height="100"
+            
+          />
+          
+          <button mat-flat-button color="primary" class="m-l-16 input-file-button">
+            <input type="file" (change)="selectFile($event)" #fileInput />
+          </button>
+        </div>
+      </mat-tab>
+      
+    </mat-tab-group>
+
+    
+
+    <div class="row">
+      <div class="col-lg-3">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Status:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            
+            id="status"
+            name="name"
+            [(ngModel)]="local_data.status"
+            placeholder="Status"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="stack" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Title:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="title"
+            name="title"
+            [(ngModel)]="local_data.title"
+            placeholder="Title"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="text-caption" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Time study:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="time_study"
+            name="time_study"
+            [(ngModel)]="local_data.time_study"
+            placeholder="Time study"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="alarm" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Description:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="description"
+            name="description"
+            [(ngModel)]="local_data.description"
+            placeholder="description"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="align-box-left-middle" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-5">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Price:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="price"
+            name="price"
+            [(ngModel)]="local_data.price"
+            placeholder="price"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="coin" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-5">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Old price:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="old_price"
+            name="old_price"
+            [(ngModel)]="local_data.old_price"
+            placeholder="Old price"
+          />
+          <mat-icon matPrefix>
+            <i-tabler name="coin" class="icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-2">
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+            >Star:</mat-label
+          >
+        <mat-form-field appearance="outline" class="w-100" >          
+          <mat-select [(ngModel)]="local_data.star" placeholder="Star" name="star">
+            <mat-option [value]="1">1</mat-option>
+            <mat-option [value]="2">2</mat-option>
+            <mat-option [value]="3">3</mat-option>
+            <mat-option [value]="4">4</mat-option>
+            <mat-option [value]="5">5</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>
+            <i-tabler name="star" class="fill-warning icon-20 d-flex"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+     
+
+     
+    </div>
+    <button
+      *ngIf="local_data.id"
+      mat-flat-button
+      (click)="saveEdit()"
+      mat-flat-button
+      color="primary"
+      [disabled]="!courseForm.valid"
+    >
+    Save Edit
+      
+    </button>
+    <button
+      *ngIf="!local_data.id"
+      mat-flat-button
+      (click)="saveCreate()"
+      mat-flat-button
+      color="primary"
+      [disabled]="!courseForm.valid"
+    >
+    Add
+    </button>
+    <button
+      mat-stroked-button
+      color="warn"
+      class="m-l-8"
+      (click)="closeDialog()"
+    >
+      Cancel
+    </button>
+  </form>
+</mat-dialog-content>
+} @else {
+<div class="p-x-24">
+  <p>Sure to delete <span class="f-w-600">{{local_data.Name}}</span> ?</p>
+</div>
+<div mat-dialog-actions class="p-x-24 p-b-24">
+  <button mat-button *ngIf="local_data.id" (click)="saveEdit()" mat-flat-button color="warn">
+    Edit
+  </button>
+  <button mat-button *ngIf="!local_data.id" (click)="saveCreate()" mat-flat-button color="warn">
+    Add
+  </button>
+  <button mat-button (click)="closeDialog()" class="m-l-8">Cancel</button>
+</div>
+}
