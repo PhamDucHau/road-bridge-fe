@@ -42,6 +42,6 @@ jobs:
         password: v8B7oM21hptdTJQY  # Hoặc sử dụng private key
         script: |
           docker pull haupham2311/road-bridge-fe:latest
-          docker stop angular-app || true
-          docker rm angular-app || true
-          docker run -d --name angular-app -p 4300:80 haupham2311/road-bridge-fe:latest
+          docker stop road-bridge-fe || true
+          docker rm road-bridge-fe || true
+          docker run -d --name road-bridge-fe -p 4300:80 haupham2311/road-bridge-fe:latest
