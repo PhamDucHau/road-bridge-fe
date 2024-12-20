@@ -1,184 +1,106 @@
-
 <mat-card class="b-1 shadow-none">
-    <mat-card-content class="b-t-1">
-      <form style="margin-top: 21px;">
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Tên công trình: <span class="text-warning">(*)</span></mat-label>
-        <mat-form-field class="w-100" appearance="outline">          
-          <input
-            type="text"
-            placeholder="Chọn tên công trình"
-            aria-label="Number"
-            matInput
-            [formControl]="firstControl"
-            [matAutocomplete]="auto"
-            (focus)="onFocus()"
-            (blur)="onBlur()"
-          />
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for(firstoption of filteredOptions | async; track
-            firstoption) {
-            <mat-option [value]="firstoption">
-              {{ firstoption }}
-            </mat-option>
-            }
-          </mat-autocomplete>
-          <mat-icon matSuffix>{{ isDropdownOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
-        </mat-form-field>
-  
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Địa điểm: <span class="text-warning">(*)</span></mat-label>
-        <mat-form-field class="w-100" appearance="outline">          
-          <input
-            type="text"
-            placeholder="Chọn địa điểm"
-            aria-label="Number"
-            matInput
-            [formControl]="firstControl"
-            [matAutocomplete]="auto"
-            (focus)="onFocus()"
-            (blur)="onBlur()"
-          />
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for(firstoption of filteredOptions | async; track
-            firstoption) {
-            <mat-option [value]="firstoption">
-              {{ firstoption }}
-            </mat-option>
-            }
-          </mat-autocomplete>
-          <mat-icon matSuffix>{{ isDropdownOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-</mat-card>
-
-<div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div>
-
-<div class="row m-y-20">
-  <div class="col-2 d-flex align-items-center">    
-    <mat-icon matSuffix>arrow_back</mat-icon>
-  </div>
-  <div class="col">
-    <div class="f-w-700 f-s-20" style="color: var(--1, #115D85);text-align: center;font-family: 'Roboto Slab';font-style: normal;line-height: normal;">
-        Báo hiệu Chú ý nguy hiểm (C3.1) - Cấm vượt (C1.8) <br/>
-        <span>------ 7/40 ------</span>
-    </div>
-    </div>
-    <div class="col-2 d-flex align-items-center justify-content-end">    
-      <mat-icon matSuffix>arrow_forward</mat-icon>
-    </div>
-</div>
-
-<mat-card class="b-1 shadow-none">
-  <mat-card-header class="p-y-20">
-    <mat-card-title>D219-L19</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="b-t-1">
-    <form style="margin-top: 21px;">      
-      <mat-form-field class="w-100" appearance="outline">  
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập số lượng</mat-label>        
-        <input
-          type="number"          
-          aria-label="Number"
-          matInput
-          [formControl]="firstControl"                 
-        />  
-      </mat-form-field>   
-      
-      <mat-form-field class="w-100" appearance="outline"> 
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>         
-        <input
-          type="number"          
-          aria-label="Number"
-          matInput
-          [formControl]="firstControl" 
-        />        
-      </mat-form-field>
-
-      <mat-form-field class="w-100" appearance="outline"> 
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>         
-        <input
-          type="test"                    
-          matInput
-          [formControl]="firstControl" 
-        />        
-      </mat-form-field>
-      <div class="custom-textarea-container">        
-        <textarea id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
-
-<mat-card class="b-1 shadow-none">
-  <mat-card-header class="p-y-20">
-    <mat-card-title>D219-L20</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="b-t-1">
-    <form style="margin-top: 21px;">      
-      <mat-form-field class="w-100" appearance="outline">  
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập số lượng</mat-label>        
-        <input
-          type="number"          
-          aria-label="Number"
-          matInput
-          [formControl]="firstControl"                 
-        />  
-      </mat-form-field>   
-      
-      <mat-form-field class="w-100" appearance="outline"> 
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>         
-        <input
-          type="number"          
-          aria-label="Number"
-          matInput
-          [formControl]="firstControl" 
-        />        
-      </mat-form-field>
-
-      <mat-form-field class="w-100" appearance="outline"> 
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>         
-        <input
-          type="test"                    
-          matInput
-          [formControl]="firstControl" 
-        />        
-      </mat-form-field>
-      <div class="custom-textarea-container">        
-        <textarea id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
-      </div> 
-    </form>
-  </mat-card-content>
-</mat-card>
-
-<mat-card class="b-1 shadow-none">
-  <mat-card-header class="p-y-20">
-    <mat-card-title>Unknow label</mat-card-title>
-  </mat-card-header>  
   <mat-card-content class="b-t-1">
     <form style="margin-top: 21px;">
-      
-      <mat-form-field class="w-100" appearance="outline">          
-        <input
-          type="text"
-          placeholder="Input text"
-          aria-label="Number"
-          matInput
-          [formControl]="firstControl"         
-        />
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Tên công trình: <span
+          class="text-warning">(*)</span></mat-label>
+      <mat-form-field class="w-100" appearance="outline">
+        <input type="text" placeholder="Chọn tên công trình" aria-label="Number" matInput
+          [formControl]="congTrinhControl" [matAutocomplete]="auto" (focus)="onFocusCongTrinh()"
+          (blur)="onBlurCongTrinh()" />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          @for(firstoption of congTrinhFilterOption | async; track
+          firstoption) {
+          <mat-option [value]="firstoption">
+            {{ firstoption }}
+          </mat-option>
+          }
+        </mat-autocomplete>
+        <mat-icon matSuffix>{{ isDropdownOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </mat-form-field>
+
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Địa điểm: <span
+          class="text-warning">(*)</span></mat-label>
+      <mat-form-field class="w-100" appearance="outline">
+        <input type="text" placeholder="Chọn địa điểm" aria-label="Number" matInput [formControl]="diaDiemControl"
+          [matAutocomplete]="autoDiaDiem" (focus)="onFocusDiaDiem()" (blur)="onBlurDiaDiem()" />
+        <mat-autocomplete autoActiveFirstOption #autoDiaDiem="matAutocomplete">
+          @for(firstoptions of diaDiemFilterOption | async; track
+          diaDiem) {
+          <mat-option [value]="firstoptions">
+            {{ firstoptions }}
+          </mat-option>
+          }
+        </mat-autocomplete>
+        <mat-icon matSuffix>{{ isDropdownOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
       </mat-form-field>
     </form>
-   
   </mat-card-content>
 </mat-card>
 
-<div class="d-flex align-items-center justify-content-end">
-  <a
-    style="border-radius: 4px; 
-    background: linear-gradient(81deg, #115D85 -0.64%, #609DC2 12.04%, #71ABCF 49.15%, #8AC2DA 84%, #A1D7E5 100%);"
-    mat-button    
-    mat-flat-button
-    class="text-white f-s-16 "
-    >Hoàn thành</a
-  >
-</div>
+<div *ngIf="isProducts">
+  <div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div>
 
+  <div class="row m-y-20">
+    <div class="col-2 d-flex align-items-center">
+      <mat-icon matSuffix>arrow_back</mat-icon>
+    </div>
+    <div class="col">
+      <div class="f-w-700 f-s-20"
+        style="color: var(--1, #115D85);text-align: center;font-family: 'Roboto Slab';font-style: normal;line-height: normal;">
+        Báo hiệu Chú ý nguy hiểm (C3.1) - Cấm vượt (C1.8) <br />
+        <span>------ 7/40 ------</span>
+      </div>
+    </div>
+    <div class="col-2 d-flex align-items-center justify-content-end">
+      <mat-icon matSuffix>arrow_forward</mat-icon>
+    </div>
+  </div>
+
+  <mat-card class="b-1 shadow-none" *ngFor="let product of productsList">
+    <mat-card-header class="p-y-20">
+      <mat-card-title>{{product}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1">
+      <form style="margin-top: 21px;">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập số lượng</mat-label>
+          <input type="number" aria-label="Number" matInput />
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>
+          <input type="number" aria-label="Number" matInput />
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>
+          <input type="test" matInput />
+        </mat-form-field>
+        <div class="custom-textarea-container">
+          <textarea id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="b-1 shadow-none">
+    <mat-card-header class="p-y-20">
+      <mat-card-title>Unknow label</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1">
+      <form style="margin-top: 21px;">
+
+        <mat-form-field class="w-100" appearance="outline">
+          <input type="text" placeholder="Input text" aria-label="Number" matInput />
+        </mat-form-field>
+      </form>
+
+    </mat-card-content>
+  </mat-card>
+
+  <div class="d-flex align-items-center justify-content-end">
+    <a style="border-radius: 4px; 
+    background: linear-gradient(81deg, #115D85 -0.64%, #609DC2 12.04%, #71ABCF 49.15%, #8AC2DA 84%, #A1D7E5 100%);"
+      mat-button mat-flat-button class="text-white f-s-16 ">Hoàn thành</a>
+  </div>
+</div>

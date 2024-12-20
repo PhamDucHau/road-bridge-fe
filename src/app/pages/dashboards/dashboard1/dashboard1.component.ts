@@ -19,6 +19,7 @@ import { AppProjectsComponent } from '../../../components/dashboard1/projects/pr
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { dashboardService } from '../dashboard.service';
 
 @Component({
   selector: 'app-dashboard1',
@@ -288,7 +289,7 @@ export class AppDashboard1Component {
       ]
     }
   ];
-  constructor() {}
+  constructor( private service: dashboardService ) {}
   exportToExcelBaoCaoGanNhat(): void {
     // 1. Tạo worksheet từ dữ liệu
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.listBaoCaoGanNhat);
@@ -325,4 +326,6 @@ export class AppDashboard1Component {
     const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
     saveAs(data, 'BaoCaoDotXuat.xlsx');
   }
+
+  
 }
