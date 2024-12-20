@@ -78,7 +78,7 @@ export class HeaderComponent {
   };
 
   ngOnInit(): void {
-    console.log('this.user_info',JSON.parse(this.user_info));
+    
   }
 
   public languages: any[] = [

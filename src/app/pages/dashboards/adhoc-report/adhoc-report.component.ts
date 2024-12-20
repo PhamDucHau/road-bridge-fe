@@ -5,9 +5,9 @@ import {MatSelectModule} from '@angular/material/select';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
-import { map, Observable, of, startWith } from 'rxjs';
+import { forkJoin, map, Observable, of, startWith } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { dashboardService } from '../dashboard.service';
 
@@ -53,7 +53,7 @@ export class AdhocReportComponent {
   
 
   onFileSelected(event: any) {
-    console.log(event);
+
   }
   triggerFileUpload() {
     
@@ -81,23 +81,23 @@ export class AdhocReportComponent {
   public diaDiemFilterOption: Observable<string[]>;
   public isProducts = false;
   public productsList : any = [];
+  public nhapKhoList : any = [];
+  public indexSanPham: number = 0;
   
 
   public diaDiem: any = []; 
   form: FormGroup;
-  ngOnInit() {
-    
+  ngOnInit() {    
     // first option
     this.service.getAllDataForm().subscribe(res => {
       this.congTrinhDiaDiem = res
       this.congTrinhOption = this.getTitleKey(res)
-      
       this.congTrinhFilterOption = this.congTrinhControl.valueChanges.pipe(
         startWith(''),
         map((value) => this._filterCongTrinh(value || '', this.congTrinhOption))
       )
       
-    })
+    })   
     
     this.congTrinhFilterOption = this.congTrinhControl.valueChanges.pipe(
       startWith(''),
@@ -106,7 +106,7 @@ export class AdhocReportComponent {
     this.diaDiemFilterOption = this.diaDiemControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterDiaDiem(value || '', this.diaDiemOption))
-    )
+    )   
     
     // this.filteredOptions = this.firstControl.valueChanges.pipe(
     //   startWith(''),
@@ -119,79 +119,85 @@ export class AdhocReportComponent {
    
     
   }
+
+  increaseIndex(){
+    if(this.indexSanPham != this.productsList.length - 1){
+      this.indexSanPham = this.indexSanPham + 1
+    }    
+  }
+  decreaseIndex(){
+    if(this.indexSanPham > 0){
+      this.indexSanPham = this.indexSanPham - 1
+    }
+  }
   onFocusCongTrinh() {
+    
     this.isDropdownOpen = true;
   }
-  onFocusDiaDiem() {    
-    
+  onFocusDiaDiem() {  
+
   }
 
   onBlurDiaDiem() {
     this.isDropdownOpen = false;
   }
   onBlurCongTrinh() {
-    this.diaDiemControl.enable(); 
-    const value = this.congTrinhControl.value || ''
-    
-    this.diaDiemOption = Object.keys(this.congTrinhDiaDiem[0][value])
-    console.log('value',value)
-    console.log('diaDiemOption',this.congTrinhOption)
-    // if (!this.congTrinhOption.some((option:any) => value.toLowerCase().includes(option.trim().toLowerCase()))) {
-    //   console.log('disable')
-    //   this.diaDiemControl.disable();
-    // }
-    this.isDropdownOpen = true;
-    this.diaDiemFilterOption = this.diaDiemControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterDiaDiem(value || '', this.diaDiemOption))
-    )
-    this.isDropdownOpen = false;
+
   }
   getTitleKey(data: any) {
     const keysWithoutId = Object.keys(data[0]).filter(key => key !== '_id');
-    console.log('keysWithoutId',keysWithoutId)
+    
     return keysWithoutId;
   }
-  // onInputUpdate() {
-  //   console.log('test')
-  //   console.log('Input value updated:', this.firstControl.value);
-  // }
-
  
 
-  // first option
-  // private _filter(value: string): string[] {   
-  //   const filterValue = value.toLowerCase();
+  onOptionSelectedCongTrinh(event: MatAutocompleteSelectedEvent): void {
+    const selectedValue = event.option.value;
+    
+    const isIncluded = this.congTrinhOption.some((item:any) => item.trim() === selectedValue.trim());
+    
+    if(isIncluded){
+      this.diaDiemControl.enable();
+      const value = this.congTrinhControl.value || ''
+      this.diaDiemOption = Object.keys(this.congTrinhDiaDiem[0][value])
+     
+      this.diaDiemFilterOption = this.diaDiemControl.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filterDiaDiem('', this.diaDiemOption))
+      ) 
+      
+    }
+    // Thêm logic tùy chỉnh của bạn tại đây
+  }
+  onOptionSelectedDiaDiem(event: MatAutocompleteSelectedEvent): void {
+    const selectedValue = event.option.value;
+   
+    if(this.diaDiemControl.value){
+      
+      this.isProducts = true
+      this.productsList = this.congTrinhDiaDiem[0][this.congTrinhControl.value || ''][this.diaDiemControl.value]
+      
+      this.service.getAllDataNhapKho().subscribe(res => {
+        this.nhapKhoList = res[0][this.congTrinhControl.value || '']
+        
+      })
+    }
+    // Thêm logic tùy chỉnh của bạn tại đây
+  }
 
-  //   return this.firstoption.filter((option) =>
-  //     option.toLowerCase().includes(filterValue)
-  //   );
-  // }
-
-  private _filterCongTrinh(value: string, congTrinhOption: any): string[] {    
-    const filterValue = value.toLowerCase();
+  private _filterCongTrinh(value: string, congTrinhOption: any): string[] {     
+    const filterValue = value.toLowerCase();    
     return congTrinhOption.filter((option:any) =>
       option.toLowerCase().includes(filterValue)
     );
   }
 
-  private _filterDiaDiem(value: string, congTrinhOption: any): string[] {       
+  private _filterDiaDiem(value: string, congTrinhOption: any): string[] {          
     const filterValue = value.toLowerCase();
-    const res = congTrinhOption.filter((option:any) =>
+    return congTrinhOption.filter((option:any) =>
       option.toLowerCase().includes(filterValue)
     );
-    console.log('res1',res)
-    if(this.diaDiemControl.value){
-      console.log('res2',res)
-      this.isProducts = true
-      this.productsList = this.congTrinhDiaDiem[0][this.congTrinhControl.value || ''][this.diaDiemControl.value]
-      console.log('this.productsList',this.productsList)
-    }
-    return res
-  }
-  
+  }  
   // option group
- 
-
   
 }

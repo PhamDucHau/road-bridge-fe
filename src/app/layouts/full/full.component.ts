@@ -224,12 +224,12 @@ export class FullComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const role = JSON.parse(localStorage.getItem('role') || '{}');
-    role.forEach((item: any) => {
-      if(item !== 'Admin'){        
-        this.navItems = this.navItems.filter((item) => item.displayName !== 'User');
-      }
-    });
+    // const role = JSON.parse(localStorage.getItem('role') || '{}');
+    // role.forEach((item: any) => {
+    //   if(item !== 'Admin'){        
+    //     this.navItems = this.navItems.filter((item) => item.displayName !== 'User');
+    //   }
+    // });
     
   }
 

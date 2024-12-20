@@ -7,7 +7,7 @@
         <input type="text" placeholder="Chọn tên công trình" aria-label="Number" matInput
           [formControl]="congTrinhControl" [matAutocomplete]="auto" (focus)="onFocusCongTrinh()"
           (blur)="onBlurCongTrinh()" />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedCongTrinh($event)">
           @for(firstoption of congTrinhFilterOption | async; track
           firstoption) {
           <mat-option [value]="firstoption">
@@ -21,11 +21,11 @@
       <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Địa điểm: <span
           class="text-warning">(*)</span></mat-label>
       <mat-form-field class="w-100" appearance="outline">
-        <input type="text" placeholder="Chọn địa điểm" aria-label="Number" matInput [formControl]="diaDiemControl"
+        <input type="text" placeholder="Chọn địa điểm" matInput [formControl]="diaDiemControl"
           [matAutocomplete]="autoDiaDiem" (focus)="onFocusDiaDiem()" (blur)="onBlurDiaDiem()" />
-        <mat-autocomplete autoActiveFirstOption #autoDiaDiem="matAutocomplete">
+        <mat-autocomplete #autoDiaDiem="matAutocomplete" (optionSelected)="onOptionSelectedDiaDiem($event)">
           @for(firstoptions of diaDiemFilterOption | async; track
-          diaDiem) {
+          firstoptions) {
           <mat-option [value]="firstoptions">
             {{ firstoptions }}
           </mat-option>
@@ -41,26 +41,28 @@
   <div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div>
 
   <div class="row m-y-20">
-    <div class="col-2 d-flex align-items-center">
-      <mat-icon matSuffix>arrow_back</mat-icon>
+    <div class="col-2 d-flex align-items-center cursor-pointer">
+      <mat-icon (click)="decreaseIndex()" class="icon" matSuffix>arrow_back</mat-icon>
     </div>
     <div class="col">
       <div class="f-w-700 f-s-20"
-        style="color: var(--1, #115D85);text-align: center;font-family: 'Roboto Slab';font-style: normal;line-height: normal;">
-        Báo hiệu Chú ý nguy hiểm (C3.1) - Cấm vượt (C1.8) <br />
-        <span>------ 7/40 ------</span>
+        style="color: var(--1, #115D85);text-align: center;font-style: normal;line-height: normal;">
+        {{ productsList[indexSanPham] }} <br />
+        <span>------ {{indexSanPham + 1}}/{{productsList.length}} ------</span>
       </div>
     </div>
-    <div class="col-2 d-flex align-items-center justify-content-end">
-      <mat-icon matSuffix>arrow_forward</mat-icon>
+    <div class="col-2 d-flex align-items-center justify-content-end cursor-pointer">
+      <mat-icon (click)="increaseIndex()" class="icon" matSuffix>arrow_forward</mat-icon>
     </div>
   </div>
 
-  <mat-card class="b-1 shadow-none" *ngFor="let product of productsList">
-    <mat-card-header class="p-y-20">
-      <mat-card-title>{{product}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="b-t-1">
+  <mat-accordion >
+    <mat-expansion-panel *ngFor="let product of nhapKhoList" class="cardWithShadow m-t-10">
+      <mat-expansion-panel-header style="height: 5rem" >
+        <mat-panel-title class="mat-body-1">
+          <mat-icon matListItemIcon class="m-r-8">folder</mat-icon> <span class="m-r-8 f-w-700">{{product['Vật liệu']}}</span> ( số lượng còn lại {{product['Số lượng nhập']}} )
+        </mat-panel-title>
+      </mat-expansion-panel-header>
       <form style="margin-top: 21px;">
         <mat-form-field class="w-100" appearance="outline">
           <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập số lượng</mat-label>
@@ -80,10 +82,12 @@
           <textarea id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
         </div>
       </form>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="b-1 shadow-none">
+      
+    </mat-expansion-panel>
+  
+  
+  </mat-accordion>
+  <mat-card class="b-1 shadow-none m-t-20">
     <mat-card-header class="p-y-20">
       <mat-card-title>Unknow label</mat-card-title>
     </mat-card-header>

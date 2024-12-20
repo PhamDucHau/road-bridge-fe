@@ -5,7 +5,7 @@
     [routerLink]="['/dashboards/adhoc-report']"
     >
     <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
-    <span>Tạo BC đột xuất</span>
+    <span >Tạo BC đột xuất</span>
   </a>  
   <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
   style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
@@ -16,7 +16,7 @@
   </a>
 </div>
 
-<div style="text-align: center; color: #000;font-family:'Roboto Slab';font-size: 26px;font-style: normal;font-weight: 700;line-height: normal;margin-bottom: 20px; ">
+<div style="text-align: center;font-size: 26px;font-weight: 600;line-height: normal;margin-bottom: 20px; ">
   Báo cáo gần nhất
 </div>
 
@@ -35,11 +35,11 @@
     <mat-expansion-panel-header style="height: 5rem" >
       <mat-panel-title class="mat-body-1">
         <div>
-          <div class="f-w-400" style="color: #000;font-family: Inter;font-size: 18px;font-style: italic;font-weight: 300;line-height: normal;">
+          <div class="f-w-400" style="font-size: 16px;font-style: italic;font-weight: 300;line-height: normal;">
             {{item.time}} - {{item.title}} 
           </div>
           <div class="d-flex gap-12 m-t-12">
-            <div class="f-w-700 " style="color: #000;font-family: Inter;font-size: 16px;font-style: normal;font-weight: 500;line-height: normal;"> 
+            <div class="f-w-700 " style="font-size: 16px;font-weight: 500;line-height: normal;"> 
               {{item.description}} </div> 
             <div>
               @if(item.status == 'WIP') {
@@ -66,7 +66,7 @@
 </mat-accordion>
 
 
-<div style="text-align: center; color: #000;font-family:'Roboto Slab';font-size: 26px;font-style: normal;font-weight: 700;line-height: normal;margin-bottom: 20px; margin-top: 20px">
+<div style="text-align: center;font-size: 26px;font-weight: 600;line-height: normal;margin-bottom: 20px; margin-top: 20px">
   Danh sách báo cáo đột xuất
 </div>
 
@@ -85,10 +85,10 @@
     <mat-expansion-panel-header style="height: 5rem">
       <mat-panel-title class="mat-body-1">
         <div>
-          <div class="f-w-400" style="color: #000;font-family: Inter;font-size: 18px;font-style: italic;font-weight: 300;line-height: normal;">
+          <div class="f-w-400" style="font-size: 16px;font-weight: 300;line-height: normal;">
             {{item.time}} - {{item.title}} </div>
             <div class="d-flex gap-12 m-t-12">
-              <div class="f-w-700 " style="color: #000;font-family: Inter;font-size: 16px;font-style: normal;font-weight: 500;line-height: normal;"> 
+              <div class="f-w-700 " style="font-size: 16px;font-weight: 500;line-height: normal;"> 
                 {{item.description}} </div> 
               <div>
                 @if(item.status == 'WIP') {

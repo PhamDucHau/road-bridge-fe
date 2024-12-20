@@ -16,7 +16,7 @@ export const DashboardsRoutes: Routes = [
         path: 'dashboard1',
         component: AppDashboard1Component,
         data: {
-          title: 'Analytical',
+          title: 'Trang chủ',
           urls: [
             { title: 'Dashboard', url: '/dashboards/dashboard1' },
             { title: 'Analytical' },

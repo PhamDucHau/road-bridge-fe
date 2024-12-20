@@ -19,11 +19,32 @@ export class dashboardService {
 
   constructor(private http: HttpClient, private router: Router) { }
   getAllDataForm(){
-    console.log('test')
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
     const response = this.http.get<any>(`${this.url}/congtrinh-diadiem`,{headers: headers });
+    return response.pipe(
+      tap((res)=>{
+      
+      }),
+      catchError((error) => {
+        console.log(error.statusText);
+        if (error.statusText === 'Unauthorized') {
+          localStorage.clear();
+          this.router.navigate(['/authentication/login']);
+        }
+        return throwError(() => error);
+      })
+    )
+  }
+
+  getAllDataNhapKho(){
+   
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+    });
+    const response = this.http.get<any>(`${this.url}/nhap-kho`,{headers: headers });
     return response.pipe(
       tap((res)=>{
       

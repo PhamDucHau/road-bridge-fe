@@ -24,3 +24,10 @@
     border-color: #007bff; /* Màu viền khi focus */
     background-color: #f8f9fa; /* Nền sáng hơn khi focus */
   }
+
+  .icon:hover {
+    transform: scale(1.5); /* Phóng to 1.5 lần */
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    color: #007bff;
+  }
