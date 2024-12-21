@@ -178,7 +178,8 @@ export class AdhocReportComponent {
       this.productsList = this.congTrinhDiaDiem[0][this.congTrinhControl.value || ''][this.diaDiemControl.value]
       
       this.service.getAllDataNhapKho().subscribe(res => {
-        this.nhapKhoList = res[0][this.congTrinhControl.value || '']
+        this.nhapKhoList = res[0][this.congTrinhControl.value || '']        
+        this.nhapKhoList = this.nhapKhoList.filter((item: any) => item['Số lượng nhập'] > 0)
         
       })
     }
