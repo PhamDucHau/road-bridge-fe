@@ -20,53 +20,126 @@
   Báo cáo gần nhất
 </div>
 
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner" >
+  <mat-spinner ></mat-spinner>
+</div>
 
-<div class="d-flex align-items-center justify-content-start m-b-8">
-  <a (click)="exportToExcelBaoCaoGanNhat()" class="btn-export"
-    style="border-radius: 4px;"
-    mat-button    
-    mat-flat-button
-    class="text-white f-s-16 bg-success"
-    ><mat-icon matSuffix>file_download</mat-icon>Export to Excel</a
-  >
+
+<div class="m-b-8 d-flex align-items-center justify-content-between">
+  <div class="d-flex align-items-center justify-content-start ">
+    <a (click)="exportToExcelBaoCaoGanNhat()" class="btn-export"
+      style="border-radius: 4px;"
+      mat-button    
+      mat-flat-button
+      class="text-white f-s-16 bg-success"
+      ><mat-icon matSuffix>file_download</mat-icon>Export to Excel</a
+    >  
+  </div>
+  
+  
+
+  <div class="d-flex align-items-center justify-content-end">
+    <div>
+      <mat-form-field appearance="outline" class="w-100 hide-hint">
+        <input matInput placeholder="Search"
+        (keyup)="applyFilterApply($any($event.target).value)"
+        />
+        <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+        </mat-icon>
+    </mat-form-field>
+    </div>
+    <mat-paginator (page)="handlePageEventApply($event)" [length]="totalRecordApply" [pageIndex]="pageIndexApply" [pageSize]="pageSizeApply" [pageSizeOptions]="pageSizeOptionsApply"
+                  [hidePageSize]="false" aria-label="Chọn trang">
+    </mat-paginator>
+  </div>
 </div>
 <mat-accordion >
-  <mat-expansion-panel *ngFor="let item of listBaoCaoGanNhat" class="cardWithShadow">
+  
+  <mat-expansion-panel *ngFor="let item of allBaoCao$ | async" class="cardWithShadow">
+    
     <mat-expansion-panel-header style="height: 5rem" >
-      <mat-panel-title class="mat-body-1">
-        <div>
-          <div class="f-w-400" style="font-size: 16px;font-style: italic;font-weight: 300;line-height: normal;">
-            {{item.time}} - {{item.title}} 
-          </div>
-          <div class="d-flex gap-12 m-t-12">
-            <div class="f-w-700 " style="font-size: 16px;font-weight: 500;line-height: normal;"> 
-              {{item.description}} </div> 
-            <div>
-              @if(item.status == 'WIP') {
-                <span style="background-color: rgb(255, 185, 1);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">WIP</span>
-              }    
-              @if(item.status == 'DONE') {
-                <span style="background-color: rgb(42, 196, 111);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span>
-              }   
-                
+      
+      <mat-panel-title class="mat-body-1">  
+        <!-- <div>
+          <mat-icon matSuffix >
+            <i-tabler name="trash" class="icon-24"></i-tabler>
+          </mat-icon>
+        </div>            -->
+          <div>
+            <div class="f-w-400" style="font-size: 16px;font-style: italic;font-weight: 300;line-height: normal;">
+              {{item.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} - {{item.name_cong_trinh}} 
             </div>
-          </div>
-        </div>
+            <div class="d-flex gap-12 m-t-12">
+              <div class="f-w-700 " style="font-size: 16px;font-weight: 500;line-height: normal;"> 
+                {{item.name_dia_diem}} - {{item.du_an}} </div> 
+              <div class="d-flex gap-12">
+                <span style="background-color: rgb(42, 196, 111);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span>
+
+                <mat-icon matSuffix (click)="editBaoCao($event,item)" class="h-blue" >
+                  <i-tabler name="edit" class="icon-26"></i-tabler>
+                </mat-icon>
+                
+                <mat-icon matSuffix (click)="deleteBaoCao($event,item._id)" class="h-red" >
+                  <i-tabler name="trash" class="icon-26"></i-tabler>
+                </mat-icon>
+           
+                <!-- @if(item.status == 'WIP') {
+                  <span style="background-color: rgb(255, 185, 1);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">WIP</span>
+                }    
+                @if(item.status == 'DONE') {
+                  <span style="background-color: rgb(42, 196, 111);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span>
+                }    -->
+                  
+              </div>
+            </div>
+          </div>        
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <p class="mat-body-1 text-left">
+    <!-- <p *ngFor="let child of item.chi_tiet" class="mat-body-1 text-left" >
       Admin Dashboard is the backend interface of a website or an
       application that helps to manage the website's overall content and
       settings. It is widely used by the site owners to keep track of their
       website, make changes to their content, and more.
-    </p>
+    </p> -->
+    <mat-accordion >
+      <mat-expansion-panel *ngFor="let product of item.chi_tiet ; let i = index" class="cardWithShadow m-t-10">
+        <mat-expansion-panel-header style="height: 5rem" >
+          <mat-panel-title class="mat-body-1">
+            <mat-icon matListItemIcon class="m-r-8">folder</mat-icon> <span class="m-r-8 f-w-700">{{product['Vật liệu']}}</span> ( số lượng {{product['Số lượng nhập']}} )
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form style="margin-top: 21px;">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập số lượng</mat-label>
+            <input type="number" disabled value="{{product['Số lượng nhập']}}"  aria-label="Number" matInput />
+          </mat-form-field>
+  
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>
+            <input type="number" disabled value="{{product['Đơn giá']}}" aria-label="Number" matInput />
+          </mat-form-field>
+  
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>
+            <input disabled type="text" value="{{product['Mô tả hư hại']}}" matInput />
+          </mat-form-field>
+          <div class="custom-textarea-container">
+            <textarea disabled id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
+          </div>
+        </form>
+        
+      </mat-expansion-panel>
+    
+    
+    </mat-accordion>
   </mat-expansion-panel>
 
 
 </mat-accordion>
 
 
-<div style="text-align: center;font-size: 26px;font-weight: 600;line-height: normal;margin-bottom: 20px; margin-top: 20px">
+<!-- <div style="text-align: center;font-size: 26px;font-weight: 600;line-height: normal;margin-bottom: 20px; margin-top: 20px">
   Danh sách báo cáo đột xuất
 </div>
 
@@ -112,4 +185,4 @@
   </mat-expansion-panel>
   
 
-</mat-accordion>
+</mat-accordion> -->
