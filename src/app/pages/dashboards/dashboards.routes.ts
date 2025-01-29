@@ -35,6 +35,17 @@ export const DashboardsRoutes: Routes = [
         },
       },
       {
+        path: 'adhoc-report/:id',
+        component: AdhocReportComponent,
+        data: {
+          title: 'Báo cáo đột xuất',
+          urls: [
+            { title: 'Dashboard', url: '/dashboards/dashboard1' },
+            { title: 'Báo cáo đột xuất' },
+          ],
+        },
+      },
+      {
         path: 'adhoc-report',
         component: AdhocReportComponent,
         data: {

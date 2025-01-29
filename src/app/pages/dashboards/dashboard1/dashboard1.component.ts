@@ -18,8 +18,13 @@ import { AppTopProjectsComponent } from '../../../components/dashboard1/top-proj
 import { AppProjectsComponent } from '../../../components/dashboard1/projects/projects.component';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { dashboardService } from '../dashboard.service';
+import { Observable, Subscription } from 'rxjs';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DialogConfirmComponent } from '../common/dialog-confirm/dialog-confirm.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-dashboard1',
@@ -40,103 +45,18 @@ import { dashboardService } from '../dashboard.service';
     AppProjectsComponent,
     MaterialModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule,
+    OverlayModule,
+    MatPaginatorModule,
   ],
   templateUrl: './dashboard1.component.html',
+  styleUrl: './dashboard1.component.scss'
 })
 export class AppDashboard1Component {
-  protected listBaoCaoGanNhat :any[] = [
-    {
-      time: '10/5/2024',
-      title: 'BC đột xuất',
-      description: 'Rạch Láng The - Bến mương',
-      status: 'WIP',
-      userHandle: 'Phuc Nguyen',
-      data: [
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-      ]
-    },
-    {
-      time: '10/5/2024',
-      title: 'BC định ngạch',
-      description: 'Kênh Thầy Cai',
-      status: 'DONE',
-      userHandle: 'Phuc Nguyen',
-      data: [
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-      ]
-    },
-    {
-      time: '10/5/2024',
-      title: 'BC đột xuất',
-      description: 'Kênh Địa Phận',
-      status: 'WIP',
-      userHandle: 'Phuc Nguyen',
-      data: [
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-        {
-          product: 'Biển báo',
-          price: 100.000,
-          quantity: 20,
-          note: 'Chính xác',
-          images: 'assets/images/products/s1.jpg',
-        },
-      ]
-    }
-  ];
+
+  protected listBaoCaoGanNhat :any[] = [];
+
   protected listBaoCaoDotXuat :any[] = [
     {
       time: '10/5/2024',
@@ -289,7 +209,118 @@ export class AppDashboard1Component {
       ]
     }
   ];
-  constructor( private service: dashboardService ) {}
+  protected pageSizeOptionsApply: any[] = [];
+  // protected totalRecordApply$!: Observable<number | null>;
+  protected pageIndexApply!: number;
+  protected pageSizeApply!: number;
+  protected filterApply: any = {}
+  protected totalRecordApply: number = 0
+  
+  protected allBaoCao$!: Observable<any>;
+  private subscription!: Subscription;
+  public loadingSpinner = false;
+  // public dialog: MatDialog
+  
+  constructor( 
+    private service: dashboardService, 
+    private dialog: MatDialog, 
+    private router: Router, 
+  ) {}
+  ngOnInit(): void {
+    this.loadingSpinner = true
+    this.pageSizeOptionsApply = [5, 10, 20, 50, 100, 200]
+    this.pageIndexApply = 0
+    this.pageSizeApply = 5
+    this.filterApply = {
+      page: this.pageIndexApply + 1,
+      size: this.pageSizeApply,
+      search: ''
+    }
+    this.allBaoCao$ = this.service.allBaoCao$
+    
+    this.subscription = this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {      
+      this.listBaoCaoGanNhat = data.data;
+      this.totalRecordApply = data.pagination.totalCount      
+      setTimeout(() => {
+        this.loadingSpinner = false
+      },500)
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  editBaoCao(event: Event,item: any) {
+    event.stopPropagation();    
+    this.router.navigate([`/dashboards/adhoc-report/${item._id}`]);    
+  }
+
+  deleteBaoCao(event: Event,id: any) {
+    event.stopPropagation();    
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '290px',
+      // enterAnimationDuration,
+      // exitAnimationDuration,
+      data:{
+        title: 'Xoá báo cáo',
+        message: 'Bạn có chắc muốn xoá báo cáo này ?',
+      }
+    });
+    
+    dialogRef.afterClosed().subscribe(result => {      
+      if (result) {        
+        this.service.deleteDataBaoCao(id).subscribe(data => {
+          this.loadingSpinner = true
+          if (data) {
+            this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+              this.listBaoCaoGanNhat = data.data;
+              this.totalRecordApply = data.pagination.totalCount
+              setTimeout(() => {
+                this.loadingSpinner = false
+              },1000)
+            })
+          }
+        })
+      } else {
+        console.log('User clicked Cancel');
+      }
+    });
+  }
+
+  handlePageEventApply(e: PageEvent) {  
+    // this.loadingSpinner = true;
+    this.pageIndexApply = e.pageIndex
+    this.pageSizeApply = e.pageSize
+    this.filterApply = {
+      page: this.pageIndexApply + 1,
+      size: this.pageSizeApply,
+      search: ''
+    }
+    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+      this.listBaoCaoGanNhat = data.data;
+      this.totalRecordApply = data.pagination.totalCount
+    })
+  }
+  applyFilterApply(filterValue: string) {
+    this.filterApply.search = filterValue  
+    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+      this.listBaoCaoGanNhat = data.data;
+      this.totalRecordApply = data.pagination.totalCount
+    })
+    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+      this.listBaoCaoGanNhat = data.data;
+      this.totalRecordApply = data.pagination.totalCount
+    })
+  }
+
+  onInput(event: Event, i:number, label: string): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value || null;    
+    // this.dataSanPham[i][label] = value;
+  }
   exportToExcelBaoCaoGanNhat(): void {
     // 1. Tạo worksheet từ dữ liệu
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.listBaoCaoGanNhat);
