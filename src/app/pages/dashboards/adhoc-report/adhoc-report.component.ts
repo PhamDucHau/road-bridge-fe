@@ -340,7 +340,7 @@ export class AdhocReportComponent {
             this.service.updateDataBaoCao(formSave).subscribe(res => {            
               if(res){
                 this.openSnackBar('Câp nhật báo cáo thành công', 'success');
-                // this.router.navigate(['/dashboards/dashboard1']);
+                this.router.navigate(['/dashboards/dashboard1']);
               }      
             })
           }else{
