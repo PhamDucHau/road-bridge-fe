@@ -25,6 +25,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../common/dialog-confirm/dialog-confirm.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { ViewImageComponent } from '../common/view-image/view-image.component';
 
 @Component({
   selector: 'app-dashboard1',
@@ -49,7 +50,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatDialogModule,
     OverlayModule,
     MatPaginatorModule,
-  ],
+  ],  
   templateUrl: './dashboard1.component.html',
   styleUrl: './dashboard1.component.scss'
 })
@@ -247,6 +248,17 @@ export class AppDashboard1Component {
     });
   }
 
+  viewImage(image: any) {
+    const dialogRef = this.dialog.open(ViewImageComponent, {
+      width: '80%',
+      height: '80%',
+      data: { image: image }
+    });
+  }
+  chaneLinkViewImage(image: any) {
+    window.open(image, "_blank")
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -322,8 +334,30 @@ export class AppDashboard1Component {
     // this.dataSanPham[i][label] = value;
   }
   exportToExcelBaoCaoGanNhat(): void {
+    console.log(this.listBaoCaoGanNhat)
+    let formattedData:any = []
+    this.listBaoCaoGanNhat.forEach((element: any, index: number)=> {
+      // console.log('element', element)
+      console.log('index', index)
+      element.chi_tiet.forEach((detail: any, index: number) => {
+        // console.log('detail', detail)
+        formattedData.push({
+          "Ngày tạo": index == 0 ? element.createdAt : '',
+          "Tên công trình": index == 0 ? element.name_cong_trinh : '',
+          "Tên địa điểm": index == 0 ? element.name_dia_diem : '',
+          "Tên dự án": index == 0 ? element.du_an : '',
+          "Tên vật liệu": detail["Vật liệu"],
+          "Số lượng": detail["Số lượng nhập"],
+          "Đơn Giá": detail["Đơn giá"],
+          "Mô tả hư hại": detail["Mô tả hư hại"],
+          "Hình ảnh hư hại": detail["Hình ảnh hư hại"],
+        })
+        
+      })
+    })
+    console.log('formattedData', formattedData)
     // 1. Tạo worksheet từ dữ liệu
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.listBaoCaoGanNhat);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
 
     // 2. Tạo workbook và thêm worksheet vào
     const wb: XLSX.WorkBook = XLSX.utils.book_new();

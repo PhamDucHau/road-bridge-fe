@@ -25,7 +25,7 @@
 </div>
 
 
-<div class="m-b-8 d-flex align-items-center justify-content-between">
+<div class="m-b-8 d-md-flex d-block m-t-12 m-b-12 align-items-center justify-content-between">
   <div class="d-flex align-items-center justify-content-start ">
     <a (click)="exportToExcelBaoCaoGanNhat()" class="btn-export"
       style="border-radius: 4px;"
@@ -38,9 +38,9 @@
   
   
 
-  <div class="d-flex align-items-center justify-content-end">
+  <div class="d-sm-flex d-block m-t-12 align-items-center justify-content-end">
     <div>
-      <mat-form-field appearance="outline" class="w-100 hide-hint">
+      <mat-form-field appearance="outline" class="w-100 hide-hint m-b-12">
         <input matInput placeholder="Search"
         (keyup)="applyFilterApply($any($event.target).value)"
         />
@@ -58,7 +58,7 @@
   
   <mat-expansion-panel *ngFor="let item of allBaoCao$ | async" class="cardWithShadow">
     
-    <mat-expansion-panel-header style="height: 5rem" >
+    <mat-expansion-panel-header class="panel-header-height">
       
       <mat-panel-title class="mat-body-1">  
         <!-- <div>
@@ -73,8 +73,9 @@
             <div class="d-flex gap-12 m-t-12">
               <div class="f-w-700 " style="font-size: 16px;font-weight: 500;line-height: normal;"> 
                 {{item.name_dia_diem}} - {{item.du_an}} </div> 
-              <div class="d-flex gap-12">
+              <div class="d-flex gap-12 align-items-center justify-content-end">
                 <span style="background-color: rgb(42, 196, 111);" class="d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span>
+                <!-- <span style="color: rgb(42, 196, 111);" class="d-flex mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span> -->
 
                 <mat-icon matSuffix (click)="editBaoCao($event,item)" class="h-blue" >
                   <i-tabler name="edit" class="icon-26"></i-tabler>
@@ -124,8 +125,22 @@
             <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>
             <input disabled type="text" value="{{product['Mô tả hư hại']}}" matInput />
           </mat-form-field>
-          <div class="custom-textarea-container">
+          <!-- <div class="custom-textarea-container">
             <textarea disabled id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
+          </div> -->
+          <div class="d-flex align-items-center justify-content-start gap-16"  *ngIf="product['Hình ảnh hư hại']">
+            <div class="image-container">
+              <img [src]="product['Hình ảnh hư hại'] || ''" alt="Hình ảnh đẹp">
+            </div>
+            <div>
+              <mat-icon matSuffix class="h-blue cursor-pointer" (click)="viewImage(product['Hình ảnh hư hại'] || '')" >
+                <i-tabler name="eye" class="icon-26"></i-tabler>
+              </mat-icon>
+  
+              <mat-icon matSuffix class="h-blue cursor-pointer" (click)="chaneLinkViewImage(product['Hình ảnh hư hại'] || '')" >
+                <i-tabler name="eye-share" class="icon-26"></i-tabler>
+              </mat-icon>
+            </div>
           </div>
         </form>
         

@@ -16,6 +16,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../common/dialog-confirm/dialog-confirm.component';
 
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { TablerIconsModule } from 'angular-tabler-icons';
+import { ViewImageComponent } from '../common/view-image/view-image.component';
+
 
 export interface StateGroup {
   letter: string;
@@ -44,24 +48,32 @@ export interface State {
 @Component({
   selector: 'app-adhoc-report',
   standalone: true,
-  imports: [MaterialModule, FormsModule, ReactiveFormsModule, CommonModule, MatProgressSpinnerModule],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule, CommonModule, MatProgressSpinnerModule, TablerIconsModule,],
   templateUrl: './adhoc-report.component.html',
-  styleUrl: './adhoc-report.component.scss'
+  styleUrl: './adhoc-report.component.scss',
+  
 })
 export class AdhocReportComponent {
+  
+  imageUrl: string | null = null;
   private _snackBar = inject(MatSnackBar);
   public loadingSpinner = false;
+ 
   constructor(
     private _formBuilder: FormBuilder,
     private service: dashboardService,
     private router: Router,
     private dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+   
 
-  ) { }
+  ) { 
+    
+  }
   isDropdownOpen: boolean = false;
   congTrinhControl = new FormControl('');
   diaDiemControl = new FormControl({ value: '', disabled: true });
+  productsListControl = new FormControl('');
   // filter option
   filterControl = new FormControl('');
   public congTrinhDiaDiem: any = [];
@@ -71,6 +83,7 @@ export class AdhocReportComponent {
 
   public diaDiemOption: any = [];
   public diaDiemFilterOption: Observable<string[]>;
+  public duAnFilterOption: Observable<string[]>;
   public diaDiemCurrent: string = '';
   public isProducts = false;
   public productsList: any = [];
@@ -85,6 +98,9 @@ export class AdhocReportComponent {
   public diaDiem: any = [];
   form: FormGroup;
   public idParam: any = '';
+
+  
+
   ngOnInit() {
     this.idParam = this.route.snapshot.paramMap.get('id');
     if (this.idParam) {
@@ -92,14 +108,14 @@ export class AdhocReportComponent {
       const api2$ = this.service.getBaoCaoById(this.idParam);
       const api3$ = this.service.getAllDataNhapKho();
       forkJoin([api1$, api2$, api3$]).subscribe({
-        next: ([res1, res2, res3]) => {
-          console.log('res1', res1);
-          console.log('res2', res2);
-          console.log('res3', res3);
-          
+        next: ([res1, res2, res3]) => {    
+          console.log('res1', res1)   
+          console.log('res2', res2)   
+          console.log('res3', res3)
           this.congTrinhDiaDiem = res1
           this.congTrinhControl = new FormControl(res2.data.name_cong_trinh);
           this.diaDiemControl = new FormControl(res2.data.name_dia_diem);
+          this.productsListControl = new FormControl(res2.data.du_an);
           this.congTrinhCurrent = res2.data.name_cong_trinh.trim()
           this.diaDiemCurrent = res2.data.name_dia_diem.trim()
           res1.map((item: any) => this.congTrinhOption.push(item.name_cong_trinh))
@@ -118,13 +134,19 @@ export class AdhocReportComponent {
                 startWith(''),
                 map((value) => this._filterDiaDiem(value || '', this.diaDiemOption))
               )
+
+              
+              // _filterDuAn
             }            
             if (item.name_cong_trinh.trim() === res2.data.name_cong_trinh.trim()) {
               item.chi_tiet.map((item2: any) => {
                 if (item2.name_dia_diem.trim() === res2.data.name_dia_diem.trim()) {
                   this.productsList = item2.chi_tiet
                   this.indexSanPham = this.productsList.findIndex((item3: any) => item3.trim() === res2.data.du_an.trim())
-                  
+                  this.duAnFilterOption = this.productsListControl.valueChanges.pipe(
+                    startWith(''),
+                    map((value) => this._filterDuAn(value || '', this.productsList))
+                  )                 
                 }
               })
             }
@@ -132,8 +154,7 @@ export class AdhocReportComponent {
           res3.map((item: any) => {
 
             if (item.name_cong_trinh.trim() === res2.data.name_cong_trinh.trim()) {
-
-              this.nhapKhoList = item.chi_tiet
+              this.nhapKhoList = item.chi_tiet              
             }
           })          
           this.isProducts = true;
@@ -142,15 +163,15 @@ export class AdhocReportComponent {
               'Vật liệu': item['Vật liệu'],
               'Số lượng nhập': item['Số lượng nhập'],
               'Đơn giá': item['Đơn giá'],
-              'Mô tả hư hại': '',
-              'Hình ảnh hư hại': ''
+              'Mô tả hư hại': item['Mô tả hư hại'],
+              'Hình ảnh hư hại': item['Hình ảnh hư hại']
             })
             this.dataSanPhamEdit.push({
               'Vật liệu': item['Vật liệu'],
               'Số lượng nhập': item['Số lượng nhập'],
               'Đơn giá': item['Đơn giá'],
-              'Mô tả hư hại': '',
-              'Hình ảnh hư hại': ''
+              'Mô tả hư hại': item['Mô tả hư hại'],
+              'Hình ảnh hư hại': item['Hình ảnh hư hại']
             })
           })
         },
@@ -168,6 +189,17 @@ export class AdhocReportComponent {
         )
       })
     }
+  }
+
+  viewImage(image: any) {
+    const dialogRef = this.dialog.open(ViewImageComponent, {
+      width: '80%',
+      height: '80%',
+      data: { image: image }
+    });
+  }
+  chaneLinkViewImage(image: any) {
+    window.open(image, "_blank")
   }
 
   public numberTitle = (numberProduct: number, index: number) => {
@@ -207,6 +239,31 @@ export class AdhocReportComponent {
     return keysWithoutId;
   }
 
+  selectFile(event: any, index: number): void {
+    if (!event.target.files[0] || event.target.files[0].length === 0) {
+      // this.msg = 'You must select an image';
+      return;
+    }
+    const mimeType = event.target.files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      // this.msg = "Only images are supported";
+      return;
+    }
+    // tslint:disable-next-line - Disables all
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    // tslint:disable-next-line - Disables all
+    reader.onload = (_event) => {
+      // tslint:disable-next-line - Disables all
+      // this.local_data.imagePath = reader.result;
+      this.service.uploadFile(event.target.files[0]).subscribe((res: any) => {
+        console.log(res);
+        this.dataSanPham[index]['Hình ảnh hư hại'] = res.url
+      })
+      
+    };
+  }
+
 
   onOptionSelectedCongTrinh(event: MatAutocompleteSelectedEvent): void {
     const selectedValue = event.option.value;
@@ -232,6 +289,7 @@ export class AdhocReportComponent {
     // Thêm logic tùy chỉnh của bạn tại đây
   }
   onOptionSelectedDiaDiem(event: MatAutocompleteSelectedEvent): void {   
+    this.productsListControl = new FormControl('');
     this.indexSanPham = 0
     const selectedValue = event.option.value;
     if (this.diaDiemControl.value) {
@@ -242,6 +300,10 @@ export class AdhocReportComponent {
           item.chi_tiet.map((item2: any) => {
             if (item2.name_dia_diem.trim() === this.diaDiemCurrent.trim()) {
               this.productsList = item2.chi_tiet
+              this.duAnFilterOption = this.productsListControl.valueChanges.pipe(
+                startWith(''),
+                map((value) => this._filterDuAn(value || '', this.productsList))
+              )
             }
           })
         }
@@ -285,9 +347,20 @@ export class AdhocReportComponent {
       option.toLowerCase().includes(filterValue)
     );
   }
+
+  private _filterDuAn(value: string, congTrinhOption: any): string[] {
+    console.log('du an', congTrinhOption)
+    const filterValue = value.toLowerCase();
+    return congTrinhOption.filter((option: any) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
   // option group
 
-  save(): void {
+  save(): void {    
+    if(!this.productsListControl.value){      
+      return this.openSnackBar('Field dự án đang trống', 'error');
+    }
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '290px',
       // enterAnimationDuration,
@@ -316,19 +389,17 @@ export class AdhocReportComponent {
             _id: this.idParam,
             name_cong_trinh: this.congTrinhCurrent,
             name_dia_diem: this.diaDiemCurrent,
-            du_an: this.productsList[this.indexSanPham],
+            du_an: this.productsListControl.value,
             chi_tiet: this.dataSanPham
           }          
         }else{
           formSave = {
             name_cong_trinh: this.congTrinhCurrent,
             name_dia_diem: this.diaDiemCurrent,
-            du_an: this.productsList[this.indexSanPham],
+            du_an: this.productsListControl.value,
             chi_tiet: this.dataSanPham
           }
-        }
-        console.log('this.productsList', this.productsList)
-        console.log('this.indexSanPham', this.indexSanPham)
+        }        
         let count = 0
         this.dataSanPham.forEach((item: any) => {
           if (item['Số lượng nhập'] > 0 || item['Đơn giá'] > 0) {
@@ -336,6 +407,8 @@ export class AdhocReportComponent {
           }
         })        
         if(count > 0){
+          console.log('formSave', formSave)
+          
           if(this.idParam){
             this.service.updateDataBaoCao(formSave).subscribe(res => {            
               if(res){

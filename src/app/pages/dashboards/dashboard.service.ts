@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from 'src/app/config/environments/environment';
 import { Router } from '@angular/router';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
 
 
 
@@ -21,7 +24,26 @@ export class dashboardService {
   public allBaoCao$: Observable<any | null> =
     this.allBaoCaoDisplay.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    // private s3Client: S3Client
+  ) { 
+    // this.s3Client = new S3Client({
+    //   region: 'us-east-1', // MinIO không yêu cầu region
+    //   endpoint: 'http://khoadue.me:9001', // URL của MinIO
+    //   credentials: {
+    //     accessKeyId: 'nltbO2VxDjerDd3YhxwI',
+    //     secretAccessKey: 'FRmNitQwocCBwLxqlqaUp5qC3gQM8XSHi0AouDsc',
+    //   },
+    //   forcePathStyle: true, // Bắt buộc với MinIO
+    // });
+   }
+
+   
+
+  
+  
   getAllDataForm(){
     
     const headers = new HttpHeaders({
@@ -87,6 +109,15 @@ export class dashboardService {
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
     return this.http.post<any>(`${this.url}/bao-cao`, data, { headers: headers });
+  }
+
+  uploadFile(file: File): Observable<string> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+    });
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<string>(`${this.url}/minio/file`, formData, { headers: headers });
   }
 
   getAllDataBaoCao(filterApply:any){ 
