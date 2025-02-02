@@ -1,5 +1,5 @@
 <div class="m-24 d-flex justify-content-center" *ngIf="loadingSpinner">
-  <mat-spinner ></mat-spinner>
+  <mat-spinner></mat-spinner>
 </div>
 <mat-card class="b-1 shadow-none">
   <mat-card-content class="b-t-1">
@@ -8,8 +8,7 @@
           class="text-warning">(*)</span></mat-label>
       <mat-form-field class="w-100" appearance="outline">
         <input type="text" placeholder="Chọn tên công trình" aria-label="Number" matInput
-          [formControl]="congTrinhControl" [matAutocomplete]="auto" (focus)="onFocusCongTrinh()"
-        />
+          [formControl]="congTrinhControl" [matAutocomplete]="auto" (focus)="onFocusCongTrinh()" />
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedCongTrinh($event)">
           @for(firstoption of congTrinhFilterOption | async; track
           firstoption) {
@@ -24,8 +23,8 @@
       <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Địa điểm: <span
           class="text-warning">(*)</span></mat-label>
       <mat-form-field class="w-100" appearance="outline">
-        <input type="text" placeholder="Chọn địa điểm" aria-label="Number" matInput 
-        [formControl]="diaDiemControl" [matAutocomplete]="autoDiaDiem" (focus)="onFocusDiaDiem()" (blur)="onBlurDiaDiem()" />
+        <input type="text" placeholder="Chọn địa điểm" aria-label="Number" matInput [formControl]="diaDiemControl"
+          [matAutocomplete]="autoDiaDiem" (focus)="onFocusDiaDiem()" (blur)="onBlurDiaDiem()" />
         <mat-autocomplete #autoDiaDiem="matAutocomplete" (optionSelected)="onOptionSelectedDiaDiem($event)">
           @for(firstoptions of diaDiemFilterOption | async; track
           firstoptions) {
@@ -44,54 +43,110 @@
   <div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div>
 
   <div class="row m-y-20">
-    <div class="col-2 d-flex align-items-center cursor-pointer">
-      <mat-icon (click)="decreaseIndex()" class="icon" matSuffix>arrow_back</mat-icon>      
-    </div>
+    <!-- <div class="col-2 d-flex align-items-center cursor-pointer">
+     
+        <mat-icon (click)="decreaseIndex()" class="icon" matSuffix>arrow_back</mat-icon>
+        
+      
+     
+    </div> -->
     <div class="col">
-      <div class="f-w-700 f-s-20"
+      <!-- {{productsList.length}} -->
+      <div>
+        <mat-label class="mat-subtitle-2 f-s-20 f-w-600 m-b-8 d-block text-center m-b-16">Dự án <span
+            class="text-warning">(*)</span></mat-label>
+        <mat-form-field class="w-100" appearance="outline">
+          <input class="f-w-700 f-s-20"
+            style="color: var(--1, #115D85);text-align: center;font-style: normal;line-height: normal;" type="text"
+            aria-label="Number" matInput [formControl]="productsListControl" [matAutocomplete]="autoProductList"
+            (focus)="onFocusDiaDiem()" (blur)="onBlurDiaDiem()" />
+          <mat-autocomplete #autoProductList="matAutocomplete">
+            @for(firstoptions of duAnFilterOption | async; track
+            firstoptions) {
+            <mat-option [value]="firstoptions">
+              <span class="f-w-500 f-s-16">{{ firstoptions }}</span>
+            </mat-option>
+            }
+          </mat-autocomplete>
+          <mat-icon matSuffix>{{ isDropdownOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- <div class="f-w-700 f-s-20"
         style="color: var(--1, #115D85);text-align: center;font-style: normal;line-height: normal;">
         {{ productsList[indexSanPham] }} <br />
         <span>------ {{indexSanPham + 1}}/{{productsList.length}} ------</span>
-      </div>
+      </div> -->
+
+
     </div>
-    <div class="col-2 d-flex align-items-center justify-content-end cursor-pointer">
+    <!-- <div class="col-2 d-flex align-items-center justify-content-end cursor-pointer">
       <mat-icon (click)="increaseIndex()" class="icon" matSuffix>arrow_forward</mat-icon>
-    </div>
+    </div> -->
   </div>
 
-  <mat-accordion >
+  <mat-accordion>
     <mat-expansion-panel *ngFor="let product of nhapKhoList ; let i = index" class="cardWithShadow m-t-10">
-      <mat-expansion-panel-header style="height: 5rem" *ngIf="product['Số lượng nhập'] != 0" >
+      <mat-expansion-panel-header style="height: 5rem" *ngIf="product['Số lượng nhập'] != 0">
         <mat-panel-title class="mat-body-1">
-          <mat-icon matListItemIcon [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon> <span class="m-r-8 f-w-700">{{product['Vật liệu']}}</span> 
+          <mat-icon matListItemIcon
+            [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon> <span
+            class="m-r-8 f-w-700">{{product['Vật liệu']}}</span>
           ( số lượng còn lại {{numberTitle(product['Số lượng nhập'], i)}} )
-          
+
           <!-- {{product['Số lượng nhập']}} - {{dataSanPham[i]['Số lượng nhập']}} -->
         </mat-panel-title>
       </mat-expansion-panel-header>
       <form style="margin-top: 21px;">
         <mat-form-field class="w-100" appearance="outline">
           <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập số lượng</mat-label>
-          <input type="number" [value]="dataSanPham[i]['Số lượng nhập'] || 0 " (input)="onInput($event,i,'Số lượng nhập')"  aria-label="Number" matInput />
+          <input type="number" [value]="dataSanPham[i]['Số lượng nhập'] || 0 "
+            (input)="onInput($event,i,'Số lượng nhập')" aria-label="Number" matInput />
         </mat-form-field>
 
         <mat-form-field class="w-100" appearance="outline">
           <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>
-          <input type="number" [value]="dataSanPham[i]['Đơn giá'] || 0 " (input)="onInput($event,i,'Đơn giá')" aria-label="Number" matInput />
+          <input type="number" [value]="dataSanPham[i]['Đơn giá'] || 0 " (input)="onInput($event,i,'Đơn giá')"
+            aria-label="Number" matInput />
         </mat-form-field>
 
         <mat-form-field class="w-100" appearance="outline">
           <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>
-          <input type="text" [value]="dataSanPham[i]['Mô tả hư hỏng'] || '' " (input)="onInput($event,i,'Mô tả hư hại')" matInput />
+          <input type="text" [value]="dataSanPham[i]['Mô tả hư hỏng'] || '' " (input)="onInput($event,i,'Mô tả hư hại')"
+            matInput />
         </mat-form-field>
-        <div class="custom-textarea-container">
+
+        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Hình ảnh hư hại</mat-label>
+        <button mat-flat-button color="primary" class="input-file-button m-b-8">
+          <input type="file" (change)="selectFile($event,i)" #fileInput />
+        </button>
+        <!-- <div class="custom-textarea-container">
           <textarea id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
+        </div> -->
+        <!-- <div *ngIf="dataSanPham[i]['Hình ảnh hư hại']">
+          <img [src]="dataSanPham[i]['Hình ảnh hư hại'] || ''"
+            style="height: 200px" width="300px" />
+        </div> -->
+
+        <div class="d-flex align-items-center justify-content-start gap-16"  *ngIf="dataSanPham[i]['Hình ảnh hư hại']">
+          <div class="image-container">
+            <img [src]="dataSanPham[i]['Hình ảnh hư hại'] || ''" alt="Hình ảnh đẹp">
+          </div>
+          <div>
+            <mat-icon matSuffix class="h-blue cursor-pointer" (click)="viewImage(dataSanPham[i]['Hình ảnh hư hại'] || '')" >
+              <i-tabler name="eye" class="icon-26"></i-tabler>
+            </mat-icon>
+
+            <mat-icon matSuffix class="h-blue cursor-pointer" (click)="chaneLinkViewImage(dataSanPham[i]['Hình ảnh hư hại'] || '')" >
+              <i-tabler name="eye-share" class="icon-26"></i-tabler>
+            </mat-icon>
+          </div>
         </div>
       </form>
-      
+
     </mat-expansion-panel>
-  
-  
+
+
   </mat-accordion>
   <mat-card class="b-1 shadow-none m-t-20">
     <mat-card-header class="p-y-20">

@@ -1,0 +1,8 @@
+{
+    "/uploads": {
+      "target": "http://khoadue.me:9001",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
