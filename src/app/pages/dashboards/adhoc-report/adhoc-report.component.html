@@ -112,7 +112,7 @@
 
         <mat-form-field class="w-100" appearance="outline">
           <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>
-          <input type="text" [value]="dataSanPham[i]['Mô tả hư hỏng'] || '' " (input)="onInput($event,i,'Mô tả hư hại')"
+          <input type="text" [value]="dataSanPham[i]['Mô tả hư hại'] || '' " (input)="onInput($event,i,'Mô tả hư hại')"
             matInput />
         </mat-form-field>
 
@@ -148,7 +148,7 @@
 
 
   </mat-accordion>
-  <mat-card class="b-1 shadow-none m-t-20">
+  <!-- <mat-card class="b-1 shadow-none m-t-20">
     <mat-card-header class="p-y-20">
       <mat-card-title>Unknow label</mat-card-title>
     </mat-card-header>
@@ -161,11 +161,19 @@
       </form>
 
     </mat-card-content>
-  </mat-card>
+  </mat-card> -->
 
-  <div class="d-flex align-items-center justify-content-end" (click)="save()">
-    <a style="border-radius: 4px; 
-    background: linear-gradient(81deg, #115D85 -0.64%, #609DC2 12.04%, #71ABCF 49.15%, #8AC2DA 84%, #A1D7E5 100%);"
-      mat-button mat-flat-button class="text-white f-s-16 ">{{idParam ? 'Lưu thay đổi' : 'Hoàn thành'}}</a>
+  <div class="d-flex gap-16 justify-content-end">
+    <div class="d-flex align-items-center justify-content-end" (click)="save('DRAFT')">
+      <a style="border-radius: 4px; 
+      background: linear-gradient(81deg, #115D85 -0.64%, #609DC2 12.04%, #71ABCF 49.15%, #8AC2DA 84%, #A1D7E5 100%);"
+        mat-button mat-flat-button class="text-white f-s-16 ">{{idParam ? 'Lưu thay đổi' : 'Lưu'}}</a>
+    </div>
+  
+    <div class="d-flex align-items-center justify-content-end" (click)="save('DONE')">
+      <a style="border-radius: 4px; 
+      background: linear-gradient(81deg, #115D85 -0.64%, #609DC2 12.04%, #71ABCF 49.15%, #8AC2DA 84%, #A1D7E5 100%);"
+        mat-button mat-flat-button class="text-white f-s-16 ">Hoàn Thành</a>
+    </div>
   </div>
 </div>

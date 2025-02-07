@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
@@ -22,10 +22,12 @@ import { Router, RouterModule } from '@angular/router';
 import { dashboardService } from '../dashboard.service';
 import { Observable, Subscription } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../common/dialog-confirm/dialog-confirm.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ViewImageComponent } from '../common/view-image/view-image.component';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarFormDialogComponent } from '../common/calendar-form-dialog/calendar-form-dialog.component';
 
 @Component({
   selector: 'app-dashboard1',
@@ -50,11 +52,15 @@ import { ViewImageComponent } from '../common/view-image/view-image.component';
     MatDialogModule,
     OverlayModule,
     MatPaginatorModule,
+    FormsModule, 
+    ReactiveFormsModule,
   ],  
   templateUrl: './dashboard1.component.html',
   styleUrl: './dashboard1.component.scss'
 })
 export class AppDashboard1Component {
+  dialogRef2: MatDialogRef<CalendarFormDialogComponent> =
+    Object.create(TemplateRef);
 
   protected listBaoCaoGanNhat :any[] = [];
 
@@ -220,6 +226,9 @@ export class AppDashboard1Component {
   protected allBaoCao$!: Observable<any>;
   private subscription!: Subscription;
   public loadingSpinner = false;
+  protected congTrinhControl = new FormControl('');
+  protected isFilterTime = false;
+  protected isFilterQuy = false;
   // public dialog: MatDialog
   
   constructor( 
@@ -228,6 +237,8 @@ export class AppDashboard1Component {
     private router: Router, 
   ) {}
   ngOnInit(): void {
+    this.isFilterTime = false
+    this.isFilterQuy = false
     this.loadingSpinner = true
     this.pageSizeOptionsApply = [5, 10, 20, 50, 100, 200]
     this.pageIndexApply = 0
@@ -242,6 +253,103 @@ export class AppDashboard1Component {
     this.subscription = this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {      
       this.listBaoCaoGanNhat = data.data;
       this.totalRecordApply = data.pagination.totalCount      
+      setTimeout(() => {
+        this.loadingSpinner = false
+      },500)
+    });
+  }
+
+  filterQuy(): void {
+    this.isFilterTime = false
+    this.isFilterQuy = false
+    this.dialogRef2 = this.dialog.open(CalendarFormDialogComponent, {
+      panelClass: 'calendar-form-dialog',
+      data: {
+        action: 'filterQuy',
+        date: new Date(),
+      },
+    });
+    this.dialogRef2.afterClosed().subscribe((res) => {
+      if (!res) {
+        return;
+      }      
+     
+      this.filterApply = {
+        page: this.pageIndexApply + 1,
+        size: this.pageSizeApply,
+        search: ''
+      }
+      this.filterApply = {
+        year: res.event.year,
+        quarter: res.event.quy,        
+        ...this.filterApply,
+        
+      };
+      
+      this.service.getAllDataBaoCao(this.filterApply).subscribe(data => { 
+        this.isFilterQuy = true     
+        this.listBaoCaoGanNhat = data.data;
+        this.totalRecordApply = data.pagination.totalCount      
+        setTimeout(() => {
+          this.loadingSpinner = false
+        },500)
+      });
+      
+    });
+  }
+  filterKhoanThoiGian(): void {
+    this.isFilterTime = false
+    this.isFilterQuy = false
+
+    this.dialogRef2 = this.dialog.open(CalendarFormDialogComponent, {
+      panelClass: 'calendar-form-dialog',
+      data: {
+        action: 'filterTime',
+        date: new Date(),
+      },
+    });
+    this.dialogRef2.afterClosed().subscribe((res) => {
+      if (!res) {
+        return;
+      }      
+      
+      this.filterApply = {
+        page: this.pageIndexApply + 1,
+        size: this.pageSizeApply,
+        search: ''
+      }
+      this.filterApply = {
+        startDate: res.event.start.toISOString().split("T")[0],
+        endDate: res.event.end.toISOString().split("T")[0],
+        ...this.filterApply,        
+      };
+      
+      this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {  
+        this.isFilterTime = true    
+        this.listBaoCaoGanNhat = data.data;
+        this.totalRecordApply = data.pagination.totalCount      
+        
+        setTimeout(() => {
+          this.loadingSpinner = false
+        },500)
+      });
+      
+    });
+  }
+
+  resetFilter(){
+    this.isFilterTime = false
+    this.isFilterQuy = false
+    this.filterApply = {
+      page: this.pageIndexApply + 1,
+      size: this.pageSizeApply,
+      search: ''
+    }
+    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {  
+        
+      this.listBaoCaoGanNhat = data.data;
+      this.totalRecordApply = data.pagination.totalCount      
+      
       setTimeout(() => {
         this.loadingSpinner = false
       },500)
@@ -263,6 +371,37 @@ export class AppDashboard1Component {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  upDoneBaoCao(event: Event,id: any) {
+    event.stopPropagation();    
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '290px',
+      // enterAnimationDuration,
+      // exitAnimationDuration,
+      data:{
+        title: 'Chuyển thành DONE',
+        message: 'Bạn có chắc muốn thực hiện hành động này ?',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {      
+      if (result) {        
+        this.service.changeStatusBaoCao(id).subscribe(data => {
+          this.loadingSpinner = true
+          if (data) {
+            this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+              this.listBaoCaoGanNhat = data.data;
+              this.totalRecordApply = data.pagination.totalCount
+              setTimeout(() => {
+                this.loadingSpinner = false
+              },1000)
+            })
+          }
+        })
+      } else {
+        console.log('User clicked Cancel');
+      }
+    });
   }
 
   editBaoCao(event: Event,item: any) {
@@ -317,15 +456,20 @@ export class AppDashboard1Component {
     })
   }
   applyFilterApply(filterValue: string) {
+    this.filterApply = {
+      page: this.pageIndexApply + 1,
+      size: this.pageSizeApply,
+      search: ''
+    }
     this.filterApply.search = filterValue  
     this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
       this.listBaoCaoGanNhat = data.data;
       this.totalRecordApply = data.pagination.totalCount
     })
-    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
-      this.listBaoCaoGanNhat = data.data;
-      this.totalRecordApply = data.pagination.totalCount
-    })
+    // this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+    //   this.listBaoCaoGanNhat = data.data;
+    //   this.totalRecordApply = data.pagination.totalCount
+    // })
   }
 
   onInput(event: Event, i:number, label: string): void {
@@ -334,13 +478,13 @@ export class AppDashboard1Component {
     // this.dataSanPham[i][label] = value;
   }
   exportToExcelBaoCaoGanNhat(): void {
-    console.log(this.listBaoCaoGanNhat)
+    
     let formattedData:any = []
     this.listBaoCaoGanNhat.forEach((element: any, index: number)=> {
-      // console.log('element', element)
-      console.log('index', index)
+      
+
       element.chi_tiet.forEach((detail: any, index: number) => {
-        // console.log('detail', detail)
+        
         formattedData.push({
           "Ngày tạo": index == 0 ? element.createdAt : '',
           "Tên công trình": index == 0 ? element.name_cong_trinh : '',
@@ -355,7 +499,7 @@ export class AppDashboard1Component {
         
       })
     })
-    console.log('formattedData', formattedData)
+    
     // 1. Tạo worksheet từ dữ liệu
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
 

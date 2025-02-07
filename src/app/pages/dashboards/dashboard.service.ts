@@ -152,6 +152,17 @@ export class dashboardService {
     }
     return this.http.post<any>(`${this.url}/bao-cao/delete`,body, { headers: headers });
   }
+
+  changeStatusBaoCao(id: string): Observable<any> {
+    console.log(id);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+    });
+    const body = {
+      id: id
+    }
+    return this.http.post<any>(`${this.url}/bao-cao/change-status`,body, { headers: headers });
+  }
  
 
  

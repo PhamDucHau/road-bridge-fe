@@ -1,0 +1,52 @@
+<div mat-dialog-content style="max-width: 500px">
+  <h4 class="mat-headline-6 m-b-16">Chọn khoản thời gian</h4>
+
+  <form name="eventForm" [formGroup]="eventForm" class="event-form">
+    <div class="row" >
+      <div class="col-sm-6" *ngIf="action === 'filterTime'">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startDateDP" name="startDate" formControlName="start" />
+          <mat-datepicker-toggle matSuffix [for]="startDateDP"></mat-datepicker-toggle>
+          <mat-datepicker #startDateDP></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6" *ngIf="action === 'filterTime'">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="endDateDP" name="endDate" formControlName="end" />
+          <mat-datepicker-toggle matSuffix [for]="endDateDP"></mat-datepicker-toggle>
+          <mat-datepicker #endDateDP></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-6" *ngIf="action !== 'filterTime'">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Năm</mat-label>
+          <input matInput name="year" formControlName="year"/>
+          
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-6" *ngIf="action !== 'filterTime'">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Quý</mat-label>
+        <mat-select matInput formControlName="quy" >          
+            <mat-option value="Q1">Quý 1</mat-option>
+            <mat-option value="Q2">Quý 2</mat-option>
+            <mat-option value="Q3">Quý 3</mat-option>
+            <mat-option value="Q4">Quý 4</mat-option>          
+        </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+   
+
+    
+    <button *ngIf="isValid()" mat-flat-button color="primary" (click)="dialogRef.close({ action: 'save', event: eventForm.value })"
+       aria-label="SAVE">
+      Save
+    </button>
+  </form>
+</div>

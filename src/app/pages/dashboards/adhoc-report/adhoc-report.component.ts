@@ -109,9 +109,9 @@ export class AdhocReportComponent {
       const api3$ = this.service.getAllDataNhapKho();
       forkJoin([api1$, api2$, api3$]).subscribe({
         next: ([res1, res2, res3]) => {    
-          console.log('res1', res1)   
-          console.log('res2', res2)   
-          console.log('res3', res3)
+          // console.log('res1', res1)   
+          // console.log('res2', res2)   
+          // console.log('res3', res3)
           this.congTrinhDiaDiem = res1
           this.congTrinhControl = new FormControl(res2.data.name_cong_trinh);
           this.diaDiemControl = new FormControl(res2.data.name_dia_diem);
@@ -257,7 +257,7 @@ export class AdhocReportComponent {
       // tslint:disable-next-line - Disables all
       // this.local_data.imagePath = reader.result;
       this.service.uploadFile(event.target.files[0]).subscribe((res: any) => {
-        console.log(res);
+        // console.log(res);
         this.dataSanPham[index]['Hình ảnh hư hại'] = res.url
       })
       
@@ -274,6 +274,8 @@ export class AdhocReportComponent {
       const value = this.congTrinhControl.value || ''
       this.congTrinhDiaDiem.map((item: any) => {
         if (item.name_cong_trinh.trim() === value.trim()) {
+          this.diaDiemOption = []
+          this.diaDiemControl = new FormControl('');
           item.chi_tiet.map((item2: any) => {
             this.diaDiemOption.push(item2.name_dia_diem)
           })
@@ -316,7 +318,7 @@ export class AdhocReportComponent {
             this.nhapKhoList = item.chi_tiet
           }
         })
-        console.log('this.nhapKhoList', this.nhapKhoList)
+        // console.log('this.nhapKhoList', this.nhapKhoList)
         // this.nhapKhoList = this.nhapKhoList.filter((item: any) => item['Số lượng nhập'] > 0)
         this.nhapKhoList.forEach((item: any) => {
           this.dataSanPham.push({
@@ -334,22 +336,23 @@ export class AdhocReportComponent {
   }
 
   private _filterCongTrinh(value: string, congTrinhOption: any): any {
+    // console.log('cong trinh', congTrinhOption)
     const filterValue = value.toLowerCase();
     return congTrinhOption.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
     );
   }
 
-  private _filterDiaDiem(value: string, congTrinhOption: any): string[] {
-
+  private _filterDiaDiem(value: string, diaDiemOption: any): string[] {
+    // console.log('dia diem', diaDiemOption)
     const filterValue = value.toLowerCase();
-    return congTrinhOption.filter((option: any) =>
+    return diaDiemOption.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
     );
   }
 
   private _filterDuAn(value: string, congTrinhOption: any): string[] {
-    console.log('du an', congTrinhOption)
+    // console.log('du an', congTrinhOption)
     const filterValue = value.toLowerCase();
     return congTrinhOption.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
@@ -357,7 +360,7 @@ export class AdhocReportComponent {
   }
   // option group
 
-  save(): void {    
+  save(status:string): void {    
     if(!this.productsListControl.value){      
       return this.openSnackBar('Field dự án đang trống', 'error');
     }
@@ -390,14 +393,16 @@ export class AdhocReportComponent {
             name_cong_trinh: this.congTrinhCurrent,
             name_dia_diem: this.diaDiemCurrent,
             du_an: this.productsListControl.value,
-            chi_tiet: this.dataSanPham
+            chi_tiet: this.dataSanPham,
+            status: status
           }          
         }else{
           formSave = {
             name_cong_trinh: this.congTrinhCurrent,
             name_dia_diem: this.diaDiemCurrent,
             du_an: this.productsListControl.value,
-            chi_tiet: this.dataSanPham
+            chi_tiet: this.dataSanPham,
+            status: status
           }
         }        
         let count = 0
@@ -407,7 +412,7 @@ export class AdhocReportComponent {
           }
         })        
         if(count > 0){
-          console.log('formSave', formSave)
+          // console.log('formSave', formSave)
           
           if(this.idParam){
             this.service.updateDataBaoCao(formSave).subscribe(res => {            
