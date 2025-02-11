@@ -52,9 +52,9 @@ import { CalendarFormDialogComponent } from '../common/calendar-form-dialog/cale
     MatDialogModule,
     OverlayModule,
     MatPaginatorModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
-  ],  
+  ],
   templateUrl: './dashboard1.component.html',
   styleUrl: './dashboard1.component.scss'
 })
@@ -62,9 +62,9 @@ export class AppDashboard1Component {
   dialogRef2: MatDialogRef<CalendarFormDialogComponent> =
     Object.create(TemplateRef);
 
-  protected listBaoCaoGanNhat :any[] = [];
+  protected listBaoCaoGanNhat: any[] = [];
 
-  protected listBaoCaoDotXuat :any[] = [
+  protected listBaoCaoDotXuat: any[] = [
     {
       time: '10/5/2024',
       title: 'BC đột xuất',
@@ -222,7 +222,7 @@ export class AppDashboard1Component {
   protected pageSizeApply!: number;
   protected filterApply: any = {}
   protected totalRecordApply: number = 0
-  
+
   protected allBaoCao$!: Observable<any>;
   private subscription!: Subscription;
   public loadingSpinner = false;
@@ -230,12 +230,12 @@ export class AppDashboard1Component {
   protected isFilterTime = false;
   protected isFilterQuy = false;
   // public dialog: MatDialog
-  
-  constructor( 
-    private service: dashboardService, 
-    private dialog: MatDialog, 
-    private router: Router, 
-  ) {}
+
+  constructor(
+    private service: dashboardService,
+    private dialog: MatDialog,
+    private router: Router,
+  ) { }
   ngOnInit(): void {
     this.isFilterTime = false
     this.isFilterQuy = false
@@ -249,13 +249,13 @@ export class AppDashboard1Component {
       search: ''
     }
     this.allBaoCao$ = this.service.allBaoCao$
-    
-    this.subscription = this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {      
+
+    this.subscription = this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
       this.listBaoCaoGanNhat = data.data;
-      this.totalRecordApply = data.pagination.totalCount      
+      this.totalRecordApply = data.pagination.totalCount
       setTimeout(() => {
         this.loadingSpinner = false
-      },500)
+      }, 500)
     });
   }
 
@@ -272,8 +272,8 @@ export class AppDashboard1Component {
     this.dialogRef2.afterClosed().subscribe((res) => {
       if (!res) {
         return;
-      }      
-     
+      }
+
       this.filterApply = {
         page: this.pageIndexApply + 1,
         size: this.pageSizeApply,
@@ -281,20 +281,20 @@ export class AppDashboard1Component {
       }
       this.filterApply = {
         year: res.event.year,
-        quarter: res.event.quy,        
+        quarter: res.event.quy,
         ...this.filterApply,
-        
+
       };
-      
-      this.service.getAllDataBaoCao(this.filterApply).subscribe(data => { 
-        this.isFilterQuy = true     
+
+      this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+        this.isFilterQuy = true
         this.listBaoCaoGanNhat = data.data;
-        this.totalRecordApply = data.pagination.totalCount      
+        this.totalRecordApply = data.pagination.totalCount
         setTimeout(() => {
           this.loadingSpinner = false
-        },500)
+        }, 500)
       });
-      
+
     });
   }
   filterKhoanThoiGian(): void {
@@ -311,8 +311,8 @@ export class AppDashboard1Component {
     this.dialogRef2.afterClosed().subscribe((res) => {
       if (!res) {
         return;
-      }      
-      
+      }
+
       this.filterApply = {
         page: this.pageIndexApply + 1,
         size: this.pageSizeApply,
@@ -321,23 +321,23 @@ export class AppDashboard1Component {
       this.filterApply = {
         startDate: res.event.start.toISOString().split("T")[0],
         endDate: res.event.end.toISOString().split("T")[0],
-        ...this.filterApply,        
+        ...this.filterApply,
       };
-      
-      this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {  
-        this.isFilterTime = true    
+
+      this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+        this.isFilterTime = true
         this.listBaoCaoGanNhat = data.data;
-        this.totalRecordApply = data.pagination.totalCount      
-        
+        this.totalRecordApply = data.pagination.totalCount
+
         setTimeout(() => {
           this.loadingSpinner = false
-        },500)
+        }, 500)
       });
-      
+
     });
   }
 
-  resetFilter(){
+  resetFilter() {
     this.isFilterTime = false
     this.isFilterQuy = false
     this.filterApply = {
@@ -345,14 +345,14 @@ export class AppDashboard1Component {
       size: this.pageSizeApply,
       search: ''
     }
-    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {  
-        
+    this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
+
       this.listBaoCaoGanNhat = data.data;
-      this.totalRecordApply = data.pagination.totalCount      
-      
+      this.totalRecordApply = data.pagination.totalCount
+
       setTimeout(() => {
         this.loadingSpinner = false
-      },500)
+      }, 500)
     });
   }
 
@@ -373,19 +373,19 @@ export class AppDashboard1Component {
     }
   }
 
-  upDoneBaoCao(event: Event,id: any) {
-    event.stopPropagation();    
+  upDoneBaoCao(event: Event, id: any) {
+    event.stopPropagation();
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '290px',
       // enterAnimationDuration,
       // exitAnimationDuration,
-      data:{
+      data: {
         title: 'Chuyển thành DONE',
         message: 'Bạn có chắc muốn thực hiện hành động này ?',
       }
     });
-    dialogRef.afterClosed().subscribe(result => {      
-      if (result) {        
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         this.service.changeStatusBaoCao(id).subscribe(data => {
           this.loadingSpinner = true
           if (data) {
@@ -394,7 +394,7 @@ export class AppDashboard1Component {
               this.totalRecordApply = data.pagination.totalCount
               setTimeout(() => {
                 this.loadingSpinner = false
-              },1000)
+              }, 1000)
             })
           }
         })
@@ -404,25 +404,25 @@ export class AppDashboard1Component {
     });
   }
 
-  editBaoCao(event: Event,item: any) {
-    event.stopPropagation();    
-    this.router.navigate([`/dashboards/adhoc-report/${item._id}`]);    
+  editBaoCao(event: Event, item: any) {
+    event.stopPropagation();
+    this.router.navigate([`/dashboards/adhoc-report/${item._id}`]);
   }
 
-  deleteBaoCao(event: Event,id: any) {
-    event.stopPropagation();    
+  deleteBaoCao(event: Event, id: any) {
+    event.stopPropagation();
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '290px',
       // enterAnimationDuration,
       // exitAnimationDuration,
-      data:{
+      data: {
         title: 'Xoá báo cáo',
         message: 'Bạn có chắc muốn xoá báo cáo này ?',
       }
     });
-    
-    dialogRef.afterClosed().subscribe(result => {      
-      if (result) {        
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         this.service.deleteDataBaoCao(id).subscribe(data => {
           this.loadingSpinner = true
           if (data) {
@@ -431,7 +431,7 @@ export class AppDashboard1Component {
               this.totalRecordApply = data.pagination.totalCount
               setTimeout(() => {
                 this.loadingSpinner = false
-              },1000)
+              }, 1000)
             })
           }
         })
@@ -441,7 +441,7 @@ export class AppDashboard1Component {
     });
   }
 
-  handlePageEventApply(e: PageEvent) {  
+  handlePageEventApply(e: PageEvent) {
     // this.loadingSpinner = true;
     this.pageIndexApply = e.pageIndex
     this.pageSizeApply = e.pageSize
@@ -461,7 +461,7 @@ export class AppDashboard1Component {
       size: this.pageSizeApply,
       search: ''
     }
-    this.filterApply.search = filterValue  
+    this.filterApply.search = filterValue
     this.service.getAllDataBaoCao(this.filterApply).subscribe(data => {
       this.listBaoCaoGanNhat = data.data;
       this.totalRecordApply = data.pagination.totalCount
@@ -472,50 +472,42 @@ export class AppDashboard1Component {
     // })
   }
 
-  onInput(event: Event, i:number, label: string): void {
+  onInput(event: Event, i: number, label: string): void {
     const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value || null;    
+    const value = inputElement.value || null;
     // this.dataSanPham[i][label] = value;
   }
   exportToExcelBaoCaoGanNhat(): void {
-    
-    let formattedData:any = []
-    this.listBaoCaoGanNhat.forEach((element: any, index: number)=> {
-      
-
-      element.chi_tiet.forEach((detail: any, index: number) => {
-        
-        formattedData.push({
-          "Ngày tạo": index == 0 ? element.createdAt : '',
-          "Tên công trình": index == 0 ? element.name_cong_trinh : '',
-          "Tên địa điểm": index == 0 ? element.name_dia_diem : '',
-          "Tên dự án": index == 0 ? element.du_an : '',
-          "Tên vật liệu": detail["Vật liệu"],
-          "Số lượng": detail["Số lượng nhập"],
-          "Đơn Giá": detail["Đơn giá"],
-          "Mô tả hư hại": detail["Mô tả hư hại"],
-          "Hình ảnh hư hại": detail["Hình ảnh hư hại"],
-        })
-        
-      })
+    let formattedData: any = []
+    // formattedData = this.listBaoCaoGanNhat.map((element: any) => {
+    //   return element.chi_tiet.reduce((acc: Record<string, number | string>, item: any) => {
+    //     acc[item["Vật liệu"]] = item["Số lượng nhập"];
+    //     return acc;
+    //   }, {'Ngày tạo': new Date(element.createdAt).toLocaleDateString("vi-VN"), "Tên công trình": element.name_cong_trinh, "Tên địa điểm": element.name_dia_diem, 'Dự Án': element.du_an }); // Thêm key "tên công trình"
+    // });    
+    this.service.getAllBaoCao().subscribe(res => {
+      formattedData = res.map((element: any) => {
+        // console.log('element', element);
+        return element.chi_tiet.reduce((acc: Record<string, number | string>, item: any) => {
+          acc[item["Vật liệu"]] = item["Số lượng nhập"];
+          return acc;
+        }, { 'Ngày tạo': new Date(element.createdAt).toLocaleDateString("vi-VN"), "Tên công trình": element.name_cong_trinh, "Tên địa điểm": element.name_dia_diem, 'Dự Án': element.du_an })
+      });
+      console.log('formattedData', formattedData);
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
+      ws['!cols'] = new Array(Object.keys(formattedData[0]).length).fill({ wch: 20 }); // Đặt độ rộng 30 cho tất cả cột
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      // 3. Xuất file Excel dưới dạng Blob
+      const excelBuffer: any = XLSX.write(wb, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
+      const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+      saveAs(data, 'BaoCaoGanNhat.xlsx');
     })
-    
-    // 1. Tạo worksheet từ dữ liệu
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
 
-    // 2. Tạo workbook và thêm worksheet vào
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    // 3. Xuất file Excel dưới dạng Blob
-    const excelBuffer: any = XLSX.write(wb, {
-      bookType: 'xlsx',
-      type: 'array',
-    });
-
-    // 4. Lưu file bằng file-saver
-    const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(data, 'BaoCaoGanNhat.xlsx');
   }
   exportToExcelBaoCaoDotXuat(): void {
     // 1. Tạo worksheet từ dữ liệu
@@ -536,5 +528,5 @@ export class AppDashboard1Component {
     saveAs(data, 'BaoCaoDotXuat.xlsx');
   }
 
-  
+
 }
