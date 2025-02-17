@@ -66,7 +66,7 @@
 
   
 
-    <button mat-flat-button class="text-white f-s-16 bg-success" (click)="exportToExcelBaoCaoGanNhat()">
+    <button mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcel()">
       <mat-icon matSuffix>file_download</mat-icon>
       Export to Excel
     </button>
@@ -181,8 +181,25 @@
 
       </mat-expansion-panel>
 
+      <mat-card class="b-1 shadow-none m-t-20">
+        <mat-card-header class="p-y-20">
+          <mat-card-title>Ghi chú</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="b-t-1">
+          <form style="margin-top: 21px;">   
+            <mat-form-field class="w-100" appearance="outline">
+              <textarea disabled value="{{item['note']}}"  placeholder="Nhập ghi chú của bạn" matInput rows="4" cdkTextareaAutosize cdkAutosizeMinRows="4"
+                cdkAutosizeMaxRows="10">
+          </textarea>
+            </mat-form-field>
+          </form>
+  
+        </mat-card-content>
+      </mat-card>
+
 
     </mat-accordion>
+
   </mat-expansion-panel>
 
 

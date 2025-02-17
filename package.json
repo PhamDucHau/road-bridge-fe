@@ -33,6 +33,7 @@
     "apexcharts": "^3.40.0",
     "aws-sdk": "^2.1692.0",
     "date-fns": "^2.29.3",
+    "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "lodash": "^4.17.21",
     "ng-apexcharts": "^1.7.6",
