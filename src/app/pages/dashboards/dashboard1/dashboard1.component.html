@@ -37,7 +37,7 @@
 
     <div>
       <button mat-flat-button [color]="isFilterTime ? 'accent' : 'primary'" (click)="filterKhoanThoiGian()">
-        khoản thời gian
+        khoảng thời gian
       </button>
     </div>
   
@@ -114,7 +114,7 @@
                 <i-tabler name="edit" class="icon-26"></i-tabler>
               </mat-icon>
 
-              <mat-icon matSuffix (click)="deleteBaoCao($event,item._id)" class="h-red m-r-8">
+              <mat-icon *ngIf="item.status !== 'DONE'" matSuffix (click)="deleteBaoCao($event,item._id)" class="h-red m-r-8">
                 <i-tabler name="trash" class="icon-26"></i-tabler>
               </mat-icon>
 
