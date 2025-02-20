@@ -59,7 +59,7 @@
           <input class="f-w-700 f-s-20"
             style="color: var(--1, #115D85);text-align: center;font-style: normal;line-height: normal;" type="text"
             aria-label="Number" matInput [formControl]="productsListControl" [matAutocomplete]="autoProductList"
-            (focus)="onFocusDiaDiem()" (blur)="onBlurDiaDiem()" />
+            (focus)="onFocusDuAn()" (blur)="onBlurDiaDiem()" />
           <mat-autocomplete #autoProductList="matAutocomplete" (optionSelected)="onOptionSelectedDuAn($event)">
             @for(firstoptions of duAnFilterOption | async; track
             firstoptions) {
@@ -88,12 +88,14 @@
   <mat-accordion *ngIf="isProducts">
     <mat-expansion-panel *ngFor="let product of nhapKhoList ; let i = index" class="cardWithShadow m-t-10">
       <mat-expansion-panel-header style="height: 5rem" *ngIf="product['Số lượng nhập'] > 0 || dataSanPham[i]['Số lượng nhập'] > 0 ">
-        <mat-panel-title class="mat-body-1">
+        <mat-panel-title class="mat-body-1" >
           <mat-icon matListItemIcon
+            class="m-r-8"
             [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon> <span
             class="m-r-8 f-w-700">{{product['Vật liệu']}}</span>
-          ( số lượng dự kiến {{numberTitle(product['Số lượng nhập'], i)}} )
-
+          <span [ngClass]="{'text-red': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black': numberTitle(product['Số lượng nhập'], i) >= 0}">( số lượng dự kiến {{numberTitle(product['Số lượng nhập'], i)}} )</span>
+          
+          <!-- [ngClass]="{'text-red': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black': numberTitle(product['Số lượng nhập'], i) >= 0}" -->
           <!-- {{product['Số lượng nhập']}} - {{dataSanPham[i]['Số lượng nhập']}} -->
         </mat-panel-title>
       </mat-expansion-panel-header>
