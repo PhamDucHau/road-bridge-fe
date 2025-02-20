@@ -212,12 +212,14 @@ export class AdhocReportComponent {
   }
 
   public numberTitle = (numberProduct: number, index: number) => {
+    
     let res = 0
     if (this.idParam) {
       res = numberProduct - (+this.dataSanPham[index]['Số lượng nhập']) + (+this.dataSanPhamEdit[index]['Số lượng nhập'])
     } else {
       res = numberProduct - (+this.dataSanPham[index]['Số lượng nhập'])
     }
+   
     return res
   }
 
@@ -234,11 +236,12 @@ export class AdhocReportComponent {
   onFocusCongTrinh() {
     this.isDropdownOpen = true;
   }
-  onFocusDiaDiem() {
+  onFocusDiaDiem(){}
 
-  }
+
 
   onBlurDiaDiem() {
+    
     this.isDropdownOpen = false;
   }
 
@@ -343,39 +346,53 @@ export class AdhocReportComponent {
     // Thêm logic tùy chỉnh của bạn tại đây
   }
 
+  originalValue: any = null;
+  isConfirmDialogOpen = false;
+  onFocusDuAn() {
+    
+    if (!this.isConfirmDialogOpen) {
+      this.originalValue = this.productsListControl.value;
+      // console.log('this.originalValue: onFocus', this.originalValue)
+    }
+  }
+
   onOptionSelectedDuAn(event: MatAutocompleteSelectedEvent): void {
-    // console.log('event.option.value', event.option.value)
+    const selectedValue = event.option.value;   
+    this.isConfirmDialogOpen = true;   
     let originalValue: string = '';
-
-    // const dialogRef = this.dialog.open(DialogConfirmComponent, {
-    //   width: '290px',
-    //   // enterAnimationDuration,
-    //   // exitAnimationDuration,
-    //   data: {
-    //     title: 'Đổi dự án',
-    //     message: 'Bạn có chắc muốn đổi sang dự án khác ?',
-    //   }
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //    console.log('User clicked OK');
-    //    console.log('this', this)
-    //    this.dataSanPham.forEach((item: any, index: number) => {
-    //      if( item['Số lượng nhập'] > 0){
-    //       this.dataSanPham[index]['Số lượng nhập'] = 0
-    //       this.dataSanPham[index]['Đơn giá'] = 0
-    //       this.dataSanPham[index]['Mô tả hư hại'] = null
-    //       this.dataSanPham[index]['Hình ảnh hư hại'] = null          
-    //      }
-    //    })
-    //   } else {
-    //     console.log('User clicked Cancel', this);
-    //     if(this.infoReport){
-    //       this.productsListControl = new FormControl(this.infoReport.data.du_an);
-    //     }
-    //     }
-
-    // });
+    // [formControl]="productsListControl"
+    let count = 0
+    this.dataSanPham.forEach((item: any) => {
+      if (item['Số lượng nhập'] > 0 || item['Đơn giá'] > 0) {
+        count = count + 1
+      }
+    })
+    if(count > 0){
+      const dialogRef = this.dialog.open(DialogConfirmComponent, {
+        width: '290px',
+        data: {
+          title: 'Đổi dự án',
+          message: 'Bạn có chắc muốn đổi sang dự án khác ?',
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.isConfirmDialogOpen = false;
+        if (result) {
+          this.productsListControl.setValue(selectedValue);        
+         this.dataSanPham.forEach((item: any, index: number) => {
+           if( item['Số lượng nhập'] > 0){
+            this.dataSanPham[index]['Số lượng nhập'] = 0
+            this.dataSanPham[index]['Đơn giá'] = 0
+            this.dataSanPham[index]['Mô tả hư hại'] = null
+            this.dataSanPham[index]['Hình ảnh hư hại'] = null          
+           }
+         })
+        } else {        
+          this.productsListControl.setValue(this.originalValue);         
+          }
+  
+      });
+    }
 
     if (event.option.value) {
       this.isProducts = true
@@ -562,6 +579,15 @@ export class AdhocReportComponent {
       data: { message: data, status: status }, // Truyền dữ liệu
     });
   }
+
+  // getQuantityClass(quantity: number, i: number): string {
+  //   const value = this.numberTitle(quantity, i); // Gọi hàm xử lý số lượng
+  //   console.log('value', value);
+  //   if (value < 0) return 'text-red';
+  //   if (value === 0) return 'text-black';
+  //   return 'text-success';
+  // }
+  
 
 }
 

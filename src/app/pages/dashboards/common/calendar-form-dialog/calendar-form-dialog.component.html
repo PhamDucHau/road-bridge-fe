@@ -1,5 +1,5 @@
 <div mat-dialog-content style="max-width: 500px">
-  <h4 class="mat-headline-6 m-b-16">Chọn khoản thời gian</h4>
+  <h4 class="mat-headline-6 m-b-16">Chọn khoảng thời gian</h4>
 
   <form name="eventForm" [formGroup]="eventForm" class="event-form">
     <div class="row" >
@@ -13,7 +13,7 @@
       </div>
       <div class="col-sm-6" *ngIf="action === 'filterTime'">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Start Date</mat-label>
+          <mat-label>End Date</mat-label>
           <input matInput [matDatepicker]="endDateDP" name="endDate" formControlName="end" />
           <mat-datepicker-toggle matSuffix [for]="endDateDP"></mat-datepicker-toggle>
           <mat-datepicker #endDateDP></mat-datepicker>
