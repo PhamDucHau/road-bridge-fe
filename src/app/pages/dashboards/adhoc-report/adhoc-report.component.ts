@@ -111,15 +111,15 @@ export class AdhocReportComponent {
       const api2$ = this.service.getBaoCaoById(this.idParam);
       const api3$ = this.service.getAllDataNhapKho();
       forkJoin([api1$, api2$, api3$]).subscribe({
-        next: ([res1, res2, res3]) => {     
-          this.infoReport = res2    
+        next: ([res1, res2, res3]) => {
+          this.infoReport = res2
           this.congTrinhDiaDiem = res1
           this.congTrinhControl = new FormControl(res2.data.name_cong_trinh);
-          this.diaDiemControl = new FormControl(res2.data.name_dia_diem);    
-          this.congTrinhControl.disable();   
-          this.diaDiemControl.disable();    
+          this.diaDiemControl = new FormControl(res2.data.name_dia_diem);
+          this.congTrinhControl.disable();
+          this.diaDiemControl.disable();
           this.productsListControl = new FormControl(res2.data.du_an);
-          
+
           this.noteControl = new FormControl(res2.data.note);
           this.congTrinhCurrent = res2.data.name_cong_trinh.trim()
           this.diaDiemCurrent = res2.data.name_dia_diem.trim()
@@ -148,7 +148,7 @@ export class AdhocReportComponent {
                 if (item2.name_dia_diem.trim() === res2.data.name_dia_diem.trim()) {
                   this.productsList = item2.chi_tiet
                   this.indexSanPham = this.productsList.findIndex((item3: any) => item3.trim() === res2.data.du_an.trim())
-                  
+
                   this.duAnFilterOption = this.productsListControl.valueChanges.pipe(
                     startWith(''),
                     map((value) => this._filterDuAn(value || '', this.productsList))
@@ -165,9 +165,9 @@ export class AdhocReportComponent {
           })
           this.isDuAn = true
           this.isProducts = true;
-          console.log('res2.data.chi_tiet', res2.data.chi_tiet.length)
+          
           res2.data.chi_tiet.map((item: any) => {
-            
+
             this.dataSanPham.push({
               'Vật liệu': item['Vật liệu'],
               'Số lượng nhập': item['Số lượng nhập'],
@@ -273,13 +273,13 @@ export class AdhocReportComponent {
 
   onOptionSelectedCongTrinh(event: MatAutocompleteSelectedEvent): void {
     const selectedValue = event.option.value;
-   
+
     this.service.getAllDataNhapKho().subscribe(res => {
       const congTrinh = (this.congTrinhControl.value || '').trim();
       res.map((item: any) => {
-        
+
         if (item.name_cong_trinh.trim() === congTrinh) {
-         
+
           this.nhapKhoList = item.chi_tiet
         }
       })
@@ -295,10 +295,10 @@ export class AdhocReportComponent {
       })
 
       const isIncluded = this.congTrinhOption.some((item: any) => item.trim() === selectedValue.trim());
-     
+
 
       if (isIncluded && this.nhapKhoList.length > 0) {
-    
+
         this.congTrinhCurrent = selectedValue.trim()
         this.diaDiemControl.enable();
         const value = this.congTrinhControl.value || ''
@@ -324,16 +324,16 @@ export class AdhocReportComponent {
             }
           }
         })
-        this.diaDiemOption = [...new Set(this.diaDiemOption)];        
+        this.diaDiemOption = [...new Set(this.diaDiemOption)];
 
         this.diaDiemFilterOption = this.diaDiemControl.valueChanges.pipe(
           startWith(''),
           map((value) => this._filterDiaDiem(value || '', this.diaDiemOption))
         )
-        
+
 
       } else {
-        
+
         this.openSnackBar('Trong kho chưa có vật liệu vui lòng chọn công trình khác hoặc kiểm tra lại Database', 'error');
       }
 
@@ -346,7 +346,7 @@ export class AdhocReportComponent {
   onOptionSelectedDuAn(event: MatAutocompleteSelectedEvent): void {
     // console.log('event.option.value', event.option.value)
     let originalValue: string = '';
-    
+
     // const dialogRef = this.dialog.open(DialogConfirmComponent, {
     //   width: '290px',
     //   // enterAnimationDuration,
@@ -374,9 +374,9 @@ export class AdhocReportComponent {
     //       this.productsListControl = new FormControl(this.infoReport.data.du_an);
     //     }
     //     }
-        
+
     // });
-   
+
     if (event.option.value) {
       this.isProducts = true
 
@@ -389,24 +389,24 @@ export class AdhocReportComponent {
     const selectedValue = event.option.value;
     if (this.diaDiemControl.value) {
       this.diaDiemCurrent = this.diaDiemControl.value.trim()
-      
+
       // this.isProducts = true
       this.isDuAn = true
 
 
       this.congTrinhDiaDiem.map((item: any) => {
-        
+
         if (item.name_cong_trinh.trim() === this.congTrinhCurrent.trim()) {
-          item.chi_tiet.map((item2: any) => {            
+          item.chi_tiet.map((item2: any) => {
             if (item2.name_dia_diem) {
-              if (item2.name_dia_diem.trim() === this.diaDiemCurrent.trim()) {               
-                
-                this.productsList = item2.chi_tiet                
+              if (item2.name_dia_diem.trim() === this.diaDiemCurrent.trim()) {
+
+                this.productsList = item2.chi_tiet
                 this.duAnFilterOption = this.productsListControl.valueChanges.pipe(
                   startWith(''),
                   map((value) => this._filterDuAn(value || '', this.productsList))
                 )
-                
+
               }
             }
           })
@@ -434,8 +434,8 @@ export class AdhocReportComponent {
     );
   }
 
-  private _filterDuAn(value: string, congTrinhOption: any): string[] {   
-    
+  private _filterDuAn(value: string, congTrinhOption: any): string[] {
+
     const filterValue = value.toLowerCase();
     return congTrinhOption.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
@@ -444,10 +444,37 @@ export class AdhocReportComponent {
   // option group
 
   save(status: string): void {
-   
+
     if (!this.productsListControl.value) {
       return this.openSnackBar('Field dự án đang trống', 'warning');
     }
+    let count = 0
+    this.dataSanPham.forEach((item: any) => {
+      if (item['Số lượng nhập'] > 0 || item['Đơn giá'] > 0) {
+        count = count + 1
+      }
+    })
+    if (count === 0) {
+      return this.openSnackBar('Chưa có vật liệu nào được yêu cầu', 'warning');
+    }
+
+    let countFalse = 0
+    this.dataSanPham.forEach((item: any) => {
+      this.nhapKhoList .forEach((item2: any) => {
+        
+        if (item['Vật liệu'] === item2['Vật liệu']) {
+          if (Number(item['Số lượng nhập']) > Number(item2['Số lượng nhập'])) {
+            countFalse++            
+          }
+        }
+      })
+    })
+
+    if (countFalse > 0) {
+     
+      return this.openSnackBar('Có vật liệu yêu cầu đang vụt mức kho, cần giảm số lượng', 'warning');
+    }
+
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '290px',
       // enterAnimationDuration,
@@ -491,15 +518,11 @@ export class AdhocReportComponent {
             note: this.noteControl.value
           }
         }
-        let count = 0
-        this.dataSanPham.forEach((item: any) => {
-          if (item['Số lượng nhập'] > 0 || item['Đơn giá'] > 0) {
-            count = count + 1
-          }
-        })
-        if (count > 0) {
-          // console.log('formSave', formSave)
 
+
+
+
+        if (formSave) {
           if (this.idParam) {
             this.service.updateDataBaoCao(formSave).subscribe(res => {
               if (res) {
