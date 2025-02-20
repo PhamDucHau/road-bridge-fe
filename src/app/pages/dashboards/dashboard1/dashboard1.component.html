@@ -7,9 +7,9 @@
   </a>
   <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
     style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
-    [routerLink]="['/dashboards/adhoc-report']">
-    <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
-    <span>Tạo BC đinh ngạch</span>
+    (click)="exportExcel()">
+    <mat-icon matSuffix class="icon-26 m-r-4">file_download</mat-icon>
+    <span>Tạo BC định ngạch</span>
   </a>
 </div>
 
@@ -37,7 +37,7 @@
 
     <div>
       <button mat-flat-button [color]="isFilterTime ? 'accent' : 'primary'" (click)="filterKhoanThoiGian()">
-        khoảng thời gian
+        Khoảng thời gian
       </button>
     </div>
   
@@ -61,7 +61,7 @@
 
 </div>
 
-<div class="d-block align-items-center justify-content-between m-b-8">
+<!-- <div class="d-block align-items-center justify-content-between m-b-8">
   
 
   
@@ -72,7 +72,7 @@
     </button>
 
   
-</div>
+</div> -->
 
 <mat-accordion>
 

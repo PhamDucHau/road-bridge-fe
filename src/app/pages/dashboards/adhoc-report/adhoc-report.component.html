@@ -87,7 +87,7 @@
 
   <mat-accordion *ngIf="isProducts">
     <mat-expansion-panel *ngFor="let product of nhapKhoList ; let i = index" class="cardWithShadow m-t-10">
-      <mat-expansion-panel-header style="height: 5rem" *ngIf="product['Số lượng nhập'] != 0">
+      <mat-expansion-panel-header style="height: 5rem" *ngIf="product['Số lượng nhập'] > 0 || dataSanPham[i]['Số lượng nhập'] > 0 ">
         <mat-panel-title class="mat-body-1">
           <mat-icon matListItemIcon
             [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon> <span
