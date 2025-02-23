@@ -19,6 +19,7 @@ import { DialogConfirmComponent } from '../common/dialog-confirm/dialog-confirm.
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { ViewImageComponent } from '../common/view-image/view-image.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 
 export interface StateGroup {
@@ -48,7 +49,7 @@ export interface State {
 @Component({
   selector: 'app-adhoc-report',
   standalone: true,
-  imports: [MaterialModule, FormsModule, ReactiveFormsModule, CommonModule, MatProgressSpinnerModule, TablerIconsModule,],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule, CommonModule, MatProgressSpinnerModule, TablerIconsModule, OverlayModule],
   templateUrl: './adhoc-report.component.html',
   styleUrl: './adhoc-report.component.scss',
 
@@ -104,14 +105,16 @@ export class AdhocReportComponent {
 
 
 
-  ngOnInit() {
+  ngOnInit() {  
     this.idParam = this.route.snapshot.paramMap.get('id');
     if (this.idParam) {
+      this.loadingSpinner = true
       const api1$ = this.service.getAllDataForm();
       const api2$ = this.service.getBaoCaoById(this.idParam);
       const api3$ = this.service.getAllDataNhapKho();
       forkJoin([api1$, api2$, api3$]).subscribe({
         next: ([res1, res2, res3]) => {
+          this.loadingSpinner = false
           this.infoReport = res2
           this.congTrinhDiaDiem = res1
           this.congTrinhControl = new FormControl(res2.data.name_cong_trinh);
@@ -359,7 +362,7 @@ export class AdhocReportComponent {
   onOptionSelectedDuAn(event: MatAutocompleteSelectedEvent): void {
     const selectedValue = event.option.value;   
     this.isConfirmDialogOpen = true;   
-    let originalValue: string = '';
+    
     // [formControl]="productsListControl"
     let count = 0
     this.dataSanPham.forEach((item: any) => {
