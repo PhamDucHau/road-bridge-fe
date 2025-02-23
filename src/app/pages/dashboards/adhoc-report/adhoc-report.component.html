@@ -1,4 +1,4 @@
-<div class="m-24 d-flex justify-content-center" *ngIf="loadingSpinner">
+<div class="m-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner">
   <mat-spinner></mat-spinner>
 </div>
 <mat-card class="b-1 shadow-none">
@@ -165,7 +165,7 @@
 
 
   <div class="d-flex gap-16 justify-content-end">
-    <div class="d-flex align-items-center justify-content-end" (click)="save('DRAFT')">
+    <div *ngIf="infoReport?.data?.status !== 'DONE'" class="d-flex align-items-center justify-content-end" (click)="save('DRAFT')">
       <a style="border-radius: 4px; 
       background: linear-gradient(81deg, #115D85 -0.64%, #609DC2 12.04%, #71ABCF 49.15%, #8AC2DA 84%, #A1D7E5 100%);"
         mat-button mat-flat-button class="text-white f-s-16 ">{{idParam ? 'Lưu thay đổi' : 'Lưu'}}</a>
