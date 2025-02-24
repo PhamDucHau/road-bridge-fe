@@ -55,8 +55,9 @@ export class AppSideLoginComponent {
           localStorage.clear();          
           setTimeout(() => {
             const role:any = [];
+            console.log('response', response);
             // response.role.map((item:any) => role.push(item.name_role));            
-            localStorage.setItem('tokens', response.accessToken);
+            localStorage.setItem('tokens', response.access_token);
             // localStorage.setItem('role', JSON.stringify(role));
             // localStorage.setItem('user_info', JSON.stringify(response.user_info));
             this.openSnackBar('Login successful', 'success');
