@@ -84,6 +84,7 @@ export class CalendarFormDialogComponent {
   isValid() {
     
     if (this.eventForm.value.start && this.eventForm.value.end && this.action === 'filterTime') {
+      console.log('this.eventForm', this.eventForm.value);
       
       return true
     } 

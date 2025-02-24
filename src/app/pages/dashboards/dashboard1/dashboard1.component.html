@@ -66,10 +66,14 @@
 
   
 
-    <button mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcel()">
+    <!-- <button mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcelFilter()">
       <mat-icon matSuffix>file_download</mat-icon>
       Export to Excel
-    </button>
+    </button> -->
+    <a mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcelFilter()" href="javascript:void(0);">
+      <mat-icon matSuffix>file_download</mat-icon>
+      Export to Excel
+    </a>
 
   
 </div>

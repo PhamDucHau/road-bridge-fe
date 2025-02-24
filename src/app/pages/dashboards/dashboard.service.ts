@@ -97,8 +97,7 @@ export class dashboardService {
   }
 
 
-  updateDataBaoCao(data: any): Observable<any> {
-    console.log('data', data);
+  updateDataBaoCao(data: any): Observable<any> {    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
@@ -163,8 +162,31 @@ export class dashboardService {
     )
   }
 
+  getAllBaoCaoForFilter(filterApply:any){
+    const params = filterApply ; 
+    // const params = filterApply ; 
+    // console.log(params); 
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+    });
+    const response = this.http.get<any>(`${this.url}/bao-cao/all-filter`,{headers: headers, params: params});
+    return response.pipe(
+      map((res)=>{
+        return res.data
+      }),
+      catchError((error) => {
+        console.log(error.statusText);
+        if (error.statusText === 'Unauthorized') {
+          localStorage.clear();
+          this.router.navigate(['/authentication/login']);
+        }
+        return throwError(() => error);
+      })
+    )
+  }
+
   deleteDataBaoCao(id: string): Observable<any> {
-    console.log(id);
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
@@ -175,7 +197,7 @@ export class dashboardService {
   }
 
   changeStatusBaoCao(id: string): Observable<any> {
-    console.log(id);
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
