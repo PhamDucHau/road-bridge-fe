@@ -164,6 +164,7 @@ export class AdhocReportComponent {
 
             if (item.name_cong_trinh.trim() === res2.data.name_cong_trinh.trim()) {
               this.nhapKhoList = item.chi_tiet
+              console.log('this.nhapKhoList', this.nhapKhoList)
             }
           })
           this.isDuAn = true
@@ -186,6 +187,7 @@ export class AdhocReportComponent {
               'Hình ảnh hư hại': item['Hình ảnh hư hại']
             })
           })
+          console.log('this', this)
         },
         error: (error) => {
         }
@@ -194,6 +196,7 @@ export class AdhocReportComponent {
     } else {
       this.service.getAllDataForm().subscribe(res => {
         this.congTrinhDiaDiem = res
+        console.log('this', this)
         res.map((item: any) => this.congTrinhOption.push(item.name_cong_trinh))
         this.congTrinhFilterOption = this.congTrinhControl.valueChanges.pipe(
           startWith(''),
@@ -201,6 +204,8 @@ export class AdhocReportComponent {
         )
       })
     }
+
+   
   }
 
   viewImage(image: any) {
@@ -299,6 +304,7 @@ export class AdhocReportComponent {
           'Hình ảnh hư hại': null
         })
       })
+      console.log('this.nhapKhoList2', this.nhapKhoList)
 
       const isIncluded = this.congTrinhOption.some((item: any) => item.trim() === selectedValue.trim());
 
