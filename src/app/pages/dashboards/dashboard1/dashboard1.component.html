@@ -166,19 +166,21 @@
           <!-- <div class="custom-textarea-container">
             <textarea disabled id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
           </div> -->
-          <div class="d-flex align-items-center justify-content-start gap-16" *ngIf="product['Hình ảnh hư hại']">
-            <div class="image-container">
-              <img [src]="product['Hình ảnh hư hại'] || ''" alt="Hình ảnh đẹp">
-            </div>
-            <div>
-              <mat-icon matSuffix class="h-blue cursor-pointer" (click)="viewImage(product['Hình ảnh hư hại'] || '')">
-                <i-tabler name="eye" class="icon-26"></i-tabler>
-              </mat-icon>
-
-              <mat-icon matSuffix class="h-blue cursor-pointer"
-                (click)="chaneLinkViewImage(product['Hình ảnh hư hại'] || '')">
-                <i-tabler name="eye-share" class="icon-26"></i-tabler>
-              </mat-icon>
+          <div class="d-flex flex-wrap gap-12">
+            <div class="d-flex align-items-center justify-content-start gap-16" *ngFor="let image of product['Hình ảnh hư hại']">
+              <div class="image-container" >
+                <img [src]="image || ''" alt="Hình ảnh đẹp">
+              </div>
+              <div>
+                <mat-icon matSuffix class="h-blue cursor-pointer" (click)="viewImage(image || '')">
+                  <i-tabler name="eye" class="icon-26"></i-tabler>
+                </mat-icon>
+  
+                <mat-icon matSuffix class="h-blue cursor-pointer"
+                  (click)="chaneLinkViewImage(image || '')">
+                  <i-tabler name="eye-share" class="icon-26"></i-tabler>
+                </mat-icon>
+              </div>
             </div>
           </div>
         </form>
