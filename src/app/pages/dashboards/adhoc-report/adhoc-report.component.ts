@@ -164,7 +164,7 @@ export class AdhocReportComponent {
 
             if (item.name_cong_trinh.trim() === res2.data.name_cong_trinh.trim()) {
               this.nhapKhoList = item.chi_tiet
-              console.log('this.nhapKhoList', this.nhapKhoList)
+              
             }
           })
           this.isDuAn = true
@@ -187,7 +187,7 @@ export class AdhocReportComponent {
               'Hình ảnh hư hại': item['Hình ảnh hư hại']
             })
           })
-          console.log('this', this)
+          
         },
         error: (error) => {
         }
@@ -196,7 +196,7 @@ export class AdhocReportComponent {
     } else {
       this.service.getAllDataForm().subscribe(res => {
         this.congTrinhDiaDiem = res
-        console.log('this', this)
+       
         res.map((item: any) => this.congTrinhOption.push(item.name_cong_trinh))
         this.congTrinhFilterOption = this.congTrinhControl.valueChanges.pipe(
           startWith(''),
@@ -207,6 +207,7 @@ export class AdhocReportComponent {
 
    
   }
+ 
 
   viewImage(image: any) {
     const dialogRef = this.dialog.open(ViewImageComponent, {
@@ -269,13 +270,15 @@ export class AdhocReportComponent {
 
       return;
     }
+    
 
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
 
     reader.onload = (_event) => {
       this.service.uploadFile(event.target.files[0]).subscribe((res: any) => {
-        this.dataSanPham[index]['Hình ảnh hư hại'] = res.url
+       
+        this.dataSanPham[index]['Hình ảnh hư hại'].push(res.url)
       })
 
     };
@@ -301,10 +304,10 @@ export class AdhocReportComponent {
           'Số lượng nhập': 0,
           'Đơn giá': 0,
           'Mô tả hư hại': null,
-          'Hình ảnh hư hại': null
+          'Hình ảnh hư hại': []
         })
       })
-      console.log('this.nhapKhoList2', this.nhapKhoList)
+      
 
       const isIncluded = this.congTrinhOption.some((item: any) => item.trim() === selectedValue.trim());
 
@@ -445,7 +448,7 @@ export class AdhocReportComponent {
   }
 
   private _filterCongTrinh(value: string, congTrinhOption: any): any {
-    // console.log('cong trinh', congTrinhOption)
+   
     const filterValue = value.toLowerCase();
     return congTrinhOption.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
@@ -453,7 +456,7 @@ export class AdhocReportComponent {
   }
 
   private _filterDiaDiem(value: string, diaDiemOption: any): string[] {
-    // console.log('dia diem', diaDiemOption)
+    
     const filterValue = value.toLowerCase();
     return diaDiemOption.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
@@ -469,33 +472,63 @@ export class AdhocReportComponent {
   }
   // option group
 
+  deleteImage(index: number, i:any) {
+    this.dataSanPham[i]['Hình ảnh hư hại'].splice(index, 1)
+  }
+
   save(status: string): void {
 
     if (!this.productsListControl.value) {
       return this.openSnackBar('Field dự án đang trống', 'warning');
     }
     let count = 0
+    // let countGia = 0
+    let missingFields = 0
+    let countNotpositive = 0
     this.dataSanPham.forEach((item: any) => {
       if (item['Số lượng nhập'] > 0 || item['Đơn giá'] > 0) {
         count = count + 1
+      }
+      // if(item['Đơn giá'] > 0 || item['Số lượng nhập'] < 0 && item['Đơn giá'] < 0 || item['Số lượng nhập'] > 0){
+      //   missingFields = missingFields + 1
+      // }
+      if(item['Số lượng nhập'] > 0){
+        if(item['Đơn giá'] < 0 || item['Đơn giá'] == 0 || item['Đơn giá'] == null){
+          missingFields = missingFields + 1
+        }
+      }
+      if(item['Đơn giá'] > 0){
+        if(item['Số lượng nhập'] < 0 || item['Số lượng nhập'] == 0 || item['Số lượng nhập'] == null){
+          missingFields = missingFields + 1
+        }
+      }
+      if (item['Số lượng nhập'] < 0 || item['Đơn giá'] < 0 ) {
+        countNotpositive = countNotpositive + 1
       }
     })
     if (count === 0) {
       return this.openSnackBar('Chưa có vật liệu nào được yêu cầu', 'warning');
     }
+    if(missingFields > 0){
+      return this.openSnackBar('Có vật liệu đang chưa đầy đủ, có thể thiếu số lượng hoặc đơn giá', 'warning');
+    }
+    // if (countGia === 0) {
+    //   return this.openSnackBar('Chưa có đơn giá nào được yêu cầu', 'warning');
+    // }
+    if (countNotpositive > 0) {
+      return this.openSnackBar('Mọi số liệu nhập phải là số dương, vui lòng check lại', 'warning');
+    }
 
     let countFalse = 0
-    this.dataSanPham.forEach((item: any) => {
-      this.nhapKhoList .forEach((item2: any) => {
+    
+    this.nhapKhoList.forEach((item: any , index: number) => {
+      const numberTitle = this.numberTitle(item['Số lượng nhập'], index)
+      if (Number(numberTitle) < 0) {
         
-        if (item['Vật liệu'] === item2['Vật liệu']) {
-          if (Number(item['Số lượng nhập']) > Number(item2['Số lượng nhập'])) {
-            countFalse++            
-          }
-        }
-      })
-    })
-
+        countFalse++
+      }      
+    }) 
+    
     if (countFalse > 0) {
      
       return this.openSnackBar('Có vật liệu yêu cầu đang vụt mức kho, cần giảm số lượng', 'warning');
@@ -588,16 +621,6 @@ export class AdhocReportComponent {
       data: { message: data, status: status }, // Truyền dữ liệu
     });
   }
-
-  // getQuantityClass(quantity: number, i: number): string {
-  //   const value = this.numberTitle(quantity, i); // Gọi hàm xử lý số lượng
-  //   console.log('value', value);
-  //   if (value < 0) return 'text-red';
-  //   if (value === 0) return 'text-black';
-  //   return 'text-success';
-  // }
-  
-
 }
 
 @Component({

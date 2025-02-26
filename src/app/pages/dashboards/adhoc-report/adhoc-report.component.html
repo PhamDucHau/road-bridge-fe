@@ -119,24 +119,31 @@
         </mat-form-field>
 
         <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Hình ảnh hư hại</mat-label>
-        <button mat-flat-button color="primary" class="input-file-button m-b-8">
-          <input type="file" (change)="selectFile($event,i)" #fileInput />
-        </button>    
-
-        <div class="d-flex align-items-center justify-content-start gap-16" *ngIf="dataSanPham[i]['Hình ảnh hư hại']">
-          <div class="image-container">
-            <img [src]="dataSanPham[i]['Hình ảnh hư hại'] || ''" alt="Hình ảnh đẹp">
-          </div>
-          <div>
-            <mat-icon matSuffix class="h-blue cursor-pointer"
-              (click)="viewImage(dataSanPham[i]['Hình ảnh hư hại'] || '')">
-              <i-tabler name="eye" class="icon-26"></i-tabler>
-            </mat-icon>
-
-            <mat-icon matSuffix class="h-blue cursor-pointer"
-              (click)="chaneLinkViewImage(dataSanPham[i]['Hình ảnh hư hại'] || '')">
-              <i-tabler name="eye-share" class="icon-26"></i-tabler>
-            </mat-icon>
+        
+        <button mat-flat-button color="primary" class="input-file-button m-b-8" (click)="fileInput.click()">
+          Thêm ảnh
+        </button>
+        <input type="file" #fileInput (change)="selectFile($event,i)" style="display: none;" />    
+        
+        <div *ngIf="dataSanPham[i]['Hình ảnh hư hại']" class="d-flex flex-wrap gap-12">
+          <div class="d-flex align-items-center justify-content-start gap-16" *ngFor="let image of dataSanPham[i]['Hình ảnh hư hại'] ; let index = index" >
+            <div class="image-container">
+              <img [src]="image || ''" alt="Hình ảnh đẹp">
+            </div>
+            <div>
+              <mat-icon matSuffix class="h-blue cursor-pointer"
+                (click)="viewImage(image || '')">
+                <i-tabler name="eye" class="icon-26"></i-tabler>
+              </mat-icon>
+  
+              <mat-icon matSuffix class="h-blue cursor-pointer"
+                (click)="chaneLinkViewImage(image || '')">
+                <i-tabler name="eye-share" class="icon-26"></i-tabler>
+              </mat-icon>
+              <mat-icon matSuffix class="h-red m-r-8 cursor-pointer">
+                <i-tabler name="trash" class="icon-26" (click)="deleteImage(index,i)"></i-tabler>
+              </mat-icon>
+            </div>
           </div>
         </div>
       </form>

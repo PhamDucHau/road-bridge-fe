@@ -121,7 +121,7 @@ export class dashboardService {
 
   getAllDataBaoCao(filterApply:any){ 
     const params = filterApply ; 
-    console.log(params); 
+    // console.log(params); 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
