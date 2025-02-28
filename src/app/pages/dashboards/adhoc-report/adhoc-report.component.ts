@@ -260,29 +260,58 @@ export class AdhocReportComponent {
     return keysWithoutId;
   }
 
-  selectFile(event: any, index: number): void {
-    if (!event.target.files[0] || event.target.files[0].length === 0) {
-      // this.msg = 'You must select an image';
-      return;
-    }
-    const mimeType = event.target.files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
+  // selectFile(event: any, index: number): void {
+  //   if (!event.target.files[0] || event.target.files[0].length === 0) {      
+  //     return;
+  //   }
+  //   const mimeType = event.target.files[0].type;
+  //   if (mimeType.match(/image\/*/) == null) {
 
-      return;
-    }
+  //     return;
+  //   }
     
 
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(event.target.files[0]);
 
-    reader.onload = (_event) => {
-      this.service.uploadFile(event.target.files[0]).subscribe((res: any) => {
+  //   reader.onload = (_event) => {
+  //     this.service.uploadFile(event.target.files[0]).subscribe((res: any) => {
        
-        this.dataSanPham[index]['Hình ảnh hư hại'].push(res.url)
-      })
+  //       this.dataSanPham[index]['Hình ảnh hư hại'].push(res.url)
+  //     })
 
-    };
+  //   };
+  // }
+
+  selectFile(event: any, index: number): void {
+    
+    if(this.dataSanPham[index]['Hình ảnh hư hại'] === null){
+      this.dataSanPham[index]['Hình ảnh hư hại'] = []
+    }
+    const files = event.target.files;
+    if (!files || files.length === 0) {
+      return;
+    }
+  
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+  
+      // Kiểm tra MIME type (chỉ nhận ảnh)
+      if (!file.type.match(/image\/*/)) {
+        continue;
+      }
+  
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+  
+      reader.onload = () => {
+        this.service.uploadFile(file).subscribe((res: any) => {
+          this.dataSanPham[index]['Hình ảnh hư hại'].push(res.url);
+        });
+      };
+    }
   }
+  
 
 
   onOptionSelectedCongTrinh(event: MatAutocompleteSelectedEvent): void {

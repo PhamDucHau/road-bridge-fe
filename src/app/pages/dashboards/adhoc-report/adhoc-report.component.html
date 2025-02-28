@@ -123,7 +123,7 @@
         <button mat-flat-button color="primary" class="input-file-button m-b-8" (click)="fileInput.click()">
           Thêm ảnh
         </button>
-        <input type="file" #fileInput (change)="selectFile($event,i)" style="display: none;" />    
+        <input type="file" #fileInput (change)="selectFile($event,i)" style="display: none;" multiple />    
         
         <div *ngIf="dataSanPham[i]['Hình ảnh hư hại']" class="d-flex flex-wrap gap-12">
           <div class="d-flex align-items-center justify-content-start gap-16" *ngFor="let image of dataSanPham[i]['Hình ảnh hư hại'] ; let index = index" >
