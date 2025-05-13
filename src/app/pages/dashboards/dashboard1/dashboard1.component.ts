@@ -919,7 +919,7 @@ export class AppDashboard1Component {
     }
 
     if(valueType === 'HT') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO HIANHF TRÌNH';
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO HÀNH TRÌNH';
     }    
     sheet.getCell('A2').value = 'CÔNG TRÌNH: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA NĂM 2024';
     sheet.getCell('A3').value = 'GÓI THẦU: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA KHU VỰC 1';
