@@ -123,4 +123,33 @@
     }
   }
 
+  .hover-card {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    position: absolute;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hover-container:hover .hover-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+
+  .hover-item{
+    cursor: pointer;
+  }
+  .hover-item:hover{
+    background-color: #115D85;
+    
+  }
+  .hover-item:hover span{
+    color: white !important;
+  }
+
+ 
 

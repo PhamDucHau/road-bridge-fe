@@ -76,6 +76,7 @@ export class AdhocReportComponent {
   diaDiemControl = new FormControl({ value: '', disabled: true });
   productsListControl = new FormControl('');
   noteControl = new FormControl('');
+  tripControl = new FormControl('');
   // filter option
   filterControl = new FormControl('');
   public congTrinhDiaDiem: any = [];
@@ -124,6 +125,7 @@ export class AdhocReportComponent {
           this.productsListControl = new FormControl(res2.data.du_an);
 
           this.noteControl = new FormControl(res2.data.note);
+          this.tripControl = new FormControl(res2.data.trip);
           this.congTrinhCurrent = res2.data.name_cong_trinh.trim()
           this.diaDiemCurrent = res2.data.name_dia_diem.trim()
           res1.map((item: any) => this.congTrinhOption.push(item.name_cong_trinh))
@@ -587,6 +589,12 @@ export class AdhocReportComponent {
       return this.openSnackBar('Có vật liệu yêu cầu đang vụt mức kho, cần giảm số lượng', 'warning');
     }
 
+    const valueTrip = Number(this.tripControl.value);
+
+    if (isNaN(valueTrip)) {
+      return this.openSnackBar('Tổng số kilometer phải là số', 'warning');
+    }
+
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '290px',
       // enterAnimationDuration,
@@ -618,7 +626,8 @@ export class AdhocReportComponent {
             du_an: this.productsListControl.value,
             chi_tiet: this.dataSanPham,
             status: status,
-            note: this.noteControl.value
+            note: this.noteControl.value,
+            trip: this.tripControl.value
           }
         } else {
           formSave = {
@@ -627,7 +636,8 @@ export class AdhocReportComponent {
             du_an: this.productsListControl.value,
             chi_tiet: this.dataSanPham,
             status: status,
-            note: this.noteControl.value
+            note: this.noteControl.value,
+            trip: this.tripControl.value
           }
         }
 

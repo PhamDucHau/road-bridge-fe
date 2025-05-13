@@ -5,12 +5,25 @@
     <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
     <span>Tạo BC đột xuất</span>
   </a>
-  <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
-    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
-    (click)="exportExcel()">
+  <a class="hover-container col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%); position: relative;"
+    >
     <mat-icon matSuffix class="icon-26 m-r-4">file_download</mat-icon>
     <span>Tạo BC định ngạch</span>
+    <!-- <div class="w-100 p-y-16 p-x-16" style="background-color: #115D85; position: absolute; top: 20px; left: 0;"> hau1</div> -->
+    <div style="position: absolute; top: 0px; left: 0; z-index: 1000 ; width: 100%;">
+      <div style="height: 68px;"></div>
+      <mat-card class="hover-card b-1 w-100" >      
+        <mat-card-content class="b-t-1 p-0">        
+          <mat-list role="list" class="text-left">
+            <mat-list-item (click)="exportExcel(item.value)" *ngFor="let item of listExportBcDinhNgach" role="listitem" class="hover-item"><span>{{item.name}}</span></mat-list-item>          
+          </mat-list>          
+        </mat-card-content>
+      </mat-card>
+    </div>
   </a>
+  
+  
 </div>
 
 
@@ -186,6 +199,22 @@
         </form>
 
       </mat-expansion-panel>
+
+      <mat-card class="b-1 shadow-none m-t-20">
+        <mat-card-header class="p-y-20">
+          <mat-card-title>Tổng kilometer</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="b-t-1">
+          <form style="margin-top: 21px;">
+  
+            <mat-form-field class="w-100" appearance="outline">
+              <input disabled value="{{item['trip']}}"  placeholder="Nhập tổng kilometer của bạn" matInput />
+          
+            </mat-form-field>
+          </form>
+  
+        </mat-card-content>
+      </mat-card>
 
       <mat-card class="b-1 shadow-none m-t-20">
         <mat-card-header class="p-y-20">
