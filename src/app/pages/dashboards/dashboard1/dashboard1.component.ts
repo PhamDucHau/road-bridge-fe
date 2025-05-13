@@ -897,7 +897,30 @@ export class AppDashboard1Component {
       };
     });
 
-    sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO HIỆU ĐƯỜNG THỦY NỘI ĐỊA';
+    if(valueType === 'BDPQ') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO BẢO DƯỠNG PHÁT QUANG';
+
+    }
+
+    if(valueType === 'VSDN') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO VỆ SINH ĐÈN NĂNG';
+    }
+
+    if(valueType === 'DCP') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO ĐIỀU CHỈNH PHAO';
+    }
+
+    if(valueType === 'CBR') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO CHỐNG BÔI RỬA';
+    }
+
+    if(valueType === 'SMPQ') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO SƠN MÀU PHÁT QUANG';
+    }
+
+    if(valueType === 'HT') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO HIANHF TRÌNH';
+    }    
     sheet.getCell('A2').value = 'CÔNG TRÌNH: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA NĂM 2024';
     sheet.getCell('A3').value = 'GÓI THẦU: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA KHU VỰC 1';
     sheet.getCell('A4').value = 'ĐỊA ĐIỂM: KHU VỰC QUẬN, HUYỆN, THÀNH PHỐ HỒ CHÍ MINH';
