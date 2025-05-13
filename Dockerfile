@@ -1,15 +1,20 @@
 # Giai đoạn build
-FROM node:20 AS build
+FROM node:18 AS build
 
 # Thiết lập thư mục làm việc
 WORKDIR /app
 
 # Sao chép package.json và yarn.lock
-COPY package*.json package-lock.json ./
+COPY package*.json ./
 
 # Cài đặt dependencies
 RUN npm install -g npm@10.2.3
 RUN yarn install
+
+# RUN yarn add entities@2.2.0 --exact
+
+# Rebuild esbuild nếu lỗi
+# RUN npm rebuild esbuild
 
 # Sao chép toàn bộ mã nguồn vào thư mục làm việc
 COPY . .

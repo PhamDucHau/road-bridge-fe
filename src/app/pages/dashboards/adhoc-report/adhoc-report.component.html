@@ -64,7 +64,7 @@
             @for(firstoptions of duAnFilterOption | async; track
             firstoptions) {
             <mat-option [value]="firstoptions">
-              <span class="f-w-500 f-s-16">{{ firstoptions }}</span>
+              <span class="f-w-500 f-d-16-m-14">{{ firstoptions }}</span>
             </mat-option>
             }
           </mat-autocomplete>
@@ -92,8 +92,8 @@
           <mat-icon matListItemIcon
             class="m-r-8"
             [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon> <span
-            class="m-r-8 f-w-700">{{product['Vật liệu']}}</span>
-          <span [ngClass]="{'text-red': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black': numberTitle(product['Số lượng nhập'], i) >= 0}">( số lượng dự kiến {{numberTitle(product['Số lượng nhập'], i)}} )</span>
+            class="m-r-8 f-w-700 f-d-14-m-12">{{product['Vật liệu']}}</span>
+          <span [ngClass]="{'text-red f-d-14-m-10': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black f-d-14-m-10': numberTitle(product['Số lượng nhập'], i) >= 0}">( số lượng dự kiến {{numberTitle(product['Số lượng nhập'], i)}} )</span>
           
           <!-- [ngClass]="{'text-red': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black': numberTitle(product['Số lượng nhập'], i) >= 0}" -->
           <!-- {{product['Số lượng nhập']}} - {{dataSanPham[i]['Số lượng nhập']}} -->
@@ -149,6 +149,22 @@
       </form>
 
     </mat-expansion-panel>
+
+    <mat-card class="b-1 shadow-none m-t-20">
+      <mat-card-header class="p-y-20">
+        <mat-card-title>Tổng kilometer</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="b-t-1">
+        <form style="margin-top: 21px;">
+
+          <mat-form-field class="w-100" appearance="outline">
+            <input [formControl]="tripControl"  placeholder="Nhập tổng kilometer của bạn" matInput />
+        
+          </mat-form-field>
+        </form>
+
+      </mat-card-content>
+    </mat-card>
 
     <mat-card class="b-1 shadow-none m-t-20">
       <mat-card-header class="p-y-20">

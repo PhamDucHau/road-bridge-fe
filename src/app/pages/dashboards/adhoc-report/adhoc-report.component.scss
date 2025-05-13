@@ -74,3 +74,24 @@
   background-color: rgba(0, 0, 0, 0.5); /* Làm mờ màn hình */
   z-index: 1000; /* Đảm bảo overlay ở trên cùng */
 }
+
+.f-d-16-m-14 {
+  font-size: 16px !important;   
+}
+.f-d-14-m-12 {
+  font-size: 14px !important;   
+}
+.f-d-14-m-10 {
+  font-size: 14px !important;   
+}
+@media screen and (max-width: 600px) {
+  .f-d-16-m-14 {
+    font-size: 14px !important;   
+  }
+  .f-d-14-m-12 {
+    font-size: 12px !important;   
+  }
+  .f-d-14-m-10 {
+    font-size: 10px !important;   
+  }
+}

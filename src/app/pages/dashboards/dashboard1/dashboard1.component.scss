@@ -123,4 +123,93 @@
     }
   }
 
+  .hover-card {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    position: absolute;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hover-container:hover .hover-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .taskboard-header{
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .title-and-time-list-report{
+    font-size: 16px;    
+    line-height: normal
+  }
+  .display-dia-diem-du-an{
+    display: block
+  }
+  .display-dia-diem-du-an-mobie{
+    display: none
+  }
+
+  .f-d-12-m-10 {
+    font-size: 12px !important;   
+  }
+  .f-d-14-m-10 {
+    font-size: 14px !important;   
+  }
+  .f-d-14-m-12 {
+    font-size: 14px !important;   
+  }
+  @media screen and (max-width: 600px) {
+    .f-d-14-m-12 {
+      font-size: 12px !important;   
+    }
+    .f-d-14-m-10 {
+      font-size: 10px !important;   
+    }
+    .ten-dia-diem {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;  /* hoặc inline-block nếu muốn giữ inline context */
+      max-width: 7rem; /* hoặc set một chiều cụ thể nếu muốn kiểm soát */
+    }
+    .f-d-12-m-10 {
+      font-size: 10px !important;   
+    }
+    .display-dia-diem-du-an{
+      display: none
+    }
+    .display-dia-diem-du-an-mobie{
+      display: block
+    }
+    .taskboard-header{
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .title-and-time-list-report{
+      font-size: 14px;    
+      line-height: normal
+    }
+    
+  }
+  
+  
+
+  .hover-item{
+    cursor: pointer;
+  }
+  .hover-item:hover{
+    background-color: #115D85;
+    
+  }
+  .hover-item:hover span{
+    color: white !important;
+  }
+
+ 
 

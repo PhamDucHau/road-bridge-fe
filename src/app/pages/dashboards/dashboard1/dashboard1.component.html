@@ -1,16 +1,29 @@
 <div class="row gap-8">
-  <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+  <a class="col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
     style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
     [routerLink]="['/dashboards/adhoc-report']">
     <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
     <span>Tạo BC đột xuất</span>
   </a>
-  <a class="col f-s-16 taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
-    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
-    (click)="exportExcel()">
+  <a class="hover-container col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%); position: relative;"
+    >
     <mat-icon matSuffix class="icon-26 m-r-4">file_download</mat-icon>
     <span>Tạo BC định ngạch</span>
+    <!-- <div class="w-100 p-y-16 p-x-16" style="background-color: #115D85; position: absolute; top: 20px; left: 0;"> hau1</div> -->
+    <div style="position: absolute; top: 0px; left: 0; z-index: 1000 ; width: 100%;">
+      <div style="height: 68px;"></div>
+      <mat-card class="hover-card b-1 w-100" >      
+        <mat-card-content class="b-t-1 p-0">        
+          <mat-list role="list" class="text-left">
+            <mat-list-item (click)="exportExcel(item.value)" *ngFor="let item of listExportBcDinhNgach" role="listitem" class="hover-item"><span class="f-d-14-m-12">{{item.name}}</span></mat-list-item>          
+          </mat-list>          
+        </mat-card-content>
+      </mat-card>
+    </div>
   </a>
+  
+  
 </div>
 
 
@@ -91,15 +104,20 @@
           </mat-icon>
         </div>            -->
         <div>
-          <div class="f-w-400" style="font-size: 16px;font-style: italic;font-weight: 300;line-height: normal;">
+          <div class="f-w-400 title-and-time-list-report" >
             {{item.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} - {{item.name_cong_trinh}}
           </div>
           <div class="d-flex gap-12 m-t-12">
-            <div class="f-w-700 f-s-line2" style="font-weight: 500;line-height: normal;">
-              {{item.name_dia_diem}} - {{item.du_an}} </div>
-            <div class="d-flex gap-12 align-items-center justify-content-end">
+            <div class="f-w-700 f-s-line2 display-dia-diem-du-an" style="font-weight: 500;line-height: normal;">
+              {{item.name_dia_diem}} - {{item.du_an}} 
+            </div>
+            <div class="f-w-700 f-s-10 display-dia-diem-du-an-mobie" style="font-weight: 500;line-height: normal;">
+              <div class="ten-dia-diem">{{ item.name_dia_diem }}</div>
+              <div class="ten-dia-diem">{{ item.du_an }}</div>
+            </div>
+            <div class="d-flex gap-10 align-items-center justify-content-end">
               <div 
-                    [class]="item.status === 'DONE' ? 'bg-success d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill' : 'bg-warning d-flex text-white mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill'">
+                    [class]="item.status === 'DONE' ? 'bg-success d-flex text-white mat-body-2 f-w-500 p-x-8 f-d-12-m-10 rounded-pill' : 'bg-warning d-flex text-white mat-body-2 f-w-500 p-x-8 f-d-12-m-10 rounded-pill'">
                     {{item.status}} 
 
                     <!-- <mat-icon matSuffix (click)="editBaoCao($event,item)" class="h-blue">
@@ -144,8 +162,8 @@
       <mat-expansion-panel *ngFor="let product of item.chi_tiet ; let i = index" class="cardWithShadow m-t-10">
         <mat-expansion-panel-header style="height: 5rem">
           <mat-panel-title class="mat-body-1">
-            <mat-icon matListItemIcon class="m-r-8">folder</mat-icon> <span class="m-r-8 f-w-700">{{product['Vật
-              liệu']}}</span> ( số lượng {{product['Số lượng nhập']}} )
+            <mat-icon matListItemIcon class="m-r-8">folder</mat-icon> <span class="m-r-8 f-w-700 f-d-14-m-12">{{product['Vật
+              liệu']}}</span> <span class="f-d-14-m-10">( số lượng {{product['Số lượng nhập']}} )</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <form style="margin-top: 21px;">
@@ -186,6 +204,22 @@
         </form>
 
       </mat-expansion-panel>
+
+      <mat-card class="b-1 shadow-none m-t-20">
+        <mat-card-header class="p-y-20">
+          <mat-card-title>Tổng kilometer</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="b-t-1">
+          <form style="margin-top: 21px;">
+  
+            <mat-form-field class="w-100" appearance="outline">
+              <input disabled value="{{item['trip']}}"  placeholder="Nhập tổng kilometer của bạn" matInput />
+          
+            </mat-form-field>
+          </form>
+  
+        </mat-card-content>
+      </mat-card>
 
       <mat-card class="b-1 shadow-none m-t-20">
         <mat-card-header class="p-y-20">

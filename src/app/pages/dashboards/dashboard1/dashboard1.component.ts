@@ -81,6 +81,34 @@ export class AppDashboard1Component {
   protected congTrinhControl = new FormControl('');
   protected isFilterTime = false;
   protected isFilterQuy = false;
+
+  protected listExportBcDinhNgach: any[] = [
+    {
+      value: "BDPQ",
+      name: 'Bảo dưỡng phát quang',
+    },
+    {
+      value: "VSDN",
+      name: 'Vệ sinh đèn năng',
+    },
+    {
+      value: "DCP",
+      name: 'Điều chỉnh phao',
+    },
+    
+    {
+      value: "CBR",
+      name: 'Chống bôi rửa',
+    },
+    {
+      value: "SMPQ",
+      name: 'Sơn màu phát quang',
+    },
+    {
+      value: "HT",
+      name: 'Hành trình',
+    },
+  ];
   // public dialog: MatDialog
 
   constructor(
@@ -338,14 +366,12 @@ export class AppDashboard1Component {
   
     // Thêm dữ liệu vào sheet
     const data = [
+      [''],[''],[''],[''],
+      ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Số lượng báo hiệu', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      // ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
+      ['', '','Trên bờ', 'Dưới nước'],
       [''],
-      [''],
-      [''],
-      [''],
-      ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Lý trình', '', 'Số lượng báo hiệu', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-      ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
-      [''],
-      ['', '', '', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
+      ['', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
          'D168,3,\nL=7,5m', '1,2m\nx\n2,4m', '1m\nx\n2m', '0,8m\nx\n1,7m', '0,7m\nx\n1,4m', '1,8m\nx\n1,8m', '1,5m\nx\n1,5m', '1,2m\nx\n1,2m', '1,2m\nx\n0,7m',
          '1,2m\nx\n0,8m', '1,2m\nx\n0,4m', '12m', '18m', 'BH phụ\n(0,4m\nx\n0,3m)', 'D1200', 'D2000', 'Xích', '1,2m\nx\n1,2m', '0,6m\nx\n0,6m', 'Thước\nnước\nngược', 
          'Bảng\ntên\ncầu', 'BH\nphụ\n(0,4m\nx\n0,3m)', 'Cột', 'TĐ\n12m', 'TĐ\n18m', 'Phao', 'Trên\ncầu']
@@ -356,35 +382,40 @@ export class AppDashboard1Component {
     data.forEach((row, index) => {
       sheet.addRow(row);
     });
-    sheet.mergeCells('A1:AM1');
-    sheet.mergeCells('A2:AM2');
-    sheet.mergeCells('A3:AM3');
-    sheet.mergeCells('A4:AM4');
+    sheet.mergeCells('A1:AL1');
+    sheet.mergeCells('A2:AL2');
+    sheet.mergeCells('A3:AL3');
+    sheet.mergeCells('A4:AL4');
 
     sheet.mergeCells('A5:A8');
     sheet.mergeCells('B5:B8');
-    sheet.mergeCells('C5:D5');
-    sheet.mergeCells('E5:AH5');
-    sheet.mergeCells('E6:Z6');
-    sheet.mergeCells('C6:C8');
-    sheet.mergeCells('D6:D8');
-    sheet.mergeCells('AA6:AC6');
-    sheet.mergeCells('AD6:AH6');
-    sheet.mergeCells('E7:G7');
-    sheet.mergeCells('H7:M7');
-    sheet.mergeCells('N7:W7');
-    sheet.mergeCells('X7:Z7');
-    sheet.mergeCells('AA7:AC7');
-    sheet.mergeCells('AD7:AF7');
+    // sheet.mergeCells('C5:D5'); → xoá
+    // sheet.mergeCells('C6:C8'); → xoá
+    // sheet.mergeCells('D6:D8'); → xoá
+    sheet.mergeCells('C5:AF5');
+    sheet.mergeCells('C6:X6');
+    sheet.mergeCells('Y6:AA6');
+    sheet.mergeCells('AB6:AF6');
+    sheet.mergeCells('C7:E7');
+    sheet.mergeCells('F7:K7');
+    sheet.mergeCells('L7:T7');
+    sheet.mergeCells('V7:X7');
+    sheet.mergeCells('Y7:AA7');
+    sheet.mergeCells('AB7:AD7');
+    sheet.mergeCells('AE7:AE8');
+    sheet.mergeCells('AF7:AF8');
+    sheet.mergeCells('AG5:AK5');
+    sheet.mergeCells('AG6:AI6');
     sheet.mergeCells('AG7:AG8');
     sheet.mergeCells('AH7:AH8');
-    sheet.mergeCells('AI5:AM5');
-    sheet.mergeCells('AI6:AK6');
     sheet.mergeCells('AI7:AI8');
-    sheet.mergeCells('AJ7:AJ8');
-    sheet.mergeCells('AK7:AK8');
-    sheet.mergeCells('AL6:AL8');
-    sheet.mergeCells('AM6:AM8');
+    sheet.mergeCells('AJ6:AJ8');
+    sheet.mergeCells('AK6:AK8');
+
+    sheet.mergeCells('AL5:AL8');
+    
+
+ 
 
     ['A1', 'A2', 'A3', 'A4'].forEach((cell) => {
       sheet.getCell(cell).border = {
@@ -412,20 +443,22 @@ export class AppDashboard1Component {
     sheet.getCell('X7').value = 'Trụ đèn';
     sheet.getCell('AA7').value = 'Phao';
     sheet.getCell('AD7').value = 'Báo hiệu';
-    sheet.getCell('AG7').value = 'Bảng\ntên\ncầu';  
-    sheet.getCell('AI5').value = 'ĐÈN BÁO HIỆU'; 
-    sheet.getCell('AI6').value = 'Trên bờ'; 
-    sheet.getCell('AI7').value = 'Cột';
-    sheet.getCell('AJ7').value = 'TĐ\n12m';
-    sheet.getCell('AK7').value = 'TĐ\n18m';
-    sheet.getCell('AL6').value = 'Phao';
-    sheet.getCell('AM6').value = 'Trên\ncầu';
-    // sheet.getCell('AG3').alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };  
-    sheet.getCell('AH7').value = 'BH phụ (0,4m x 0,3m)';
+    sheet.getCell('AE7').value = 'Bảng\ntên\ncầu';  
+    sheet.getCell('AF7').value = 'BH phụ (0,4m x 0,3m)';
+    sheet.getCell('AG5').value = 'ĐÈN BÁO HIỆU'; 
+    sheet.getCell('AH6').value = 'Trên bờ'; 
+    sheet.getCell('AG7').value = 'Cột';
+    sheet.getCell('AH7').value = 'TĐ\n12m';
+    sheet.getCell('AI7').value = 'TĐ\n18m';
+    sheet.getCell('AJ6').value = 'Phao';
+    sheet.getCell('AK6').value = 'Trên\ncầu';
+
+    sheet.getCell('AL5').value = 'Hành\ntrình';
+    // sheet.getCell('AG3').alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
     
     
     // Căn giữa các ô merge
-    ['A5', 'B5', 'C5', 'E5', 'E6', 'AI5', 'AI6', 'AI7', 'C6', 'D6', 'AA6', 'AD6', 'E7', 'H7', 'N7', 'X7', 'AA7','AD7', 'AG7', 'AD7', 'AH7', 'E8', 'F8', 'G8', 'H8', 'I8', 'J8', 'K8', 'L8', 'M8', 'N8', 'O8', 'P8', 'Q8', 'R8', 'S8', 'T8', 'U8', 'V8', 'W8', 'X8', 'Y8', 'Z8', 'AA8', 'AB8', 'AC8', 'AD8', 'AE8', 'AF8', 'AG8', 'AH8', 'AI8', 'AJ8', 'AK8', 'AL8', 'AM8'].forEach((cell) => {
+    ['A5', 'B5', 'C5', 'E5', 'E6', 'AI5', 'AI6', 'AI7', 'C6', 'D6', 'AA6', 'AD6', 'E7', 'H7', 'N7', 'X7', 'AA7','AD7', 'AG7', 'AD7', 'AH7','C8', 'D8', 'E8', 'F8', 'G8', 'H8', 'I8', 'J8', 'K8', 'L8', 'M8', 'N8', 'O8', 'P8', 'Q8', 'R8', 'S8', 'T8', 'U8', 'V8', 'W8', 'X8', 'Y8', 'Z8', 'AA8', 'AB8', 'AC8', 'AD8', 'AE8', 'AF8', 'AG8', 'AH8', 'AI8', 'AJ8', 'AK8', 'AL8', 'AM8'].forEach((cell) => {
       sheet.getCell(cell).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
       sheet.getCell(cell).font = { bold: true };
     });
@@ -443,49 +476,52 @@ export class AppDashboard1Component {
       const dataRes = JSON.parse(result);      
 
       const listVL:any = {
-        "Bê tông": 'E',
-        "D219, L=12m": 'F',
-        "D219, L=1m": 'G',
-        'D90, L=3,2m': 'H',
-        'D113,5, L=6m':  'I',
-        'D113,5, L=4m': 'J',
-        'D126,8, L=5,5m': 'K',
-        'D141,3, L=6,5m': 'L',
-        'D168,3, L=7,5m': 'M',
-        '1,2m x 2,4m': 'N',
-        '1m x 2m': 'O',
-        '0,8m x 1,7m': 'P',
-        '0,7m x 1,4m': 'Q',
-        '1,8m x 1,8m': 'R',
-        '1,5m x 1,5m': 'S',
-        '1,2m x 1,2m': 'T',
-        '1,2m x 0,7m': 'U',
-        '1,2m x 0,8m': 'V',
-        '1,2m x 0,4m': 'W',
-        '12m': 'X',
-        '18m': 'Y',
-        'BH phụ (0,4m x 0,3m)': 'Z',
-        'D1200': 'AA',
-        'D2000': 'AB',
-        'Xích': 'AC',
-        '1,2m x 1,2m!': 'AD',
-        '0,6m x 0,6m': 'AE',
-        'Thước nước ngược': 'AF',
-        'Bảng tên cầu': 'AG',
-        'BH phụ (0,4m x 0,3m)!': 'AH',
-        'Cột': 'AI',
-        'TĐ 12m': 'AJ',
-        'TĐ 18m': 'AK',
-        'Phao': 'AL',
-        'Trên cầu': 'AM'
+        "Bê tông": 'C',
+        "D219, L=12m": 'D',
+        "D219, L=1m": 'E',
+        'D90, L=3,2m': 'F',
+        'D113,5, L=6m': 'G',
+        'D113,5, L=4m': 'H',
+        'D126,8, L=5,5m': 'I',
+        'D141,3, L=6,5m': 'J',
+        'D168,3, L=7,5m': 'K',
+        '1,2m x 2,4m': 'L',
+        '1m x 2m': 'M',
+        '0,8m x 1,7m': 'N',
+        '0,7m x 1,4m': 'O',
+        '1,8m x 1,8m': 'P',
+        '1,5m x 1,5m': 'Q',
+        '1,2m x 1,2m': 'R',
+        '1,2m x 0,7m': 'S',
+        '1,2m x 0,8m': 'T',
+        '1,2m x 0,4m': 'U',
+        '12m': 'V',
+        '18m': 'W',
+        'BH phụ (0,4m x 0,3m)': 'X',
+        'D1200': 'Y',
+        'D2000': 'Z',
+        'Xích': 'AA',
+        '1,2m x 1,2m!': 'AB',
+        '0,6m x 0,6m': 'AC',
+        'Thước nước ngược': 'AD',
+        'Bảng tên cầu': 'AE',
+        'BH phụ (0,4m x 0,3m)!': 'AF',
+        'Cột': 'AG',
+        'TĐ 12m': 'AH',
+        'TĐ 18m': 'AI',
+        'Phao': 'AJ',
+        'Trên cầu': 'AK'
       }
       
       dataRes.forEach((item: any, index: number) => {
         let count = 9
         sheet.getCell(`A${index + count}` ).value = index + 1;
         sheet.getCell(`B${index + count}` ).value = item.name_cong_trinh;
+        sheet.getCell(`AL${index + count}` ).value = item.trip || '-';
         sheet.getCell(`A${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
+        sheet.getCell(`AL${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
         sheet.getCell(`A${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
+        sheet.getCell(`AL${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
         sheet.getCell(`B${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
        
         item.chi_tiet.forEach((detail: any, index2: number) => {
@@ -513,7 +549,7 @@ export class AppDashboard1Component {
         })
       });
       const columnWidths = [
-        10, 50, 15, 15
+        10, 50,
       ];
       columnWidths.forEach((width, index) => {
         sheet.getColumn(index + 1).width = width;
@@ -526,63 +562,331 @@ export class AppDashboard1Component {
     });   
     
   }
+
+  shortenTitleByValue(value: any){    
+    let data: string[][] = [];
+    if(value === 'BDPQ'){
+      
+      data = [
+        [''],[''],[''],[''],
+        ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Số lượng báo hiệu', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        // ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
+        ['', '','Trên bờ', 'Dưới nước'],
+        [''],
+        ['', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
+           'D168,3,\nL=7,5m', '1,2m\nx\n2,4m', '1m\nx\n2m', '0,8m\nx\n1,7m', '0,7m\nx\n1,4m', '1,8m\nx\n1,8m', '1,5m\nx\n1,5m', '1,2m\nx\n1,2m', '1,2m\nx\n0,7m',
+           '1,2m\nx\n0,8m', '1,2m\nx\n0,4m', '12m', '18m', 'BH phụ\n(0,4m\nx\n0,3m)', 'D1200', 'D2000', 'Xích', '1,2m\nx\n1,2m', '0,6m\nx\n0,6m', 'Thước\nnước\nngược', 
+           'Bảng\ntên\ncầu', 'BH\nphụ\n(0,4m\nx\n0,3m)', 'Cột', 'TĐ\n12m', 'TĐ\n18m', 'Phao', 'Trên\ncầu']
+      ];
+
+    }
+    if(value === 'SMPQ'){
+      
+      data = [
+        [''],[''],[''],[''],
+        ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Số lượng báo hiệu', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        // ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
+        ['', '','Trên bờ', 'Dưới nước'],
+        [''],
+        ['', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
+           'D168,3,\nL=7,5m', '1,2m\nx\n2,4m', '1m\nx\n2m', '0,8m\nx\n1,7m', '0,7m\nx\n1,4m', '1,8m\nx\n1,8m', '1,5m\nx\n1,5m', '1,2m\nx\n1,2m', '1,2m\nx\n0,7m',
+           '1,2m\nx\n0,8m', '1,2m\nx\n0,4m', '12m', '18m', 'BH phụ\n(0,4m\nx\n0,3m)', 'D1200', 'D2000', 'Xích', '1,2m\nx\n1,2m', '0,6m\nx\n0,6m', 'Thước\nnước\nngược', 
+           'Bảng\ntên\ncầu', 'BH\nphụ\n(0,4m\nx\n0,3m)', 'Cột', 'TĐ\n12m', 'TĐ\n18m', 'Phao', 'Trên\ncầu']
+      ];
+
+    }
+    if(value === 'VSDN'){
+      data = [
+        [''],[''],[''],[''],
+        ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu'],
+        // ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],        
+      ];
+
+    }
+
+    if(value === 'DCP') {
+      data = [
+        [''],[''],[''],[''],
+        ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Số lượng báo hiệu'],        
+      ];
+    }
+
+    if(value === 'CBR') {
+      data = [
+        [''],[''],[''],[''],
+        ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Số lượng báo hiệu'],        
+      ];
+    }
+
+    if(value === 'HT') {
+      data = [
+        [''],[''],[''],[''],
+        ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu'],        
+      ];
+    }
+    return data
+  }
+
+  shortenProjectNameByValue(value: any) {
+    let data = {}
+
+    if(value === 'BDPQ') {
+      data = {
+        "Bê tông": 'C',
+        "D219, L=12m": 'D',
+        "D219, L=1m": 'E',
+        'D90, L=3,2m': 'F',
+        'D113,5, L=6m': 'G',
+        'D113,5, L=4m': 'H',
+        'D126,8, L=5,5m': 'I',
+        'D141,3, L=6,5m': 'J',
+        'D168,3, L=7,5m': 'K',
+        '1,2m x 2,4m': 'L',
+        '1m x 2m': 'M',
+        '0,8m x 1,7m': 'N',
+        '0,7m x 1,4m': 'O',
+        '1,8m x 1,8m': 'P',
+        '1,5m x 1,5m': 'Q',
+        '1,2m x 1,2m': 'R',
+        '1,2m x 0,7m': 'S',
+        '1,2m x 0,8m': 'T',
+        '1,2m x 0,4m': 'U',
+        '12m': 'V',
+        '18m': 'W',
+        'BH phụ (0,4m x 0,3m)': 'X',
+        'D1200': 'Y',
+        'D2000': 'Z',
+        'Xích': 'AA',
+        '1,2m x 1,2m!': 'AB',
+        '0,6m x 0,6m': 'AC',
+        'Thước nước ngược': 'AD',
+        'Bảng tên cầu': 'AE',
+        'BH phụ (0,4m x 0,3m)!': 'AF',
+        'Cột': 'AG',
+        'TĐ 12m': 'AH',
+        'TĐ 18m': 'AI',
+        'Phao': 'AJ',
+        'Trên cầu': 'AK'
+      }
+      
+    }
+
+    if(value === 'SMPQ') {
+      data = {
+        "Bê tông": 'C',
+        "D219, L=12m": 'D',
+        "D219, L=1m": 'E',
+        'D90, L=3,2m': 'F',
+        'D113,5, L=6m': 'G',
+        'D113,5, L=4m': 'H',
+        'D126,8, L=5,5m': 'I',
+        'D141,3, L=6,5m': 'J',
+        'D168,3, L=7,5m': 'K',
+        '1,2m x 2,4m': 'L',
+        '1m x 2m': 'M',
+        '0,8m x 1,7m': 'N',
+        '0,7m x 1,4m': 'O',
+        '1,8m x 1,8m': 'P',
+        '1,5m x 1,5m': 'Q',
+        '1,2m x 1,2m': 'R',
+        '1,2m x 0,7m': 'S',
+        '1,2m x 0,8m': 'T',
+        '1,2m x 0,4m': 'U',
+        '12m': 'V',
+        '18m': 'W',
+        'BH phụ (0,4m x 0,3m)': 'X',
+        'D1200': 'Y',
+        'D2000': 'Z',
+        'Xích': 'AA',
+        '1,2m x 1,2m!': 'AB',
+        '0,6m x 0,6m': 'AC',
+        'Thước nước ngược': 'AD',
+        'Bảng tên cầu': 'AE',
+        'BH phụ (0,4m x 0,3m)!': 'AF',
+        'Cột': 'AG',
+        'TĐ 12m': 'AH',
+        'TĐ 18m': 'AI',
+        'Phao': 'AJ',
+        'Trên cầu': 'AK'
+      }
+      
+    }
+
+
+    if(value === 'VSDN') {
+      data = {        
+        'Cột': 'C',
+        'TĐ 12m': 'D',
+        'TĐ 18m': 'E',
+        'Phao': 'F',
+        'Trên cầu': 'G'
+      }
+    }
+
+    if(value === 'DCP') {
+      data = {        
+        'D1200': 'C',
+        'D2000': 'D',
+      }
+    }
+
+    if(value === 'CBR') {
+      data = {        
+        'D1200': 'C',
+        'D2000': 'D',
+      }
+    }
+    
+    return data
+    
+  }
  
 
-  exportExcel() {
+  exportExcel(valueType: any) {    
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet('Sheet1');
-    // Merge ô theo cấu trúc của file mẫu
-  
-  
+    // Merge ô theo cấu trúc của file mẫu 
     // Thêm dữ liệu vào sheet
-    const data = [
-      [''],
-      [''],
-      [''],
-      [''],
-      ['Stt', 'Tên sông, kênh, rạch - Cầu - Báo hiệu', 'Lý trình', '', 'Số lượng báo hiệu', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-      ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
-      [''],
-      ['', '', '', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
-         'D168,3,\nL=7,5m', '1,2m\nx\n2,4m', '1m\nx\n2m', '0,8m\nx\n1,7m', '0,7m\nx\n1,4m', '1,8m\nx\n1,8m', '1,5m\nx\n1,5m', '1,2m\nx\n1,2m', '1,2m\nx\n0,7m',
-         '1,2m\nx\n0,8m', '1,2m\nx\n0,4m', '12m', '18m', 'BH phụ\n(0,4m\nx\n0,3m)', 'D1200', 'D2000', 'Xích', '1,2m\nx\n1,2m', '0,6m\nx\n0,6m', 'Thước\nnước\nngược', 
-         'Bảng\ntên\ncầu', 'BH\nphụ\n(0,4m\nx\n0,3m)', 'Cột', 'TĐ\n12m', 'TĐ\n18m', 'Phao', 'Trên\ncầu']
-    ];
-
-    
+    const data =  this.shortenTitleByValue(valueType);    
   
     data.forEach((row, index) => {
       sheet.addRow(row);
     });
-    sheet.mergeCells('A1:AM1');
-    sheet.mergeCells('A2:AM2');
-    sheet.mergeCells('A3:AM3');
-    sheet.mergeCells('A4:AM4');
+
+    if(valueType === 'BDPQ') {
+      sheet.mergeCells('A1:AK1');
+      sheet.mergeCells('A2:AK2');
+      sheet.mergeCells('A3:AK3');
+      sheet.mergeCells('A4:AK4');
+    }
+
+    if(valueType === 'SMPQ') {
+      sheet.mergeCells('A1:AK1');
+      sheet.mergeCells('A2:AK2');
+      sheet.mergeCells('A3:AK3');
+      sheet.mergeCells('A4:AK4');
+    }
+
+    if(valueType === 'VSDN') {
+      sheet.mergeCells('A1:G1');
+      sheet.mergeCells('A2:G2');
+      sheet.mergeCells('A3:G3');
+      sheet.mergeCells('A4:G4');
+    }
+
+    if(valueType === 'DCP') {
+      sheet.mergeCells('A1:D1');
+      sheet.mergeCells('A2:D2');
+      sheet.mergeCells('A3:D3');
+      sheet.mergeCells('A4:D4');
+    }
+
+    if(valueType === 'CBR') {
+      sheet.mergeCells('A1:D1');
+      sheet.mergeCells('A2:D2');
+      sheet.mergeCells('A3:D3');
+      sheet.mergeCells('A4:D4');
+    }
+
+        
+
+    if( valueType === 'HT') {
+      sheet.mergeCells('A1:C1');
+      sheet.mergeCells('A2:C2');
+      sheet.mergeCells('A3:C3');
+      sheet.mergeCells('A4:C4');
+
+    }
 
     sheet.mergeCells('A5:A8');
     sheet.mergeCells('B5:B8');
-    sheet.mergeCells('C5:D5');
-    sheet.mergeCells('E5:AH5');
-    sheet.mergeCells('E6:Z6');
-    sheet.mergeCells('C6:C8');
-    sheet.mergeCells('D6:D8');
-    sheet.mergeCells('AA6:AC6');
-    sheet.mergeCells('AD6:AH6');
-    sheet.mergeCells('E7:G7');
-    sheet.mergeCells('H7:M7');
-    sheet.mergeCells('N7:W7');
-    sheet.mergeCells('X7:Z7');
-    sheet.mergeCells('AA7:AC7');
-    sheet.mergeCells('AD7:AF7');
-    sheet.mergeCells('AG7:AG8');
-    sheet.mergeCells('AH7:AH8');
-    sheet.mergeCells('AI5:AM5');
-    sheet.mergeCells('AI6:AK6');
-    sheet.mergeCells('AI7:AI8');
-    sheet.mergeCells('AJ7:AJ8');
-    sheet.mergeCells('AK7:AK8');
-    sheet.mergeCells('AL6:AL8');
-    sheet.mergeCells('AM6:AM8');
+    // sheet.mergeCells('C5:D5'); → xoá
+    // sheet.mergeCells('C6:C8'); → xoá
+    // sheet.mergeCells('D6:D8'); → xoá
+
+   
+
+    if(valueType === 'BDPQ') {
+      sheet.mergeCells('C5:AF5');
+      sheet.mergeCells('C6:X6');
+      sheet.mergeCells('Y6:AA6');
+      sheet.mergeCells('AB6:AF6');
+      sheet.mergeCells('C7:E7');
+      sheet.mergeCells('F7:K7');
+      sheet.mergeCells('L7:T7');
+      sheet.mergeCells('V7:X7');
+      sheet.mergeCells('Y7:AA7');
+      sheet.mergeCells('AB7:AD7');
+      sheet.mergeCells('AE7:AE8');
+      sheet.mergeCells('AF7:AF8');
+
+      sheet.mergeCells('AG5:AK5');
+      sheet.mergeCells('AG6:AI6');
+      sheet.mergeCells('AG7:AG8');
+      sheet.mergeCells('AH7:AH8');
+      sheet.mergeCells('AI7:AI8');
+      sheet.mergeCells('AJ6:AJ8');
+      sheet.mergeCells('AK6:AK8');
+    }
+
+    if(valueType === 'SMPQ') {
+      sheet.mergeCells('C5:AF5');
+      sheet.mergeCells('C6:X6');
+      sheet.mergeCells('Y6:AA6');
+      sheet.mergeCells('AB6:AF6');
+      sheet.mergeCells('C7:E7');
+      sheet.mergeCells('F7:K7');
+      sheet.mergeCells('L7:T7');
+      sheet.mergeCells('V7:X7');
+      sheet.mergeCells('Y7:AA7');
+      sheet.mergeCells('AB7:AD7');
+      sheet.mergeCells('AE7:AE8');
+      sheet.mergeCells('AF7:AF8');
+
+      sheet.mergeCells('AG5:AK5');
+      sheet.mergeCells('AG6:AI6');
+      sheet.mergeCells('AG7:AG8');
+      sheet.mergeCells('AH7:AH8');
+      sheet.mergeCells('AI7:AI8');
+      sheet.mergeCells('AJ6:AJ8');
+      sheet.mergeCells('AK6:AK8');
+    }
+
+    if(valueType === 'VSDN') {
+      sheet.mergeCells('C5:G5');
+      sheet.mergeCells('C6:E6');
+      sheet.mergeCells('C7:C8');
+      sheet.mergeCells('D7:D8');
+      sheet.mergeCells('E7:E8');
+      sheet.mergeCells('F6:F8');
+      sheet.mergeCells('G6:G8');
+
+      sheet.mergeCells('AG6:AI6');
+      sheet.mergeCells('AG7:AG8');
+      sheet.mergeCells('AH7:AH8');
+      sheet.mergeCells('AI7:AI8');
+      sheet.mergeCells('AJ6:AJ8');
+      sheet.mergeCells('AK6:AK8');
+    }
+
+    if(valueType === 'DCP') {
+      sheet.mergeCells('C5:D5');
+      sheet.mergeCells('C6:D6');
+      sheet.mergeCells('C7:D7'); 
+    }
+
+    if(valueType === 'CBR') {
+      sheet.mergeCells('C5:D5');
+      sheet.mergeCells('C6:D6');
+      sheet.mergeCells('C7:D7'); 
+    }
+    
+    
+    
+    if(valueType === 'HT') {
+      sheet.mergeCells('C5:C8');
+    }
+    
 
     ['A1', 'A2', 'A3', 'A4'].forEach((cell) => {
       sheet.getCell(cell).border = {
@@ -593,37 +897,126 @@ export class AppDashboard1Component {
       };
     });
 
-    
+    if(valueType === 'BDPQ') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO BẢO DƯỠNG PHÁT QUANG';
 
-    sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO HIỆU ĐƯỜNG THỦY NỘI ĐỊA';
+    }
+
+    if(valueType === 'VSDN') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO VỆ SINH ĐÈN NĂNG';
+    }
+
+    if(valueType === 'DCP') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO ĐIỀU CHỈNH PHAO';
+    }
+
+    if(valueType === 'CBR') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO CHỐNG BÔI RỬA';
+    }
+
+    if(valueType === 'SMPQ') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO SƠN MÀU PHÁT QUANG';
+    }
+
+    if(valueType === 'HT') {
+      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO HÀNH TRÌNH';
+    }    
     sheet.getCell('A2').value = 'CÔNG TRÌNH: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA NĂM 2024';
     sheet.getCell('A3').value = 'GÓI THẦU: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA KHU VỰC 1';
     sheet.getCell('A4').value = 'ĐỊA ĐIỂM: KHU VỰC QUẬN, HUYỆN, THÀNH PHỐ HỒ CHÍ MINH';
+    
+    sheet.getCell('A5').value = 'Stt';   
+     
+    if(valueType === 'BDPQ') {
+      sheet.getCell('AD6').value = 'Trên cầu';
+      sheet.getCell('AA6').value = 'Dưới nước'; 
+      
+      sheet.getCell('E7').value = 'Móng';
+      sheet.getCell('H7').value = 'Cột';
+      sheet.getCell('N7').value = 'Bảng';
+      sheet.getCell('X7').value = 'Trụ đèn';
+      sheet.getCell('AA7').value = 'Phao';
+      sheet.getCell('AD7').value = 'Báo hiệu';
+      sheet.getCell('AE7').value = 'Bảng\ntên\ncầu';  
+      sheet.getCell('AF7').value = 'BH phụ (0,4m x 0,3m)';
 
+      sheet.getCell('AG5').value = 'ĐÈN BÁO HIỆU';
+      sheet.getCell('AH6').value = 'Trên bờ'; 
+      sheet.getCell('AG7').value = 'Cột';
+      sheet.getCell('AH7').value = 'TĐ\n12m';
+      sheet.getCell('AI7').value = 'TĐ\n18m';
+
+      sheet.getCell('AJ6').value = 'Phao';
+      sheet.getCell('AK6').value = 'Trên\ncầu';
+    }
+    if(valueType === 'VSDN') {
+      sheet.getCell('C5').value = 'ĐÈN BÁO HIỆU';
+      sheet.getCell('C6').value = 'Trên bờ';
+      sheet.getCell('F6').value = 'Phao';
+      sheet.getCell('G6').value = 'Trên cầu';
+      sheet.getCell('C7').value = 'Cột';
+      sheet.getCell('D7').value = 'TĐ\n12m';
+      sheet.getCell('E7').value = 'TĐ\n18m';
+    }
+
+    if(valueType === 'SMPQ') {
+      sheet.getCell('AD6').value = 'Trên cầu';
+      sheet.getCell('AA6').value = 'Dưới nước'; 
+      
+      sheet.getCell('E7').value = 'Móng';
+      sheet.getCell('H7').value = 'Cột';
+      sheet.getCell('N7').value = 'Bảng';
+      sheet.getCell('X7').value = 'Trụ đèn';
+      sheet.getCell('AA7').value = 'Phao';
+      sheet.getCell('AD7').value = 'Báo hiệu';
+      sheet.getCell('AE7').value = 'Bảng\ntên\ncầu';  
+      sheet.getCell('AF7').value = 'BH phụ (0,4m x 0,3m)';
+
+      sheet.getCell('AG5').value = 'ĐÈN BÁO HIỆU';
+      sheet.getCell('AH6').value = 'Trên bờ'; 
+      sheet.getCell('AG7').value = 'Cột';
+      sheet.getCell('AH7').value = 'TĐ\n12m';
+      sheet.getCell('AI7').value = 'TĐ\n18m';
+
+      sheet.getCell('AJ6').value = 'Phao';
+      sheet.getCell('AK6').value = 'Trên\ncầu';
+    }
+    if(valueType === 'VSDN') {
+      sheet.getCell('C5').value = 'ĐÈN BÁO HIỆU';
+      sheet.getCell('C6').value = 'Trên bờ';
+      sheet.getCell('F6').value = 'Phao';
+      sheet.getCell('G6').value = 'Trên cầu';
+      sheet.getCell('C7').value = 'Cột';
+      sheet.getCell('D7').value = 'TĐ\n12m';
+      sheet.getCell('E7').value = 'TĐ\n18m';
+    }
+
+
+    if(valueType === 'DCP') {
+      sheet.getCell('C6').value = 'Dưới nước';
+      sheet.getCell('C7').value = 'Phao';
+      // 'D1200', 'D2000'
+      sheet.getCell('C8').value = 'D1200';
+      sheet.getCell('D8').value = 'D2000';    
+    }
+
+    if(valueType === 'CBR') {
+      sheet.getCell('C6').value = 'Dưới nước';
+      sheet.getCell('C7').value = 'Phao';
+      // 'D1200', 'D2000'
+      sheet.getCell('C8').value = 'D1200';
+      sheet.getCell('D8').value = 'D2000';    
+    }
     
-    sheet.getCell('A5').value = 'Stt';
-    sheet.getCell('AA6').value = 'Dưới nước';
-    sheet.getCell('AD6').value = 'Trên cầu';
-    sheet.getCell('E7').value = 'Móng';
-    sheet.getCell('H7').value = 'Cột';
-    sheet.getCell('N7').value = 'Bảng';
-    sheet.getCell('X7').value = 'Trụ đèn';
-    sheet.getCell('AA7').value = 'Phao';
-    sheet.getCell('AD7').value = 'Báo hiệu';
-    sheet.getCell('AG7').value = 'Bảng\ntên\ncầu';  
-    sheet.getCell('AI5').value = 'ĐÈN BÁO HIỆU'; 
-    sheet.getCell('AI6').value = 'Trên bờ'; 
-    sheet.getCell('AI7').value = 'Cột';
-    sheet.getCell('AJ7').value = 'TĐ\n12m';
-    sheet.getCell('AK7').value = 'TĐ\n18m';
-    sheet.getCell('AL6').value = 'Phao';
-    sheet.getCell('AM6').value = 'Trên\ncầu';
-    // sheet.getCell('AG3').alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };  
-    sheet.getCell('AH7').value = 'BH phụ (0,4m x 0,3m)';
     
     
+    if(valueType === 'HT') {
+      sheet.getCell('C5').value = 'Hành trình';
+    }
+    // sheet.getCell('AG3').alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
+
     // Căn giữa các ô merge
-    ['A5', 'B5', 'C5', 'E5', 'E6', 'AI5', 'AI6', 'AI7', 'C6', 'D6', 'AA6', 'AD6', 'E7', 'H7', 'N7', 'X7', 'AA7','AD7', 'AG7', 'AD7', 'AH7', 'E8', 'F8', 'G8', 'H8', 'I8', 'J8', 'K8', 'L8', 'M8', 'N8', 'O8', 'P8', 'Q8', 'R8', 'S8', 'T8', 'U8', 'V8', 'W8', 'X8', 'Y8', 'Z8', 'AA8', 'AB8', 'AC8', 'AD8', 'AE8', 'AF8', 'AG8', 'AH8', 'AI8', 'AJ8', 'AK8', 'AL8', 'AM8'].forEach((cell) => {
+    ['A5', 'B5', 'C5', 'E5', 'E6', 'AI5', 'AI6', 'AI7', 'C6', 'C7', 'D6', 'AA6', 'AD6', 'E7', 'H7', 'N7', 'X7', 'AA7','AD7', 'AG7', 'AD7', 'AH7','C8', 'D8', 'E8', 'F8', 'G8', 'H8', 'I8', 'J8', 'K8', 'L8', 'M8', 'N8', 'O8', 'P8', 'Q8', 'R8', 'S8', 'T8', 'U8', 'V8', 'W8', 'X8', 'Y8', 'Z8', 'AA8', 'AB8', 'AC8', 'AD8', 'AE8', 'AF8', 'AG8', 'AH8', 'AI8', 'AJ8', 'AK8', 'AL8', 'AM8'].forEach((cell) => {
       sheet.getCell(cell).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
       sheet.getCell(cell).font = { bold: true };
     });
@@ -636,55 +1029,26 @@ export class AppDashboard1Component {
       sheet.getCell(cell).font = { bold: true, size: 12 };
     });
 
-
     this.service.getAllBaoCao().subscribe(data => {
-      const result = this.aggregateMaterials(data);      
+      const result = this.aggregateMaterials(data);     
+      // console.log('result', result); 
       const dataRes = JSON.parse(result);      
-
-      const listVL:any = {
-        "Bê tông": 'E',
-        "D219, L=12m": 'F',
-        "D219, L=1m": 'G',
-        'D90, L=3,2m': 'H',
-        'D113,5, L=6m':  'I',
-        'D113,5, L=4m': 'J',
-        'D126,8, L=5,5m': 'K',
-        'D141,3, L=6,5m': 'L',
-        'D168,3, L=7,5m': 'M',
-        '1,2m x 2,4m': 'N',
-        '1m x 2m': 'O',
-        '0,8m x 1,7m': 'P',
-        '0,7m x 1,4m': 'Q',
-        '1,8m x 1,8m': 'R',
-        '1,5m x 1,5m': 'S',
-        '1,2m x 1,2m': 'T',
-        '1,2m x 0,7m': 'U',
-        '1,2m x 0,8m': 'V',
-        '1,2m x 0,4m': 'W',
-        '12m': 'X',
-        '18m': 'Y',
-        'BH phụ (0,4m x 0,3m)': 'Z',
-        'D1200': 'AA',
-        'D2000': 'AB',
-        'Xích': 'AC',
-        '1,2m x 1,2m!': 'AD',
-        '0,6m x 0,6m': 'AE',
-        'Thước nước ngược': 'AF',
-        'Bảng tên cầu': 'AG',
-        'BH phụ (0,4m x 0,3m)!': 'AH',
-        'Cột': 'AI',
-        'TĐ 12m': 'AJ',
-        'TĐ 18m': 'AK',
-        'Phao': 'AL',
-        'Trên cầu': 'AM'
-      }
+      const listVL:any = this.shortenProjectNameByValue(valueType)
       
       dataRes.forEach((item: any, index: number) => {
         let count = 9
         sheet.getCell(`A${index + count}` ).value = index + 1;
         sheet.getCell(`B${index + count}` ).value = item.name_cong_trinh;
+        console.log('item', item);
+        if(valueType === 'HT') {
+          sheet.getCell(`C${index + count}` ).value = item.trip || '-';
+          sheet.getCell(`C${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
+          sheet.getCell(`C${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
+        }
         sheet.getCell(`A${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
+        
         sheet.getCell(`A${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
+        
         sheet.getCell(`B${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
        
         item.chi_tiet.forEach((detail: any, index2: number) => {
@@ -712,9 +1076,9 @@ export class AppDashboard1Component {
         })
       });
       const columnWidths = [
-        10, 50, 15, 15
+        10, 50
       ];
-      columnWidths.forEach((width, index) => {
+      columnWidths.forEach((width, index) => {   
         sheet.getColumn(index + 1).width = width;
       });
       sheet.getRow(8).height = 50;
@@ -730,30 +1094,40 @@ export class AppDashboard1Component {
     const result:any = [];
   
     data.forEach((item:any) => {
-      const { name_cong_trinh, chi_tiet } = item;
-      chi_tiet.forEach((detail:any) => {
-        const materialName = detail["Vật liệu"];
-        const quantity = parseInt(detail["Số lượng nhập"]) || 0;
-  
-        let existingProject = result.find((r:any) => r.name_cong_trinh === name_cong_trinh);
-        if (!existingProject) {
-          existingProject = {
-            name_cong_trinh,
-            chi_tiet: []
-          };
-          result.push(existingProject);
-        }
-  
-        let existingMaterial = existingProject.chi_tiet.find((m:any) => m["Vật liệu"] === materialName);
-        if (existingMaterial) {
-          existingMaterial["Số lượng nhập"] += quantity;
-        } else {
-          existingProject.chi_tiet.push({ "Vật liệu": materialName, "Số lượng nhập": quantity });
-        }
-      });
+      const { name_cong_trinh, chi_tiet, trip } = item;
+
+    // Tìm công trình đã có trong kết quả
+    let existingProject = result.find((r: any) => r.name_cong_trinh === name_cong_trinh);
+
+    if (!existingProject) {
+      existingProject = {
+        name_cong_trinh,
+        chi_tiet: [],
+        trip: 0,
+      };
+      result.push(existingProject);
+    }
+
+    // ✅ Chỉ cộng trip 1 lần duy nhất cho mỗi item
+    existingProject.trip += Number(trip) || 0;
+     
+    chi_tiet.forEach((detail: any) => {
+      const materialName = detail["Vật liệu"];
+      const quantity = parseInt(detail["Số lượng nhập"]) || 0;
+
+      let existingMaterial = existingProject.chi_tiet.find((m: any) => m["Vật liệu"] === materialName);
+      if (existingMaterial) {
+        existingMaterial["Số lượng nhập"] += quantity;
+      } else {
+        existingProject.chi_tiet.push({
+          "Vật liệu": materialName,
+          "Số lượng nhập": quantity,
+        });
+      }
     });
-  
-    return JSON.stringify(result, null, 2);
+  });
+
+  return JSON.stringify(result, null, 2);
   }
   
 
