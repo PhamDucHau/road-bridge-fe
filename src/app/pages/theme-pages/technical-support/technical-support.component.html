@@ -1,0 +1,97 @@
+<div class="m-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner">
+    <mat-spinner></mat-spinner>
+  </div>
+<div *ngIf="lastSegment === 'technical-support'" class="header-technical-support"></div>
+<div *ngIf="lastSegment === 'system-change'" class="header-system-change"></div>
+
+<div class="form-container">
+    <div class="project-info">
+        <img width="28" height="28"
+            src="https://phinguyentienphat.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10404"
+            alt="avatar" />
+        <span class="project-name">Dự án Cầu Đường</span>
+    </div>
+
+    <h2 class="form-title">{{ lastSegment === 'technical-support' ? 'Yêu cầu hỗ trợ kỹ thuật/Báo lỗi hệ thống' : 'Yêu cầu thay đổi/Nâng cấp hệ thống' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div>
+
+            <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Summary <span
+                    style="color: red">*</span></mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input formControlName="summary" matInput />
+            </mat-form-field>
+        </div>
+
+        <div>
+
+            <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Description</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <textarea type="text" formControlName="description" matInput></textarea>
+            </mat-form-field>
+        </div>
+
+        <!-- <div>
+
+            <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Requester</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input type="text" formControlName="requester" matInput />
+            </mat-form-field>
+        </div> -->
+
+        <label>Attachment</label>
+        <div class="upload-box m-b-8">
+            📎 Drop files to attach or <button (click)="fileInput.click()">Browse</button>
+        </div>        
+        <input type="file" #fileInput (change)="selectFile($event)" style="display: none;" multiple />
+        <div class="d-flex gap-16 m-b-8" *ngIf="imagePreviews.length">
+            <img *ngFor="let img of imagePreviews" class="img-attachment" [src]="img" height="100" width="125" />
+        </div>
+
+        <div>
+
+            <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Priority</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-select formControlName="priority">
+                    <mat-option value="Hightest">Hightest</mat-option>                    
+                    <mat-option value="High">High</mat-option>
+                    <mat-option value="Medium">Medium</mat-option>
+                    <mat-option value="Low">Low</mat-option>
+                    <mat-option value="Lowest">Lowest</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="lastSegment === 'technical-support'">
+
+            <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Labels</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-select formControlName="labels">
+                    <mat-option value="form">form</mat-option>
+                    <mat-option value="process">Process</mat-option>
+                    <mat-option value="form-3">form-3</mat-option>
+                    <mat-option value="form-4">form-4</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="lastSegment === 'system-change'">
+
+            <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Labels</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-select formControlName="labels">
+                    <mat-option value="urgent">urgent</mat-option>
+                    <mat-option value="process">Process</mat-option>
+                    <mat-option value="bug">bug</mat-option>
+                    <mat-option value="form">form</mat-option>
+                    <mat-option value="form-3">form-3</mat-option>
+                    <mat-option value="form-4">form-4</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <button type="submit">Submit</button>
+
+    </form>    
+</div>
