@@ -92,6 +92,20 @@ export const routes: Routes = [
             (m) => m.LandingPageRoutes
           ),
       },
+      {
+        path: 'technical-support',
+        loadChildren: () =>
+          import('./pages/theme-pages/technical-support/technical-support.routes').then(
+            (m) => m.TechnicalSupportRoutes
+          ),
+      },
+      {
+        path: 'system-change',
+        loadChildren: () =>
+          import('./pages/theme-pages/technical-support/technical-support.routes').then(
+            (m) => m.TechnicalSupportRoutes
+          ),
+      },
     ],
   },
   {
