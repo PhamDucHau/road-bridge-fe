@@ -740,155 +740,115 @@ export class AppDashboard1Component {
     return data
     
   }
+
+  exportExcelAllFiles(){    
+    this.exportExcel(this.listExportBcDinhNgach)
+  }
+  
  
 
-  exportExcel(valueType: any) {    
+  exportExcel(data: any) {
     const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet('Sheet1');
-    // Merge ô theo cấu trúc của file mẫu 
-    // Thêm dữ liệu vào sheet
-    const data =  this.shortenTitleByValue(valueType);    
   
-    data.forEach((row, index) => {
-      sheet.addRow(row);
+    // Danh sách các promise chờ dữ liệu cho mỗi sheet
+    const sheetPromises = data.map((item: any) => {
+      const sheet = workbook.addWorksheet(item.name);
+      const rows = this.shortenTitleByValue(item.value);
+  
+      rows.forEach(row => sheet.addRow(row));
+  
+      // Gọi API lấy dữ liệu cho từng sheet
+      return new Promise<void>((resolve) => {
+        this.service.getAllBaoCao().subscribe(response => {
+          const result = this.aggregateMaterials(response);     
+          const dataRes = JSON.parse(result);      
+          const listVL: any = this.shortenProjectNameByValue(item.value);
+  
+          const baseRow = 9;
+  
+          dataRes.forEach((rowItem: any, rowIndex: number) => {
+            const rowNum = rowIndex + baseRow;
+            sheet.getCell(`A${rowNum}`).value = rowIndex + 1;
+            sheet.getCell(`B${rowNum}`).value = rowItem.name_cong_trinh;
+  
+            if (item.value === 'HT') {
+              sheet.getCell(`C${rowNum}`).value = rowItem.trip || '-';
+              sheet.getCell(`C${rowNum}`).alignment = { wrapText: true, horizontal: 'center', vertical: 'middle' };
+              sheet.getCell(`C${rowNum}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
+            }
+  
+            // format A/B column
+            ['A', 'B'].forEach(col => {
+              sheet.getCell(`${col}${rowNum}`).alignment = { wrapText: true, horizontal: 'center', vertical: 'middle' };
+              sheet.getCell(`${col}${rowNum}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
+            });
+  
+            rowItem.chi_tiet.forEach((detail: any) => {
+              const materialKey = detail['Vật liệu'];
+              const cellKey = listVL[materialKey];
+              const value = detail['Số lượng nhập'] || '-';
+  
+              if (cellKey) {
+                sheet.getCell(`${cellKey}${rowNum}`).value = value;
+                sheet.getCell(`${cellKey}${rowNum}`).alignment = { wrapText: true, horizontal: 'center', vertical: 'middle' };
+                sheet.getCell(`${cellKey}${rowNum}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
+              }
+            });
+          });
+  
+          sheet.getColumn(1).width = 10;
+          sheet.getColumn(2).width = 50;
+          sheet.getRow(8).height = 50;
+  
+          // Gọi hàm merge + tiêu đề sau khi có sheet
+          this.formatSheetByValue(sheet, item.value);
+  
+          resolve(); // báo hiệu sheet này xử lý xong
+        });
+      });
     });
+  
+    // Khi tất cả các sheet đều xong => export
+    Promise.all(sheetPromises).then(() => {
+      workbook.xlsx.writeBuffer().then(buffer => {
+        const blob = new Blob([buffer], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
+        saveAs(blob, 'export.xlsx');
+      });
+    });
+  }
 
-    if(valueType === 'BDPQ') {
-      sheet.mergeCells('A1:AK1');
-      sheet.mergeCells('A2:AK2');
-      sheet.mergeCells('A3:AK3');
-      sheet.mergeCells('A4:AK4');
-    }
-
-    if(valueType === 'SMPQ') {
-      sheet.mergeCells('A1:AK1');
-      sheet.mergeCells('A2:AK2');
-      sheet.mergeCells('A3:AK3');
-      sheet.mergeCells('A4:AK4');
-    }
-
-    if(valueType === 'VSDN') {
-      sheet.mergeCells('A1:G1');
-      sheet.mergeCells('A2:G2');
-      sheet.mergeCells('A3:G3');
-      sheet.mergeCells('A4:G4');
-    }
-
-    if(valueType === 'DCP') {
-      sheet.mergeCells('A1:D1');
-      sheet.mergeCells('A2:D2');
-      sheet.mergeCells('A3:D3');
-      sheet.mergeCells('A4:D4');
-    }
-
-    if(valueType === 'CBR') {
-      sheet.mergeCells('A1:D1');
-      sheet.mergeCells('A2:D2');
-      sheet.mergeCells('A3:D3');
-      sheet.mergeCells('A4:D4');
-    }
-
-        
-
-    if( valueType === 'HT') {
-      sheet.mergeCells('A1:C1');
-      sheet.mergeCells('A2:C2');
-      sheet.mergeCells('A3:C3');
-      sheet.mergeCells('A4:C4');
-
-    }
-
+  formatSheetByValue(sheet: ExcelJS.Worksheet, value: string) {
+    // Merge ô A1 đến A4 (áp dụng cho tất cả loại)
+    sheet.mergeCells('A1:AK1');
+    sheet.mergeCells('A2:AK2');
+    sheet.mergeCells('A3:AK3');
+    sheet.mergeCells('A4:AK4');
     sheet.mergeCells('A5:A8');
     sheet.mergeCells('B5:B8');
-    // sheet.mergeCells('C5:D5'); → xoá
-    // sheet.mergeCells('C6:C8'); → xoá
-    // sheet.mergeCells('D6:D8'); → xoá
-
-   
-
-    if(valueType === 'BDPQ') {
-      sheet.mergeCells('C5:AF5');
-      sheet.mergeCells('C6:X6');
-      sheet.mergeCells('Y6:AA6');
-      sheet.mergeCells('AB6:AF6');
-      sheet.mergeCells('C7:E7');
-      sheet.mergeCells('F7:K7');
-      sheet.mergeCells('L7:T7');
-      sheet.mergeCells('V7:X7');
-      sheet.mergeCells('Y7:AA7');
-      sheet.mergeCells('AB7:AD7');
-      sheet.mergeCells('AE7:AE8');
-      sheet.mergeCells('AF7:AF8');
-
-      sheet.mergeCells('AG5:AK5');
-      sheet.mergeCells('AG6:AI6');
-      sheet.mergeCells('AG7:AG8');
-      sheet.mergeCells('AH7:AH8');
-      sheet.mergeCells('AI7:AI8');
-      sheet.mergeCells('AJ6:AJ8');
-      sheet.mergeCells('AK6:AK8');
-    }
-
-    if(valueType === 'SMPQ') {
-      sheet.mergeCells('C5:AF5');
-      sheet.mergeCells('C6:X6');
-      sheet.mergeCells('Y6:AA6');
-      sheet.mergeCells('AB6:AF6');
-      sheet.mergeCells('C7:E7');
-      sheet.mergeCells('F7:K7');
-      sheet.mergeCells('L7:T7');
-      sheet.mergeCells('V7:X7');
-      sheet.mergeCells('Y7:AA7');
-      sheet.mergeCells('AB7:AD7');
-      sheet.mergeCells('AE7:AE8');
-      sheet.mergeCells('AF7:AF8');
-
-      sheet.mergeCells('AG5:AK5');
-      sheet.mergeCells('AG6:AI6');
-      sheet.mergeCells('AG7:AG8');
-      sheet.mergeCells('AH7:AH8');
-      sheet.mergeCells('AI7:AI8');
-      sheet.mergeCells('AJ6:AJ8');
-      sheet.mergeCells('AK6:AK8');
-    }
-
-    if(valueType === 'VSDN') {
-      sheet.mergeCells('C5:G5');
-      sheet.mergeCells('C6:E6');
-      sheet.mergeCells('C7:C8');
-      sheet.mergeCells('D7:D8');
-      sheet.mergeCells('E7:E8');
-      sheet.mergeCells('F6:F8');
-      sheet.mergeCells('G6:G8');
-
-      sheet.mergeCells('AG6:AI6');
-      sheet.mergeCells('AG7:AG8');
-      sheet.mergeCells('AH7:AH8');
-      sheet.mergeCells('AI7:AI8');
-      sheet.mergeCells('AJ6:AJ8');
-      sheet.mergeCells('AK6:AK8');
-    }
-
-    if(valueType === 'DCP') {
-      sheet.mergeCells('C5:D5');
-      sheet.mergeCells('C6:D6');
-      sheet.mergeCells('C7:D7'); 
-    }
-
-    if(valueType === 'CBR') {
-      sheet.mergeCells('C5:D5');
-      sheet.mergeCells('C6:D6');
-      sheet.mergeCells('C7:D7'); 
-    }
-    
-    
-    
-    if(valueType === 'HT') {
-      sheet.mergeCells('C5:C8');
-    }
-    
-
+  
+    // Đặt tiêu đề mặc định
+    const titleMap: Record<string, string> = {
+      BDPQ: 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO BẢO DƯỠNG PHÁT QUANG',
+      SMPQ: 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO SƠN MÀU PHÁT QUANG',
+      VSDN: 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO VỆ SINH ĐÈN NĂNG',
+      DCP:  'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO ĐIỀU CHỈNH PHAO',
+      CBR:  'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO CHỐNG BÔI RỬA',
+      HT:   'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO HÀNH TRÌNH'
+    };
+  
+    const title = titleMap[value] || 'BẢNG TỔNG HỢP';
+    sheet.getCell('A1').value = title;
+    sheet.getCell('A2').value = 'CÔNG TRÌNH: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA NĂM 2024';
+    sheet.getCell('A3').value = 'GÓI THẦU: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA KHU VỰC 1';
+    sheet.getCell('A4').value = 'ĐỊA ĐIỂM: KHU VỰC QUẬN, HUYỆN, THÀNH PHỐ HỒ CHÍ MINH';
+    sheet.getCell('A5').value = 'Stt';
+  
+    // Căn giữa và border các dòng tiêu đề
     ['A1', 'A2', 'A3', 'A4'].forEach((cell) => {
+      sheet.getCell(cell).alignment = { wrapText: true, horizontal: 'center', vertical: 'middle' };
+      sheet.getCell(cell).font = { bold: true, size: cell === 'A1' ? 16 : 12 };
       sheet.getCell(cell).border = {
         top: { style: 'thin' },
         left: { style: 'thin' },
@@ -896,199 +856,110 @@ export class AppDashboard1Component {
         right: { style: 'thin' }
       };
     });
-
-    if(valueType === 'BDPQ') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO BẢO DƯỠNG PHÁT QUANG';
-
+  
+    // Tùy biến theo từng loại báo cáo
+    switch (value) {
+      case 'BDPQ':
+      case 'SMPQ':
+        sheet.mergeCells('C5:AF5');
+        sheet.mergeCells('C6:X6');
+        sheet.mergeCells('Y6:AA6');
+        sheet.mergeCells('AB6:AF6');
+        sheet.mergeCells('C7:E7');
+        sheet.mergeCells('F7:K7');
+        sheet.mergeCells('L7:T7');
+        sheet.mergeCells('V7:X7');
+        sheet.mergeCells('Y7:AA7');
+        sheet.mergeCells('AB7:AD7');
+        sheet.mergeCells('AE7:AE8');
+        sheet.mergeCells('AF7:AF8');
+        sheet.mergeCells('AG5:AK5');
+        sheet.mergeCells('AG6:AI6');
+        sheet.mergeCells('AG7:AG8');
+        sheet.mergeCells('AH7:AH8');
+        sheet.mergeCells('AI7:AI8');
+        sheet.mergeCells('AJ6:AJ8');
+        sheet.mergeCells('AK6:AK8');
+  
+        // Đặt tên header tùy biến
+        sheet.getCell('AD6').value = 'Trên cầu';
+        sheet.getCell('AA6').value = 'Dưới nước';
+        sheet.getCell('E7').value = 'Móng';
+        sheet.getCell('H7').value = 'Cột';
+        sheet.getCell('N7').value = 'Bảng';
+        sheet.getCell('X7').value = 'Trụ đèn';
+        sheet.getCell('AA7').value = 'Phao';
+        sheet.getCell('AD7').value = 'Báo hiệu';
+        sheet.getCell('AE7').value = 'Bảng\ntên\ncầu';
+        sheet.getCell('AF7').value = 'BH phụ (0,4m x 0,3m)';
+        sheet.getCell('AG5').value = 'ĐÈN BÁO HIỆU';
+        sheet.getCell('AH6').value = 'Trên bờ';
+        sheet.getCell('AG7').value = 'Cột';
+        sheet.getCell('AH7').value = 'TĐ\n12m';
+        sheet.getCell('AI7').value = 'TĐ\n18m';
+        sheet.getCell('AJ6').value = 'Phao';
+        sheet.getCell('AK6').value = 'Trên\ncầu';
+        break;
+  
+      case 'VSDN':
+        sheet.mergeCells('C5:G5');
+        sheet.mergeCells('C6:E6');
+        sheet.mergeCells('C7:C8');
+        sheet.mergeCells('D7:D8');
+        sheet.mergeCells('E7:E8');
+        sheet.mergeCells('F6:F8');
+        sheet.mergeCells('G6:G8');
+        sheet.mergeCells('AG6:AI6');
+        sheet.mergeCells('AG7:AG8');
+        sheet.mergeCells('AH7:AH8');
+        sheet.mergeCells('AI7:AI8');
+        sheet.mergeCells('AJ6:AJ8');
+        sheet.mergeCells('AK6:AK8');
+  
+        sheet.getCell('C5').value = 'ĐÈN BÁO HIỆU';
+        sheet.getCell('C6').value = 'Trên bờ';
+        sheet.getCell('F6').value = 'Phao';
+        sheet.getCell('G6').value = 'Trên cầu';
+        sheet.getCell('C7').value = 'Cột';
+        sheet.getCell('D7').value = 'TĐ\n12m';
+        sheet.getCell('E7').value = 'TĐ\n18m';
+        break;
+  
+      case 'DCP':
+      case 'CBR':
+        sheet.mergeCells('C5:D5');
+        sheet.mergeCells('C6:D6');
+        sheet.mergeCells('C7:D7');
+  
+        sheet.getCell('C6').value = 'Dưới nước';
+        sheet.getCell('C7').value = 'Phao';
+        sheet.getCell('C8').value = 'D1200';
+        sheet.getCell('D8').value = 'D2000';
+        break;
+  
+      case 'HT':
+        sheet.mergeCells('C5:C8');
+        sheet.getCell('C5').value = 'Hành trình';
+        break;
     }
-
-    if(valueType === 'VSDN') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO VỆ SINH ĐÈN NĂNG';
-    }
-
-    if(valueType === 'DCP') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO ĐIỀU CHỈNH PHAO';
-    }
-
-    if(valueType === 'CBR') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO CHỐNG BÔI RỬA';
-    }
-
-    if(valueType === 'SMPQ') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO SƠN MÀU PHÁT QUANG';
-    }
-
-    if(valueType === 'HT') {
-      sheet.getCell('A1').value = 'BẢNG TỔNG HỢP HỆ THỐNG BÁO CÁO HÀNH TRÌNH';
-    }    
-    sheet.getCell('A2').value = 'CÔNG TRÌNH: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA NĂM 2024';
-    sheet.getCell('A3').value = 'GÓI THẦU: BẢO TRÌ CÔNG TRÌNH ĐƯỜNG THUỶ NỘI ĐỊA KHU VỰC 1';
-    sheet.getCell('A4').value = 'ĐỊA ĐIỂM: KHU VỰC QUẬN, HUYỆN, THÀNH PHỐ HỒ CHÍ MINH';
-    
-    sheet.getCell('A5').value = 'Stt';   
-     
-    if(valueType === 'BDPQ') {
-      sheet.getCell('AD6').value = 'Trên cầu';
-      sheet.getCell('AA6').value = 'Dưới nước'; 
-      
-      sheet.getCell('E7').value = 'Móng';
-      sheet.getCell('H7').value = 'Cột';
-      sheet.getCell('N7').value = 'Bảng';
-      sheet.getCell('X7').value = 'Trụ đèn';
-      sheet.getCell('AA7').value = 'Phao';
-      sheet.getCell('AD7').value = 'Báo hiệu';
-      sheet.getCell('AE7').value = 'Bảng\ntên\ncầu';  
-      sheet.getCell('AF7').value = 'BH phụ (0,4m x 0,3m)';
-
-      sheet.getCell('AG5').value = 'ĐÈN BÁO HIỆU';
-      sheet.getCell('AH6').value = 'Trên bờ'; 
-      sheet.getCell('AG7').value = 'Cột';
-      sheet.getCell('AH7').value = 'TĐ\n12m';
-      sheet.getCell('AI7').value = 'TĐ\n18m';
-
-      sheet.getCell('AJ6').value = 'Phao';
-      sheet.getCell('AK6').value = 'Trên\ncầu';
-    }
-    if(valueType === 'VSDN') {
-      sheet.getCell('C5').value = 'ĐÈN BÁO HIỆU';
-      sheet.getCell('C6').value = 'Trên bờ';
-      sheet.getCell('F6').value = 'Phao';
-      sheet.getCell('G6').value = 'Trên cầu';
-      sheet.getCell('C7').value = 'Cột';
-      sheet.getCell('D7').value = 'TĐ\n12m';
-      sheet.getCell('E7').value = 'TĐ\n18m';
-    }
-
-    if(valueType === 'SMPQ') {
-      sheet.getCell('AD6').value = 'Trên cầu';
-      sheet.getCell('AA6').value = 'Dưới nước'; 
-      
-      sheet.getCell('E7').value = 'Móng';
-      sheet.getCell('H7').value = 'Cột';
-      sheet.getCell('N7').value = 'Bảng';
-      sheet.getCell('X7').value = 'Trụ đèn';
-      sheet.getCell('AA7').value = 'Phao';
-      sheet.getCell('AD7').value = 'Báo hiệu';
-      sheet.getCell('AE7').value = 'Bảng\ntên\ncầu';  
-      sheet.getCell('AF7').value = 'BH phụ (0,4m x 0,3m)';
-
-      sheet.getCell('AG5').value = 'ĐÈN BÁO HIỆU';
-      sheet.getCell('AH6').value = 'Trên bờ'; 
-      sheet.getCell('AG7').value = 'Cột';
-      sheet.getCell('AH7').value = 'TĐ\n12m';
-      sheet.getCell('AI7').value = 'TĐ\n18m';
-
-      sheet.getCell('AJ6').value = 'Phao';
-      sheet.getCell('AK6').value = 'Trên\ncầu';
-    }
-    if(valueType === 'VSDN') {
-      sheet.getCell('C5').value = 'ĐÈN BÁO HIỆU';
-      sheet.getCell('C6').value = 'Trên bờ';
-      sheet.getCell('F6').value = 'Phao';
-      sheet.getCell('G6').value = 'Trên cầu';
-      sheet.getCell('C7').value = 'Cột';
-      sheet.getCell('D7').value = 'TĐ\n12m';
-      sheet.getCell('E7').value = 'TĐ\n18m';
-    }
-
-
-    if(valueType === 'DCP') {
-      sheet.getCell('C6').value = 'Dưới nước';
-      sheet.getCell('C7').value = 'Phao';
-      // 'D1200', 'D2000'
-      sheet.getCell('C8').value = 'D1200';
-      sheet.getCell('D8').value = 'D2000';    
-    }
-
-    if(valueType === 'CBR') {
-      sheet.getCell('C6').value = 'Dưới nước';
-      sheet.getCell('C7').value = 'Phao';
-      // 'D1200', 'D2000'
-      sheet.getCell('C8').value = 'D1200';
-      sheet.getCell('D8').value = 'D2000';    
-    }
-    
-    
-    
-    if(valueType === 'HT') {
-      sheet.getCell('C5').value = 'Hành trình';
-    }
-    // sheet.getCell('AG3').alignment = { wrapText: true, vertical: 'middle', horizontal: 'center' };
-
-    // Căn giữa các ô merge
-    ['A5', 'B5', 'C5', 'E5', 'E6', 'AI5', 'AI6', 'AI7', 'C6', 'C7', 'D6', 'AA6', 'AD6', 'E7', 'H7', 'N7', 'X7', 'AA7','AD7', 'AG7', 'AD7', 'AH7','C8', 'D8', 'E8', 'F8', 'G8', 'H8', 'I8', 'J8', 'K8', 'L8', 'M8', 'N8', 'O8', 'P8', 'Q8', 'R8', 'S8', 'T8', 'U8', 'V8', 'W8', 'X8', 'Y8', 'Z8', 'AA8', 'AB8', 'AC8', 'AD8', 'AE8', 'AF8', 'AG8', 'AH8', 'AI8', 'AJ8', 'AK8', 'AL8', 'AM8'].forEach((cell) => {
-      sheet.getCell(cell).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-      sheet.getCell(cell).font = { bold: true };
+  
+    // Apply định dạng căn giữa + in đậm cho các cell quan trọng
+    const importantCells = [
+      'A5', 'B5', 'C5', 'E5', 'E6', 'AI5', 'AI6', 'AI7',
+      'C6', 'C7', 'D6', 'AA6', 'AD6', 'E7', 'H7', 'N7', 'X7',
+      'AA7', 'AD7', 'AG7', 'AH7', 'C8', 'D8', 'E8', 'F8', 'G8',
+      'H8', 'I8', 'J8', 'K8', 'L8', 'M8', 'N8', 'O8', 'P8', 'Q8',
+      'R8', 'S8', 'T8', 'U8', 'V8', 'W8', 'X8', 'Y8', 'Z8', 'AA8',
+      'AB8', 'AC8', 'AD8', 'AE8', 'AF8', 'AG8', 'AH8', 'AI8', 'AJ8', 'AK8', 'AL8', 'AM8'
+    ];
+    importantCells.forEach(cell => {
+      const c = sheet.getCell(cell);
+      c.alignment = { wrapText: true, horizontal: 'center', vertical: 'middle' };
+      c.font = { bold: true };
     });
-
-    sheet.getCell('A1').alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-    sheet.getCell('A1').font = { bold: true, size: 16 };
-
-    ['A2', 'A3', 'A4'].forEach((cell) => {
-      sheet.getCell(cell).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-      sheet.getCell(cell).font = { bold: true, size: 12 };
-    });
-
-    this.service.getAllBaoCao().subscribe(data => {
-      const result = this.aggregateMaterials(data);     
-      // console.log('result', result); 
-      const dataRes = JSON.parse(result);      
-      const listVL:any = this.shortenProjectNameByValue(valueType)
-      
-      dataRes.forEach((item: any, index: number) => {
-        let count = 9
-        sheet.getCell(`A${index + count}` ).value = index + 1;
-        sheet.getCell(`B${index + count}` ).value = item.name_cong_trinh;
-        console.log('item', item);
-        if(valueType === 'HT') {
-          sheet.getCell(`C${index + count}` ).value = item.trip || '-';
-          sheet.getCell(`C${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-          sheet.getCell(`C${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
-        }
-        sheet.getCell(`A${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-        
-        sheet.getCell(`A${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
-        
-        sheet.getCell(`B${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
-       
-        item.chi_tiet.forEach((detail: any, index2: number) => {
-          
-          if(detail['Số lượng nhập']){
-            const materialKey = detail['Vật liệu'];
-            const vl = listVL[materialKey];
-           
-            if(vl){              
-              sheet.getCell(`${vl}${index + count}` ).value = detail['Số lượng nhập']
-              sheet.getCell(`${vl}${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-              sheet.getCell(`${vl}${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
-            }
-            
-          }else{
-            const materialKey = detail['Vật liệu'];
-            const vl = listVL[materialKey];
-            
-            if(vl){              
-              sheet.getCell(`${vl}${index + count}` ).value = '-'
-              sheet.getCell(`${vl}${index + count}`).alignment = {wrapText: true, horizontal: 'center', vertical: 'middle' };
-              sheet.getCell(`${vl}${index + count}`).font = { bold: true, color: { argb: 'FF0000FF' }, name: 'Times New Roman' };
-            }
-          }
-        })
-      });
-      const columnWidths = [
-        10, 50
-      ];
-      columnWidths.forEach((width, index) => {   
-        sheet.getColumn(index + 1).width = width;
-      });
-      sheet.getRow(8).height = 50;
-      workbook.xlsx.writeBuffer().then((buffer) => {
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'export.xlsx');
-      });
-    });   
-    
   }
+  
+  
 
   aggregateMaterials(data:any) {
     const result:any = [];

@@ -1,17 +1,17 @@
-<div class="row gap-8">
+<div class="row gap-8 m-l-0 m-r-0">
   <a class="col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
     style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%)"
     [routerLink]="['/dashboards/adhoc-report']">
     <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
     <span>Tạo BC đột xuất</span>
   </a>
-  <a class="hover-container col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+  <a (click)="exportExcelAllFiles()" class="hover-container col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
     style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%); position: relative;"
     >
     <mat-icon matSuffix class="icon-26 m-r-4">file_download</mat-icon>
     <span>Tạo BC định ngạch</span>
     <!-- <div class="w-100 p-y-16 p-x-16" style="background-color: #115D85; position: absolute; top: 20px; left: 0;"> hau1</div> -->
-    <div style="position: absolute; top: 0px; left: 0; z-index: 1000 ; width: 100%;">
+    <!-- <div style="position: absolute; top: 0px; left: 0; z-index: 1000 ; width: 100%;">
       <div style="height: 68px;"></div>
       <mat-card class="hover-card b-1 w-100" >      
         <mat-card-content class="b-t-1 p-0">        
@@ -20,7 +20,7 @@
           </mat-list>          
         </mat-card-content>
       </mat-card>
-    </div>
+    </div> -->
   </a>
   
   
