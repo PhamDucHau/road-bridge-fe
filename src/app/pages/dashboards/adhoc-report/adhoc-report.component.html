@@ -4,10 +4,22 @@
 <mat-card class="b-1 shadow-none">
   <mat-card-content class="b-t-1">
     <form style="margin-top: 21px;">
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Tên công trình: <span
+
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block m-t-12"
+        >Quý</mat-label
+      >
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select [(value)]="selectedQuarter">
+          @for(option of quarter; track option) {
+          <mat-option [value]="option.value">{{ option.title }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block f-s-16" >Tuyến: <span
           class="text-warning">(*)</span></mat-label>
       <mat-form-field class="w-100" appearance="outline">
-        <input type="text" placeholder="Chọn tên công trình" aria-label="Number" matInput
+        <input type="text" placeholder="Chọn Tuyến" aria-label="Number" matInput
           [formControl]="congTrinhControl" [matAutocomplete]="auto" (focus)="onFocusCongTrinh()" />
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedCongTrinh($event)">
           @for(firstoption of congTrinhFilterOption | async; track
@@ -20,7 +32,7 @@
         <mat-icon matSuffix>{{ isDropdownOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
       </mat-form-field>
 
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Địa điểm: <span
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block f-s-16">Địa điểm: <span
           class="text-warning">(*)</span></mat-label>
       <mat-form-field class="w-100" appearance="outline">
         <input type="text" placeholder="Chọn địa điểm" aria-label="Number" matInput [formControl]="diaDiemControl"
@@ -40,7 +52,7 @@
 </mat-card>
 
 <div *ngIf="isDuAn">
-  <div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div>
+  <!-- <div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div> -->
 
   <div class="row m-y-20">
     <!-- <div class="col-2 d-flex align-items-center cursor-pointer">
@@ -89,11 +101,12 @@
     <mat-expansion-panel *ngFor="let product of nhapKhoList ; let i = index" class="cardWithShadow">
       <mat-expansion-panel-header style="height: 5rem;" *ngIf="product['Số lượng nhập'] > 0 || dataSanPham[i]['Số lượng nhập'] > 0 ">
         <mat-panel-title class="mat-body-1" >
-          <mat-icon matListItemIcon
+          <!-- <mat-icon matListItemIcon
             class="m-r-8"
-            [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon> <span
-            class="m-r-8 f-w-700 f-d-14-m-12">{{product['Vật liệu']}}</span>
-          <span [ngClass]="{'text-red f-d-14-m-10': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black f-d-14-m-10': numberTitle(product['Số lượng nhập'], i) >= 0}">( số lượng dự kiến {{numberTitle(product['Số lượng nhập'], i)}} )</span>
+            [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon>  -->
+          <span
+            class="m-r-8 f-w-700  f-d-16-m-12">{{product['Vật liệu']}}</span>
+          <span [ngClass]="{'text-red f-d-16-m-10': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black f-d-16-m-10': numberTitle(product['Số lượng nhập'], i) >= 0}">( số lượng dự kiến {{numberTitle(product['Số lượng nhập'], i)}} )</span>
           
           <!-- [ngClass]="{'text-red': numberTitle(product['Số lượng nhập'], i) < 0, 'text-black': numberTitle(product['Số lượng nhập'], i) >= 0}" -->
           <!-- {{product['Số lượng nhập']}} - {{dataSanPham[i]['Số lượng nhập']}} -->
@@ -106,23 +119,24 @@
             (input)="onInput($event,i,'Số lượng nhập')" aria-label="Number" matInput />
         </mat-form-field>
 
-        <mat-form-field class="w-100" appearance="outline">
+        <!-- <mat-form-field class="w-100" appearance="outline">
           <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>
           <input type="number" [value]="dataSanPham[i]['Đơn giá'] || 0 " (input)="onInput($event,i,'Đơn giá')"
             aria-label="Number" matInput />
-        </mat-form-field>
+        </mat-form-field> -->
 
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>
+          <mat-label class="mat-subtitle-2 f-w-400 m-b-4 d-block">Mô tả hư hỏng</mat-label>
           <input type="text" [value]="dataSanPham[i]['Mô tả hư hại'] || '' " (input)="onInput($event,i,'Mô tả hư hại')"
             matInput />
         </mat-form-field>
 
-        <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Hình ảnh hư hại</mat-label>
+        <!-- <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Hình ảnh hư hại</mat-label> -->
         
-        <button mat-flat-button color="primary" class="input-file-button m-b-8" (click)="fileInput.click()">
+        <!-- <button mat-flat-button color="primary" class="input-file-button m-b-8" (click)="fileInput.click()">
           Thêm ảnh
-        </button>
+        </button> -->
+        <p (click)="fileInput.click()" class="cursor-pointer" style="text-decoration: underline; color: #609DC2;">Upload hình ảnh</p>
         <input type="file" #fileInput (change)="selectFile($event,i)" style="display: none;" multiple />    
         
         <div *ngIf="dataSanPham[i]['Hình ảnh hư hại']" class="d-flex flex-wrap gap-12">
@@ -150,7 +164,7 @@
 
     </mat-expansion-panel>
 
-    <mat-card class="b-1 shadow-none m-t-20">
+    <!-- <mat-card class="b-1 shadow-none m-t-20">
       <mat-card-header class="p-y-20">
         <mat-card-title>Tổng kilometer</mat-card-title>
       </mat-card-header>
@@ -164,17 +178,17 @@
         </form>
 
       </mat-card-content>
-    </mat-card>
+    </mat-card> -->
 
     <mat-card class="b-1 shadow-none m-t-20">
       <mat-card-header class="p-y-20">
-        <mat-card-title>Ghi chú</mat-card-title>
+        <mat-card-title>Văn bản liên quan</mat-card-title>
       </mat-card-header>
       <mat-card-content class="b-t-1">
         <form style="margin-top: 21px;">
 
           <mat-form-field class="w-100" appearance="outline">
-            <textarea [formControl]="noteControl"  placeholder="Nhập ghi chú của bạn" matInput rows="4" cdkTextareaAutosize cdkAutosizeMinRows="4"
+            <textarea [formControl]="noteControl"  placeholder="Nhập văn bản liên quan" matInput rows="4" cdkTextareaAutosize cdkAutosizeMinRows="4"
               cdkAutosizeMaxRows="10">
         </textarea>
           </mat-form-field>

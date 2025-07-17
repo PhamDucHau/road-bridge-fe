@@ -105,7 +105,7 @@
         </div>            -->
         <div>
           <div class="f-w-400 title-and-time-list-report" >
-            {{item.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} - {{item.name_cong_trinh}}
+            {{item.createdAt | date:'dd/MM/yyyy'}} ( {{item.quarter}} ) - {{item.name_cong_trinh}}
           </div>
           <div class="d-flex gap-12 m-t-12">
             <div class="f-w-700 f-s-line2 display-dia-diem-du-an" style="font-weight: 500;line-height: normal;">
@@ -162,7 +162,8 @@
       <mat-expansion-panel *ngFor="let product of item.chi_tiet ; let i = index" class="cardWithShadow m-t-10">
         <mat-expansion-panel-header style="height: 5rem">
           <mat-panel-title class="mat-body-1">
-            <mat-icon matListItemIcon class="m-r-8">folder</mat-icon> <span class="m-r-8 f-w-700 f-d-14-m-12">{{product['Vật
+            <!-- <mat-icon matListItemIcon class="m-r-8">folder</mat-icon>  -->
+            <span class="m-r-8 f-w-700 f-d-14-m-12">{{product['Vật
               liệu']}}</span> <span class="f-d-14-m-10">( số lượng {{product['Số lượng nhập']}} )</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
@@ -172,10 +173,10 @@
             <input type="number" disabled value="{{product['Số lượng nhập']}}" aria-label="Number" matInput />
           </mat-form-field>
 
-          <mat-form-field class="w-100" appearance="outline">
+          <!-- <mat-form-field class="w-100" appearance="outline">
             <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Nhập đơn giá</mat-label>
             <input type="number" disabled value="{{product['Đơn giá']}}" aria-label="Number" matInput />
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field class="w-100" appearance="outline">
             <mat-label class="mat-subtitle-2 f-w-400 m-b-8 d-block">Mô tả hư hỏng</mat-label>

@@ -104,6 +104,15 @@ export class AdhocReportComponent {
   public idParam: any = '';
   public infoReport: any;
 
+  quarter: any[] = [
+    { title: 'Quý 1', value: 'Quý 1' },
+    { title: 'Quý 2', value: 'Quý 2' },
+    { title: 'Quý 3', value: 'Quý 3' },
+    { title: 'Quý 4', value: 'Quý 4' },
+  ];
+
+  selectedQuarter = this.quarter[0].value;
+
 
 
   ngOnInit() {  
@@ -541,25 +550,25 @@ export class AdhocReportComponent {
     let missingFields = 0
     let countNotpositive = 0
     this.dataSanPham.forEach((item: any) => {
-      if (item['Số lượng nhập'] > 0 || item['Đơn giá'] > 0) {
+      if (item['Số lượng nhập'] > 0 ) {
         count = count + 1
       }
       // if(item['Đơn giá'] > 0 || item['Số lượng nhập'] < 0 && item['Đơn giá'] < 0 || item['Số lượng nhập'] > 0){
       //   missingFields = missingFields + 1
       // }
-      if(item['Số lượng nhập'] > 0){
-        if(item['Đơn giá'] < 0 || item['Đơn giá'] == 0 || item['Đơn giá'] == null){
-          missingFields = missingFields + 1
-        }
-      }
-      if(item['Đơn giá'] > 0){
-        if(item['Số lượng nhập'] < 0 || item['Số lượng nhập'] == 0 || item['Số lượng nhập'] == null){
-          missingFields = missingFields + 1
-        }
-      }
-      if (item['Số lượng nhập'] < 0 || item['Đơn giá'] < 0 ) {
-        countNotpositive = countNotpositive + 1
-      }
+      // if(item['Số lượng nhập'] > 0){
+      //   if(item['Đơn giá'] < 0 || item['Đơn giá'] == 0 || item['Đơn giá'] == null){
+      //     missingFields = missingFields + 1
+      //   }
+      // }
+      // if(item['Đơn giá'] > 0){
+      //   if(item['Số lượng nhập'] < 0 || item['Số lượng nhập'] == 0 || item['Số lượng nhập'] == null){
+      //     missingFields = missingFields + 1
+      //   }
+      // }
+      // if (item['Số lượng nhập'] < 0 || item['Đơn giá'] < 0 ) {
+      //   countNotpositive = countNotpositive + 1
+      // }
     })
     if (count === 0) {
       return this.openSnackBar('Chưa có vật liệu nào được yêu cầu', 'warning');
@@ -627,7 +636,8 @@ export class AdhocReportComponent {
             chi_tiet: this.dataSanPham,
             status: status,
             note: this.noteControl.value,
-            trip: this.tripControl.value
+            trip: this.tripControl.value,
+            quarter: this.selectedQuarter
           }
         } else {
           formSave = {
@@ -637,7 +647,8 @@ export class AdhocReportComponent {
             chi_tiet: this.dataSanPham,
             status: status,
             note: this.noteControl.value,
-            trip: this.tripControl.value
+            trip: this.tripControl.value,
+            quarter: this.selectedQuarter
           }
         }
 
