@@ -198,6 +198,9 @@ export class AdhocReportComponent {
               'Hình ảnh hư hại': item['Hình ảnh hư hại']
             })
           })
+          console.log('this.dataSanPhamEdit', this.dataSanPhamEdit);
+          console.log('this.dataSanPham', this.dataSanPham);
+          console.log('this.nhapKhoList', this.nhapKhoList);
           
         },
         error: (error) => {
@@ -359,6 +362,7 @@ export class AdhocReportComponent {
         if (item.name_cong_trinh.trim() === congTrinh) {
 
           this.nhapKhoList = item.chi_tiet
+          console.log('this.nhapKhoList', this.nhapKhoList);
         }
       })
 
@@ -483,8 +487,8 @@ export class AdhocReportComponent {
     if (this.diaDiemControl.value) {
       this.diaDiemCurrent = this.diaDiemControl.value.trim()
 
-      // this.isProducts = true
-      this.isDuAn = true
+      this.isProducts = true
+      // this.isDuAn = true
 
 
       this.congTrinhDiaDiem.map((item: any) => {
@@ -542,9 +546,9 @@ export class AdhocReportComponent {
 
   save(status: string): void {
 
-    if (!this.productsListControl.value) {
-      return this.openSnackBar('Field dự án đang trống', 'warning');
-    }
+    // if (!this.productsListControl.value) {
+    //   return this.openSnackBar('Field dự án đang trống', 'warning');
+    // }
     let count = 0
     // let countGia = 0
     let missingFields = 0

@@ -51,19 +51,12 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="isDuAn">
-  <!-- <div class="mat-subtitle-2 f-w-700 m-b-8 d-block f-s-16">Nội dung báo cáo</div> -->
+<div >
+ 
 
-  <div class="row m-y-20">
-    <!-- <div class="col-2 d-flex align-items-center cursor-pointer">
-     
-        <mat-icon (click)="decreaseIndex()" class="icon" matSuffix>arrow_back</mat-icon>
-        
-      
-     
-    </div> -->
+  <!-- <div class="row m-y-20">    
     <div class="col">
-      <!-- {{productsList.length}} -->
+      
       <div>
         <mat-label class="mat-subtitle-2 f-s-20 f-w-600 m-b-8 d-block text-center m-b-16">Dự án <span
             class="text-warning">(*)</span></mat-label>
@@ -84,23 +77,18 @@
         </mat-form-field>
       </div>
 
-      <!-- <div class="f-w-700 f-s-20"
-        style="color: var(--1, #115D85);text-align: center;font-style: normal;line-height: normal;">
-        {{ productsList[indexSanPham] }} <br />
-        <span>------ {{indexSanPham + 1}}/{{productsList.length}} ------</span>
-      </div> -->
-
+     
 
     </div>
-    <!-- <div class="col-2 d-flex align-items-center justify-content-end cursor-pointer">
-      <mat-icon (click)="increaseIndex()" class="icon" matSuffix>arrow_forward</mat-icon>
-    </div> -->
-  </div>
+   
+  </div> -->
 
   <mat-accordion *ngIf="isProducts">
     <mat-expansion-panel *ngFor="let product of nhapKhoList ; let i = index" class="cardWithShadow">
+      <!-- <p>{{product['Vật liệu']}}</p> -->
       <mat-expansion-panel-header style="height: 5rem;" *ngIf="product['Số lượng nhập'] > 0 || dataSanPham[i]['Số lượng nhập'] > 0 ">
         <mat-panel-title class="mat-body-1" >
+          <!-- <p>{{product['Vật liệu']}} - {{dataSanPham[i]['Vật liệu']}} - {{ product['Số lượng nhập']}} - {{dataSanPham[i]['Số lượng nhập']}} </p> -->
           <!-- <mat-icon matListItemIcon
             class="m-r-8"
             [ngClass]="dataSanPham[i]['Số lượng nhập'] > 0 ? 'm-r-8 text-success' : 'm-r-8'">folder</mat-icon>  -->

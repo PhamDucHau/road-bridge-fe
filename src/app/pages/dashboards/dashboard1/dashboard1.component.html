@@ -5,9 +5,9 @@
     <i-tabler name="file-plus" class="icon-26 m-r-4"></i-tabler>
     <span>Tạo BC đột xuất</span>
   </a>
-  <a (click)="exportExcelAllFiles()" class="hover-container col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
-    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%); position: relative;"
-    >
+  <a (click)="exportExcelAllFiles()"
+    class="hover-container col taskboard-header p-y-16 p-x-16 text-white m-b-16 col text-center cursor-pointer font-weight-bold d-flex align-items-center justify-content-center"
+    style="border-radius: 4px; background: linear-gradient(81deg, #115D85 -0.64%, #71ABCF 49.15%, #A1D7E5 100%); position: relative;">
     <mat-icon matSuffix class="icon-26 m-r-4">file_download</mat-icon>
     <span>Tạo BC định ngạch</span>
     <!-- <div class="w-100 p-y-16 p-x-16" style="background-color: #115D85; position: absolute; top: 20px; left: 0;"> hau1</div> -->
@@ -22,8 +22,8 @@
       </mat-card>
     </div> -->
   </a>
-  
-  
+
+
 </div>
 
 
@@ -35,7 +35,7 @@
   <mat-spinner></mat-spinner>
 </div>
 
-<div class="main-filter">  
+<div class="main-filter">
 
   <div class="d-flex gap-12">
 
@@ -53,7 +53,7 @@
         Khoảng thời gian
       </button>
     </div>
-  
+
     <div>
       <button mat-flat-button [color]="isFilterQuy ? 'accent' : 'primary'" (click)="filterQuy()">
         Quý
@@ -69,26 +69,26 @@
         <i-tabler name="search" class="icon-20"></i-tabler>
       </mat-icon>
     </mat-form-field>
-    
-  </div> 
+
+  </div>
 
 </div>
 
 <div class="d-block align-items-center justify-content-between m-b-8">
-  
 
-  
 
-    <!-- <button mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcelFilter()">
+
+
+  <!-- <button mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcelFilter()">
       <mat-icon matSuffix>file_download</mat-icon>
       Export to Excel
     </button> -->
-    <a mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcelFilter()" href="javascript:void(0);">
-      <mat-icon matSuffix>file_download</mat-icon>
-      Export to Excel
-    </a>
+  <a mat-flat-button class="text-white f-s-16 bg-success" (click)="exportExcelFilter()" href="javascript:void(0);">
+    <mat-icon matSuffix>file_download</mat-icon>
+    Export to Excel
+  </a>
 
-  
+
 </div>
 
 <mat-accordion>
@@ -104,31 +104,32 @@
           </mat-icon>
         </div>            -->
         <div>
-          <div class="f-w-400 title-and-time-list-report" >
+          <div class="f-w-400 title-and-time-list-report">
             {{item.createdAt | date:'dd/MM/yyyy'}} ( {{item.quarter}} ) - {{item.name_cong_trinh}}
           </div>
           <div class="d-flex gap-12 m-t-12">
             <div class="f-w-700 f-s-line2 display-dia-diem-du-an" style="font-weight: 500;line-height: normal;">
-              {{item.name_dia_diem}} - {{item.du_an}} 
+              {{item.name_dia_diem}} - {{item.du_an}}
             </div>
             <div class="f-w-700 f-s-10 display-dia-diem-du-an-mobie" style="font-weight: 500;line-height: normal;">
               <div class="ten-dia-diem">{{ item.name_dia_diem }}</div>
               <div class="ten-dia-diem">{{ item.du_an }}</div>
             </div>
             <div class="d-flex gap-10 align-items-center justify-content-end">
-              <div 
-                    [class]="item.status === 'DONE' ? 'bg-success d-flex text-white mat-body-2 f-w-500 p-x-8 f-d-12-m-10 rounded-pill' : 'bg-warning d-flex text-white mat-body-2 f-w-500 p-x-8 f-d-12-m-10 rounded-pill'">
-                    {{item.status}} 
+              <div
+                [class]="item.status === 'DONE' ? 'bg-success d-flex text-white mat-body-2 f-w-500 p-x-8 f-d-12-m-10 rounded-pill' : 'bg-warning d-flex text-white mat-body-2 f-w-500 p-x-8 f-d-12-m-10 rounded-pill'">
+                {{item.status}}
 
-                    <!-- <mat-icon matSuffix (click)="editBaoCao($event,item)" class="h-blue">
+                <!-- <mat-icon matSuffix (click)="editBaoCao($event,item)" class="h-blue">
                       <i-tabler name="arrow-big-up" class="icon-16"></i-tabler>
                     </mat-icon> -->
-                    
+
               </div>
-              
-              <!-- <span style="color: rgb(42, 196, 111);" class="d-flex mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span> -->  
-               
-              <mat-icon *ngIf="item.status !== 'DONE'" matSuffix (click)="upDoneBaoCao($event,item._id)" class="h-green">
+
+              <!-- <span style="color: rgb(42, 196, 111);" class="d-flex mat-body-2 f-w-500 p-x-8 f-s-12 rounded-pill">DONE</span> -->
+
+              <mat-icon *ngIf="item.status !== 'DONE'" matSuffix (click)="upDoneBaoCao($event,item._id)"
+                class="h-green">
                 <i-tabler name="arrow-big-up" class="icon-26"></i-tabler>
               </mat-icon>
 
@@ -136,7 +137,8 @@
                 <i-tabler name="edit" class="icon-26"></i-tabler>
               </mat-icon>
 
-              <mat-icon *ngIf="item.status !== 'DONE'" matSuffix (click)="deleteBaoCao($event,item._id)" class="h-red m-r-8">
+              <mat-icon *ngIf="item.status !== 'DONE'" matSuffix (click)="deleteBaoCao($event,item._id)"
+                class="h-red m-r-8">
                 <i-tabler name="trash" class="icon-26"></i-tabler>
               </mat-icon>
 
@@ -186,17 +188,17 @@
             <textarea disabled id="damage-description" placeholder="Hình ảnh hư hại" rows="8" class="custom-textarea"></textarea>
           </div> -->
           <div class="d-flex flex-wrap gap-12">
-            <div class="d-flex align-items-center justify-content-start gap-16" *ngFor="let image of product['Hình ảnh hư hại']">
-              <div class="image-container" >
+            <div class="d-flex align-items-center justify-content-start gap-16"
+              *ngFor="let image of product['Hình ảnh hư hại']">
+              <div class="image-container">
                 <img [src]="image || ''" alt="Hình ảnh đẹp">
               </div>
               <div>
                 <mat-icon matSuffix class="h-blue cursor-pointer" (click)="viewImage(image || '')">
                   <i-tabler name="eye" class="icon-26"></i-tabler>
                 </mat-icon>
-  
-                <mat-icon matSuffix class="h-blue cursor-pointer"
-                  (click)="chaneLinkViewImage(image || '')">
+
+                <mat-icon matSuffix class="h-blue cursor-pointer" (click)="chaneLinkViewImage(image || '')">
                   <i-tabler name="eye-share" class="icon-26"></i-tabler>
                 </mat-icon>
               </div>
@@ -206,7 +208,7 @@
 
       </mat-expansion-panel>
 
-      <mat-card class="b-1 shadow-none m-t-20">
+      <!-- <mat-card class="b-1 shadow-none m-t-20">
         <mat-card-header class="p-y-20">
           <mat-card-title>Tổng kilometer</mat-card-title>
         </mat-card-header>
@@ -220,21 +222,21 @@
           </form>
   
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
 
       <mat-card class="b-1 shadow-none m-t-20">
         <mat-card-header class="p-y-20">
-          <mat-card-title>Ghi chú</mat-card-title>
+          <mat-card-title>Văn bản liên quan</mat-card-title>
         </mat-card-header>
         <mat-card-content class="b-t-1">
-          <form style="margin-top: 21px;">   
+          <form style="margin-top: 21px;">
             <mat-form-field class="w-100" appearance="outline">
-              <textarea disabled value="{{item['note']}}"  placeholder="Nhập ghi chú của bạn" matInput rows="4" cdkTextareaAutosize cdkAutosizeMinRows="4"
-                cdkAutosizeMaxRows="10">
+              <textarea disabled value="{{item['note']}}" placeholder="Nhập văn bản liên quan" matInput rows="4"
+                cdkTextareaAutosize cdkAutosizeMinRows="4" cdkAutosizeMaxRows="10">
           </textarea>
             </mat-form-field>
           </form>
-  
+
         </mat-card-content>
       </mat-card>
 
@@ -298,8 +300,9 @@
 
 <div class="row">
   <div class="col">
-    <mat-paginator class="m-t-6" (page)="handlePageEventApply($event)" [length]="totalRecordApply" [pageIndex]="pageIndexApply"
-    [pageSize]="pageSizeApply" [pageSizeOptions]="pageSizeOptionsApply" [hidePageSize]="false" aria-label="Chọn trang">
+    <mat-paginator class="m-t-6" (page)="handlePageEventApply($event)" [length]="totalRecordApply"
+      [pageIndex]="pageIndexApply" [pageSize]="pageSizeApply" [pageSizeOptions]="pageSizeOptionsApply"
+      [hidePageSize]="false" aria-label="Chọn trang">
     </mat-paginator>
   </div>
   <div class="col-2"></div>
