@@ -126,7 +126,7 @@ export class AppDashboard1Component {
     this.filterApply = {
       page: this.pageIndexApply + 1,
       size: this.pageSizeApply,
-      search: ''
+      search: '',      
     }
     this.allBaoCao$ = this.service.allBaoCao$
 
@@ -557,7 +557,7 @@ export class AppDashboard1Component {
       sheet.getRow(8).height = 50;
       workbook.xlsx.writeBuffer().then((buffer) => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'export.xlsx');
+        saveAs(blob, 'BÁO CÁO ĐỊNH NGACH - QUÝ II, NĂM 2025.xlsx');
       });
     });   
     
@@ -573,9 +573,9 @@ export class AppDashboard1Component {
         // ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
         ['', '','Trên bờ', 'Dưới nước'],
         [''],
-        ['', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
-           'D168,3,\nL=7,5m', '1,2m\nx\n2,4m', '1m\nx\n2m', '0,8m\nx\n1,7m', '0,7m\nx\n1,4m', '1,8m\nx\n1,8m', '1,5m\nx\n1,5m', '1,2m\nx\n1,2m', '1,2m\nx\n0,7m',
-           '1,2m\nx\n0,8m', '1,2m\nx\n0,4m', '12m', '18m', 'BH phụ\n(0,4m\nx\n0,3m)', 'D1200', 'D2000', 'Xích', '1,2m\nx\n1,2m', '0,6m\nx\n0,6m', 'Thước\nnước\nngược', 
+        ['', '', 'Móng\nBê\ntông', 'Móng\nD219,\nL=12m', 'Móng\nD219,\nL=1m', 'Cột\nD90,\nL=3,2m', 'Cột\nD113,5,\nL=6m', 'Cột\nD113,5,\nL=4m', 'Cột\nD126,8,\nL=5,5m', 'Cột\nD141,3,\nL=6,5m',
+           'Cột\nD168,3,\nL=7,5m', 'Bảng\n1,2m\nx\n2,4m', 'Bảng\n1m\nx\n2m', 'Bảng\n0,8m\nx\n1,7m', 'Bảng\n0,7m\nx\n1,4m', 'Bảng\n1,8m\nx\n1,8m', 'Bảng\n1,5m\nx\n1,5m', 'Bảng\n1,2m\nx\n1,2m', 'Bảng\n1,2m\nx\n0,7m',
+           'Bảng\n1,2m\nx\n0,8m', 'Bảng\n1,2m\nx\n0,4m', 'Trụ đèn\n12m', 'Trụ đèn\n18m', 'Trụ đèn\nBH phụ\n(0,4m\nx\n0,3m)', 'Phao\nD1200', 'Phao\nD2000', 'Phao\nXích', 'Báo hiệu\n1,2m\nx\n1,2m', 'Báo hiệu\n0,6m\nx\n0,6m', 'Báo hiệu\nThước\nnước\nngược', 
            'Bảng\ntên\ncầu', 'BH\nphụ\n(0,4m\nx\n0,3m)', 'Cột', 'TĐ\n12m', 'TĐ\n18m', 'Phao', 'Trên\ncầu']
       ];
 
@@ -588,9 +588,9 @@ export class AppDashboard1Component {
         // ['', '', 'Bờ trái', 'Bờ phải', 'Trên bờ', 'Dưới nước'],
         ['', '','Trên bờ', 'Dưới nước'],
         [''],
-        ['', '', 'Bê\ntông', 'D219,\nL=12m', 'D219,\nL=1m', 'D90,\nL=3,2m', 'D113,5,\nL=6m', 'D113,5,\nL=4m', 'D126,8,\nL=5,5m', 'D141,3,\nL=6,5m',
-           'D168,3,\nL=7,5m', '1,2m\nx\n2,4m', '1m\nx\n2m', '0,8m\nx\n1,7m', '0,7m\nx\n1,4m', '1,8m\nx\n1,8m', '1,5m\nx\n1,5m', '1,2m\nx\n1,2m', '1,2m\nx\n0,7m',
-           '1,2m\nx\n0,8m', '1,2m\nx\n0,4m', '12m', '18m', 'BH phụ\n(0,4m\nx\n0,3m)', 'D1200', 'D2000', 'Xích', '1,2m\nx\n1,2m', '0,6m\nx\n0,6m', 'Thước\nnước\nngược', 
+        ['', '', 'Móng\nBê\ntông', 'Móng\nD219,\nL=12m', 'Móng\nD219,\nL=1m', 'Cột\nD90,\nL=3,2m', 'Cột\nD113,5,\nL=6m', 'Cột\nD113,5,\nL=4m', 'Cột\nD126,8,\nL=5,5m', 'Cột\nD141,3,\nL=6,5m',
+           'Cột\nD168,3,\nL=7,5m', 'Bảng\n1,2m\nx\n2,4m', 'Bảng\n1m\nx\n2m', 'Bảng\n0,8m\nx\n1,7m', 'Bảng\n0,7m\nx\n1,4m', 'Bảng\n1,8m\nx\n1,8m', 'Bảng\n1,5m\nx\n1,5m', 'Bảng\n1,2m\nx\n1,2m', 'Bảng\n1,2m\nx\n0,7m',
+           'Bảng\n1,2m\nx\n0,8m', 'Bảng\n1,2m\nx\n0,4m', 'Trụ đèn\n12m', 'Trụ đèn\n18m', 'Trụ đèn\nBH phụ\n(0,4m\nx\n0,3m)', 'Phao\nD1200', 'Phao\nD2000', 'Phao\nXích', 'Báo hiệu\n1,2m\nx\n1,2m', 'Báo hiệu\n0,6m\nx\n0,6m', 'Báo hiệu\nThước\nnước\nngược', 
            'Bảng\ntên\ncầu', 'BH\nphụ\n(0,4m\nx\n0,3m)', 'Cột', 'TĐ\n12m', 'TĐ\n18m', 'Phao', 'Trên\ncầu']
       ];
 
@@ -632,36 +632,36 @@ export class AppDashboard1Component {
 
     if(value === 'BDPQ') {
       data = {
-        "Bê tông": 'C',
-        "D219, L=12m": 'D',
-        "D219, L=1m": 'E',
-        'D90, L=3,2m': 'F',
-        'D113,5, L=6m': 'G',
-        'D113,5, L=4m': 'H',
-        'D126,8, L=5,5m': 'I',
-        'D141,3, L=6,5m': 'J',
-        'D168,3, L=7,5m': 'K',
-        '1,2m x 2,4m': 'L',
-        '1m x 2m': 'M',
-        '0,8m x 1,7m': 'N',
-        '0,7m x 1,4m': 'O',
-        '1,8m x 1,8m': 'P',
-        '1,5m x 1,5m': 'Q',
-        '1,2m x 1,2m': 'R',
-        '1,2m x 0,7m': 'S',
-        '1,2m x 0,8m': 'T',
-        '1,2m x 0,4m': 'U',
-        '12m': 'V',
-        '18m': 'W',
-        'BH phụ (0,4m x 0,3m)': 'X',
-        'D1200': 'Y',
-        'D2000': 'Z',
-        'Xích': 'AA',
-        '1,2m x 1,2m!': 'AB',
-        '0,6m x 0,6m': 'AC',
-        'Thước nước ngược': 'AD',
+        "Móng bê tông": 'C',
+        "Móng D219, L=12m": 'D',
+        "Móng D219, L=1m": 'E',
+        'Cột D90, L=3,2m': 'F',
+        'Cột D113,5, L=6m': 'G',
+        'Cột D113,5, L=4m': 'H',
+        'Cột D126,8, L=5,5m': 'I',
+        'Cột D141,3, L=6,5m': 'J',
+        'Cột D168,3, L=7,5m': 'K',
+        'Bảng 1,2m x 2,4m': 'L',
+        'Bảng 1m x 2m': 'M',
+        'Bảng 0,8m x 1,7m': 'N',
+        'Bảng 0,7m x 1,4m': 'O',
+        'Bảng 1,8m x 1,8m': 'P',
+        'Bảng 1,5m x 1,5m': 'Q',
+        'Bảng 1,2m x 1,2m': 'R',
+        'Bảng 1,2m x 0,7m': 'S',
+        'Bảng 1,2m x 0,8m': 'T',
+        'Bảng 1,2m x 0,4m': 'U',
+        'Trụ đèn 12m': 'V',
+        'Trụ đèn 18m': 'W',
+        'Trụ đèn BH phụ (0,4m x 0,3m)': 'X',
+        'Phao D1200': 'Y',
+        'Phao D2000': 'Z',
+        'Phao Xích': 'AA',
+        'Báo hiệu 1,2m x 1,2m': 'AB',
+        'Báo hiệu 0,6m x 0,6m': 'AC',
+        'Báo hiệu Thước nước ngược': 'AD',
         'Bảng tên cầu': 'AE',
-        'BH phụ (0,4m x 0,3m)!': 'AF',
+        'BH phụ (0,4m x 0,3m)': 'AF',
         'Cột': 'AG',
         'TĐ 12m': 'AH',
         'TĐ 18m': 'AI',
@@ -673,36 +673,36 @@ export class AppDashboard1Component {
 
     if(value === 'SMPQ') {
       data = {
-        "Bê tông": 'C',
-        "D219, L=12m": 'D',
-        "D219, L=1m": 'E',
-        'D90, L=3,2m': 'F',
-        'D113,5, L=6m': 'G',
-        'D113,5, L=4m': 'H',
-        'D126,8, L=5,5m': 'I',
-        'D141,3, L=6,5m': 'J',
-        'D168,3, L=7,5m': 'K',
-        '1,2m x 2,4m': 'L',
-        '1m x 2m': 'M',
-        '0,8m x 1,7m': 'N',
-        '0,7m x 1,4m': 'O',
-        '1,8m x 1,8m': 'P',
-        '1,5m x 1,5m': 'Q',
-        '1,2m x 1,2m': 'R',
-        '1,2m x 0,7m': 'S',
-        '1,2m x 0,8m': 'T',
-        '1,2m x 0,4m': 'U',
-        '12m': 'V',
-        '18m': 'W',
-        'BH phụ (0,4m x 0,3m)': 'X',
-        'D1200': 'Y',
-        'D2000': 'Z',
-        'Xích': 'AA',
-        '1,2m x 1,2m!': 'AB',
-        '0,6m x 0,6m': 'AC',
-        'Thước nước ngược': 'AD',
+        "Móng bê tông": 'C',
+        "Móng D219, L=12m": 'D',
+        "Móng D219, L=1m": 'E',
+        'Cột D90, L=3,2m': 'F',
+        'Cột D113,5, L=6m': 'G',
+        'Cột D113,5, L=4m': 'H',
+        'Cột D126,8, L=5,5m': 'I',
+        'Cột D141,3, L=6,5m': 'J',
+        'Cột D168,3, L=7,5m': 'K',
+        'Bảng 1,2m x 2,4m': 'L',
+        'Bảng 1m x 2m': 'M',
+        'Bảng 0,8m x 1,7m': 'N',
+        'Bảng 0,7m x 1,4m': 'O',
+        'Bảng 1,8m x 1,8m': 'P',
+        'Bảng 1,5m x 1,5m': 'Q',
+        'Bảng 1,2m x 1,2m': 'R',
+        'Bảng 1,2m x 0,7m': 'S',
+        'Bảng 1,2m x 0,8m': 'T',
+        'Bảng 1,2m x 0,4m': 'U',
+        'Trụ đèn 12m': 'V',
+        'Trụ đèn 18m': 'W',
+        'Trụ đèn BH phụ (0,4m x 0,3m)': 'X',
+        'Phao D1200': 'Y',
+        'Phao D2000': 'Z',
+        'Phao Xích': 'AA',
+        'Báo hiệu 1,2m x 1,2m': 'AB',
+        'Báo hiệu 0,6m x 0,6m': 'AC',
+        'Báo hiệu Thước nước ngược': 'AD',
         'Bảng tên cầu': 'AE',
-        'BH phụ (0,4m x 0,3m)!': 'AF',
+        'BH phụ (0,4m x 0,3m)': 'AF',
         'Cột': 'AG',
         'TĐ 12m': 'AH',
         'TĐ 18m': 'AI',
@@ -725,15 +725,15 @@ export class AppDashboard1Component {
 
     if(value === 'DCP') {
       data = {        
-        'D1200': 'C',
-        'D2000': 'D',
+        'Phao D1200': 'C',
+        'Phao D2000': 'D',
       }
     }
 
     if(value === 'CBR') {
       data = {        
-        'D1200': 'C',
-        'D2000': 'D',
+        'Phao D1200': 'C',
+        'Phao D2000': 'D',
       }
     }
     
@@ -741,8 +741,27 @@ export class AppDashboard1Component {
     
   }
 
-  exportExcelAllFiles(){    
+  exportExcelAllFiles(){      
+    
+    if (!this.filterApply.year && !this.filterApply.quarter) {
+      this.filterApply['year'] = new Date().getFullYear()
+      this.filterApply['quarter'] = this.getQuy(new Date())
+
+    }
     this.exportExcel(this.listExportBcDinhNgach)
+  }
+
+  getQuy(date: any) {
+    const month = date.getMonth() + 1;
+    if (month <= 3) {
+      return 'Quý 1';
+    } else if (month <= 6) {
+      return 'Quý 2';
+    } else if (month <= 9) {
+      return 'Quý 3';
+    } else {
+      return 'Quý 4';
+    }
   }
   
  
@@ -756,10 +775,11 @@ export class AppDashboard1Component {
       const rows = this.shortenTitleByValue(item.value);
   
       rows.forEach(row => sheet.addRow(row));
+      console.log('this.filterApply',this.filterApply)
   
       // Gọi API lấy dữ liệu cho từng sheet
       return new Promise<void>((resolve) => {
-        this.service.getAllBaoCao().subscribe(response => {
+        this.service.getAllBaoCaoForFilter(this.filterApply).subscribe(response => {
           const result = this.aggregateMaterials(response);     
           const dataRes = JSON.parse(result);      
           const listVL: any = this.shortenProjectNameByValue(item.value);
@@ -796,9 +816,9 @@ export class AppDashboard1Component {
             });
           });
   
-          sheet.getColumn(1).width = 10;
-          sheet.getColumn(2).width = 50;
-          sheet.getRow(8).height = 50;
+          sheet.getColumn(1).width = 10;          
+          sheet.getColumn(2).width = 50;          
+          sheet.getRow(8).height = 80;
   
           // Gọi hàm merge + tiêu đề sau khi có sheet
           this.formatSheetByValue(sheet, item.value);
@@ -807,6 +827,8 @@ export class AppDashboard1Component {
         });
       });
     });
+
+    const nameQuarterByFilter = this.formatNameQuarter(this.filterApply);
   
     // Khi tất cả các sheet đều xong => export
     Promise.all(sheetPromises).then(() => {
@@ -814,9 +836,23 @@ export class AppDashboard1Component {
         const blob = new Blob([buffer], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         });
-        saveAs(blob, 'export.xlsx');
+        saveAs(blob, `BÁO CÁO ĐỊNH NGACH - QUÝ ${nameQuarterByFilter}, NĂM ${this.filterApply.year}.xlsx`);
       });
     });
+  }
+
+  formatNameQuarter(filterApply: any) {
+    const quarter = filterApply.quarter;
+    if(quarter == 'Quý 1'){
+      return 'I';
+    }else if(quarter == 'Quý 2'){
+      return 'II';
+    }else if(quarter == 'Quý 3'){
+      return 'III';
+    }else{
+      return 'IV';
+    }
+    
   }
 
   formatSheetByValue(sheet: ExcelJS.Worksheet, value: string) {

@@ -9,7 +9,7 @@
         >Quý</mat-label
       >
       <mat-form-field appearance="outline" class="w-100">
-        <mat-select [(value)]="selectedQuarter">
+        <mat-select [formControl]="quarterControl">
           @for(option of quarter; track option) {
           <mat-option [value]="option.value">{{ option.title }}</mat-option>
           }

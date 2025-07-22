@@ -74,6 +74,7 @@ export class AdhocReportComponent {
   isDropdownOpen: boolean = false;
   congTrinhControl = new FormControl('');
   diaDiemControl = new FormControl({ value: '', disabled: true });
+  quarterControl = new FormControl('Quý 1');
   productsListControl = new FormControl('');
   noteControl = new FormControl('');
   tripControl = new FormControl('');
@@ -111,7 +112,7 @@ export class AdhocReportComponent {
     { title: 'Quý 4', value: 'Quý 4' },
   ];
 
-  selectedQuarter = this.quarter[0].value;
+  
 
 
 
@@ -129,8 +130,10 @@ export class AdhocReportComponent {
           this.congTrinhDiaDiem = res1
           this.congTrinhControl = new FormControl(res2.data.name_cong_trinh);
           this.diaDiemControl = new FormControl(res2.data.name_dia_diem);
+          this.quarterControl = new FormControl(res2.data.quarter);
           this.congTrinhControl.disable();
           this.diaDiemControl.disable();
+          this.quarterControl.disable();
           this.productsListControl = new FormControl(res2.data.du_an);
 
           this.noteControl = new FormControl(res2.data.note);
@@ -641,7 +644,7 @@ export class AdhocReportComponent {
             status: status,
             note: this.noteControl.value,
             trip: this.tripControl.value,
-            quarter: this.selectedQuarter
+            quarter: this.quarterControl.value
           }
         } else {
           formSave = {
@@ -652,7 +655,7 @@ export class AdhocReportComponent {
             status: status,
             note: this.noteControl.value,
             trip: this.tripControl.value,
-            quarter: this.selectedQuarter
+            quarter: this.quarterControl.value
           }
         }
 
